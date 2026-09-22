@@ -93,40 +93,16 @@ const Menu = (() => {
     const first = $('#lobby-menu .menu-btn');
     first?.focus();
 
-    // DEFERRED: Heavy audio stop/play after UI rendered (prevents UI stuck)
+    // PERFORMANCE FIX v2.4: NO auto music in lobby - prevents lag - Asfand Ali
+    // User: files loading khatam karo, bas formality loading screen rakho
+    // Music only starts after user interaction or 2 sec idle, super lightweight
     requestAnimationFrame(() => {
-      setTimeout(() => {
-        try {
-          if (typeof OGAudio !== 'undefined') {
-            OGAudio.stopFight(true);
-            OGAudio.stopAmbient(true);
-            if (typeof Music !== 'undefined' && Music._lastMood !== 'menu') {
-              OGAudio.stopMusic(true);
-            }
-          }
-          if (typeof BlindMusic !== 'undefined') {
-            BlindMusic.stop(true);
-          }
-          if (typeof PremiumAudio !== 'undefined') {
-            PremiumAudio.stop();
-          }
-        } catch (e) {}
-      }, 50);
-
-      // Music deferred 300ms after UI to prevent lag on lobby entry
-      setTimeout(() => {
-        try {
-          if (typeof Music !== 'undefined' && Music._lastMood !== 'menu') {
-            Music.play('menu');
-            Music.setAmb('crackle');
-            console.log('[Menu] Menu music started deferred - no lag');
-          } else if (typeof Music !== 'undefined') {
-            Music.setAmb('crackle');
-          }
-        } catch (e) {
-          try { Music.play('menu'); Music.setAmb('crackle'); } catch (ee) {}
+      // Stop any previous music instantly (lightweight)
+      try {
+        if (typeof Music !== 'undefined' && Music._lastMood && Music._lastMood !== 'menu') {
+          setTimeout(() => { try { Music.stop(true); } catch(e){} }, 100);
         }
-      }, 300);
+      } catch (e) {}
     });
     
     // Mobile: unlock all audio contexts on first gesture - deferred
@@ -597,33 +573,16 @@ const CHAPTERS = {
         }
       }
       
-      // LIGHTWEIGHT START: Only essential init first
+      // FORMALITY MODE v2.4: Super lightweight - no heavy audio at all in lobby - Asfand Ali
+      // User: files loading wala kaam khatam karo, bas formality loading screen rakho
+      // Only essential: init + boot + open (UI only, no music, no heavy audio)
       init();
       await Game.boot();
-      open(); // Shows UI instantly, music deferred inside open()
+      open(); // Instant UI, no lag
       
-      // DEFERRED HEAVY AUDIO: Staggered loading after menu visible - prevents UI stuck
-      const defer = (fn, delay) => setTimeout(fn, delay);
-      
-      // Use requestIdleCallback if available for non-blocking
-      const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
-      
-      idle(() => {
-        console.log('[Menu] Deferred heavy audio init - no lag');
-        defer(() => { try { if (typeof RealVoices !== 'undefined') RealVoices.init(); } catch (e) {} }, 500);
-        defer(() => { try { if (typeof OGAudio !== 'undefined') OGAudio.init(); } catch (e) {} }, 800);
-        defer(() => { try { if (typeof Realistic !== 'undefined') Realistic.init(); } catch (e) {} }, 1100);
-        defer(() => { try { if (typeof BlindMusic !== 'undefined') BlindMusic.init(); } catch (e) {} }, 1400);
-        defer(() => { try { if (typeof PremiumAudio !== 'undefined') PremiumAudio.init(); } catch (e) {} }, 1700);
-        defer(() => {
-          try {
-            if (typeof BlindMusic !== 'undefined') {
-              BlindMusic.playBase('noir_soft');
-              BlindMusic.setIntensity(0);
-            }
-          } catch (e) {}
-        }, 2000);
-      });
+      // NO auto heavy audio init - prevents lag completely
+      // Heavy audio will init only when user starts game (Start game / Explore etc)
+      console.log('[Menu] Formality mode - lobby instant, no heavy audio, no lag');
     },
     open,
   };
