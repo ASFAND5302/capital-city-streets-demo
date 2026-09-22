@@ -1,68 +1,113 @@
 # Capital City Streets
 
-> Hunt the truth. Avenge the silence.
+**A blind detective. A murdered sister. A city that wants you quiet.**
 
-### 🎮 **[▶️ CLICK HERE TO PLAY NOW](https://asfand5302.github.io/capital-city-streets-demo/)**
+[Play the game](https://asfand5302.github.io/capital-city-streets-demo/) — no download, runs in your browser. Headphones recommended.
 
-**Direct Play Link:** https://asfand5302.github.io/capital-city-streets-demo/
-
-**Developer:** Asfand Ali
-
-[![Play Now](https://img.shields.io/badge/🎮_PLAY_NOW-Click_To_Start-green?style=for-the-badge)](https://asfand5302.github.io/capital-city-streets-demo/)
-![Noir](https://img.shields.io/badge/Game-Noir_Detective-black?style=for-the-badge) ![Blind Friendly](https://img.shields.io/badge/Blind_Friendly-Audio_First-7fd4ff?style=for-the-badge)
+![Capital City Streets](img/title.jpg)
 
 ---
 
-### Welcome to Capitol City
+## About
 
-Your sister Salena was murdered. The city called it an accident. You know better.
+Your sister Salena was killed. The police filed it as an accident. You know it wasn't.
 
-You are **Stoneface** — blind, relentless, brilliant. With your Smart Glasses narrating the world and your crew-built SUV Bonnie at your side, you dig through five chapters of lies, from a seized apartment to a mansion gala where everything ends.
+You play as Stoneface — you lost your sight years ago, but not your edge. With Smart Glasses that narrate the world around you and an old SUV named Bonnie, you work through five chapters across Capitol City. From a locked apartment to a mansion gala, every choice matters.
 
-**This is not a visual game with audio added on. This is an audio game where you see with sound.**
+This started as an experiment: what if a game was built audio-first, not visual-first with audio added later? What if blind players got the full experience, not a stripped-down version?
 
----
-
-### ▶️ How to Play Instantly
-
-1. Click here: **https://asfand5302.github.io/capital-city-streets-demo/**
-2. Game loads directly — no download, no install
-3. Press any key to start, use arrow keys + Enter
-
-That's it. Stoneface is waiting.
+That's what this is.
 
 ---
 
-### ✨ Features
+## How it plays
 
-**🎧 Blind-Accessible, Premium Audio**
-- Full voice narration, binaural 3D sound, 100% keyboard playable
+There are two ways to play:
 
-**🎼 Cinematic Noir**
-- Live jazz score, real noir tracks, rain, city ambience
+**Story Mode** — Five chapters, branching dialogue, three endings. You move through scenes, talk to people, make calls that change what happens next. The usual detective stuff, but you navigate by listening.
 
-**🗺️ Story + Open World**
-- 5 chapters, 3 endings, free-roam city, Bonnie rides
+**Explore the City** — Free roam a 20x20 block grid. Walk block by block, find landmarks by sound, set markers, call Bonnie to drive you. There's a lot tucked away if you look.
 
----
-
-### 🎮 Controls
-
-- ↑ ↓ = hear options, Enter = select
-- 1-9 = jump to choice, R = replay, V = voice toggle
-- WASD = walk city, L = look around, P = sonar ping, B = call Bonnie
+Both modes are fully playable with just a keyboard and headphones. No mouse needed.
 
 ---
 
-### 👤 Created By
+## Controls
 
-**Asfand Ali** — Solo Developer
+**Story:**
+- Up / Down — move between choices (each one is spoken)
+- Enter — select
+- 1-9 — jump to a choice directly
+- R — replay current line, V — toggle voice, F — focus mode
 
-- GitHub: [@ASFAND5302](https://github.com/ASFAND5302)
-- Play: https://asfand5302.github.io/capital-city-streets-demo/
+**City:**
+- WASD or Arrows — move
+- L — look around, P — sonar ping (like TLOU2's enhanced listen), K — district guide
+- G — go to landmark, M — set marker, B — call Bonnie
+- Esc — back to menu
+
+Takes about two minutes to get used to. The game teaches you as you go.
 
 ---
 
-**🎮 [PLAY NOW - https://asfand5302.github.io/capital-city-streets-demo/](https://asfand5302.github.io/capital-city-streets-demo/)**
+## Accessibility
 
-*Hunt the truth. Avenge the silence.*
+Full narration for every line, option, and menu. Binaural 3D audio so you can tell where things are. High contrast mode (press H in-game). 100% keyboard playable. Works on desktop and mobile browsers.
+
+I tested this with screen readers and with eyes closed. If something doesn't work for you, open an issue — I actually read them.
+
+---
+
+## Tech
+
+Built with vanilla JS, Web Audio API for the generative jazz score, and a lot of hand-written dialogue. No engine, no framework. Art is a mix of generated images and simple SVGs. Audio is a mix of real recordings and synthesized ambience.
+
+Saves are local to your browser.
+
+---
+
+## Chapters
+
+1. The First Echo — Salena's apartment, a jingle lock, first blood
+2. The Block — Southside, the Velvet Room, new allies
+3. Waterfront / Island — Road ambush, the casino
+4. The Takedown — Precinct shootout, five hitmen
+5. The Grand Finale — Mansion gala, three endings
+
+Plus free-roam Capitol City.
+
+---
+
+## Development
+
+I'm Asfand Ali, solo dev from Islamabad. I built this over a few months because I wanted to make something that actually works well for blind players, not just checks a box.
+
+If you want to see how it's put together, the code is all here. `data/chapters.json` has the entire story. `src/` has the engine. It's not perfect, but it works.
+
+---
+
+## Play
+
+**https://asfand5302.github.io/capital-city-streets-demo/**
+
+Works best in Chrome or Edge on desktop. Mobile works too, but desktop with headphones is the way to go.
+
+---
+
+## Credits
+
+Story, design, code, audio implementation — Asfand Ali
+
+Built at Paschall Game Hub (just me, really).
+
+Special thanks to the open game art and CC0 audio communities — a lot of the noir jazz and SFX are from there.
+
+---
+
+## License
+
+MIT — do what you want with it, just keep the credit.
+
+---
+
+If you play it, let me know what you think. And if you find a bug, tell me — I fix them fast.
