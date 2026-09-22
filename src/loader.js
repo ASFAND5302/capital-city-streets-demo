@@ -85,15 +85,22 @@ const GameLoader = (() => {
     progress = pct;
     statusText = type + ': ' + fileName.split('/').pop();
     
-    // Update UI
+    // Update UI - BIG PERCENTAGE DISPLAY 70% style - Asfand Ali
     const bar = $('#loading-bar-fill');
     const pctEl = $('#loading-percent');
+    const bigPctEl = $('#loading-big-percent');
+    const barTextEl = $('#loading-bar-text');
     const statusEl = $('#loading-status');
     const detailEl = $('#loading-detail');
+    const hintEl = $('#loading-hint');
+    const blockPctEl = $('#loading-block-pct');
     
     if (bar) bar.style.width = pct + '%';
-    if (pctEl) pctEl.textContent = pct + '%';
+    if (pctEl) pctEl.textContent = pct + '% loaded';
+    if (bigPctEl) bigPctEl.textContent = pct + '%';
+    if (barTextEl) barTextEl.textContent = pct + '%';
     if (statusEl) statusEl.textContent = statusText;
+    if (blockPctEl) blockPctEl.textContent = pct + '%';
     if (detailEl) {
       const icons = {
         data: '📄',
@@ -102,7 +109,10 @@ const GameLoader = (() => {
         voice: '🎙️',
         engine: '⚙️'
       };
-      detailEl.textContent = (icons[type] || '•') + ' Loading ' + type + '... ' + fileName.split('/').pop();
+      detailEl.textContent = pct + '% loaded — ' + (icons[type] || '•') + ' Loading ' + type + '... ' + fileName.split('/').pop();
+    }
+    if (hintEl && !document.getElementById('loading-screen')?.classList.contains('ready')) {
+      hintEl.textContent = 'Loading... ' + pct + '% — please wait, lobby blocked until 100%';
     }
 
     // Checklist updates
@@ -265,6 +275,10 @@ const GameLoader = (() => {
     if (onProgress) onProgressCb = onProgress;
     calcTotal();
     console.log('[Loader] Starting - total steps:', totalSteps);
+    // Show 0% immediately prominent
+    const initBig = document.getElementById('loading-big-percent');
+    if (initBig) initBig.textContent = '0%';
+    await new Promise(r => setTimeout(r, 200));
     
     statusText = 'Loading game data...';
     
@@ -273,11 +287,13 @@ const GameLoader = (() => {
       await loadJSON(f);
     }
     
-    // Phase 2: Images (biggest part, parallel in batches of 4 for speed)
+    // Phase 2: Images (biggest part, parallel in batches of 4 for speed) - with visible % steps
     const batchSize = 4;
     for (let i = 0; i < IMAGE_FILES.length; i += batchSize) {
       const batch = IMAGE_FILES.slice(i, i + batchSize);
       await Promise.all(batch.map(f => loadImage(f)));
+      // Small delay to make percentage visible (70% style user wants to see progress)
+      await new Promise(r => setTimeout(r, 120));
     }
     
     // Phase 3: Audio essentials (parallel)
@@ -289,21 +305,27 @@ const GameLoader = (() => {
     // Phase 5: Engine
     await loadEngine();
     
-    // Final
+    // Final - 100% loaded - Asfand Ali prominent
     progress = 100;
     loaded = true;
     
     const bar = $('#loading-bar-fill');
     const pctEl = $('#loading-percent');
+    const bigPctEl = $('#loading-big-percent');
+    const barTextEl = $('#loading-bar-text');
     const statusEl = $('#loading-status');
     const detailEl = $('#loading-detail');
     const hintEl = $('#loading-hint');
+    const blockPctEl = $('#loading-block-pct');
     const checklistEl = $('#loading-checklist');
     
     if (bar) bar.style.width = '100%';
-    if (pctEl) pctEl.textContent = '100%';
+    if (pctEl) pctEl.textContent = '100% loaded';
+    if (bigPctEl) bigPctEl.textContent = '100%';
+    if (barTextEl) barTextEl.textContent = '100%';
     if (statusEl) statusEl.textContent = 'All files loaded! Ready to enter Capitol City.';
-    if (detailEl) detailEl.textContent = '✅ All game files properly loaded — lobby ready!';
+    if (detailEl) detailEl.textContent = '✅ 100% loaded — All game files properly loaded — lobby ready!';
+    if (blockPctEl) blockPctEl.textContent = '100%';
     if (checklistEl) {
       checklistEl.querySelectorAll('.chk').forEach(el => el.className = 'chk done');
     }
@@ -312,7 +334,7 @@ const GameLoader = (() => {
     const loadingScreen = $('#loading-screen');
     if (loadingScreen) loadingScreen.classList.add('ready');
     if (hintEl) {
-      hintEl.innerHTML = '<span class="ready-pulse">✓ READY</span> — Press any key to enter Capitol City';
+      hintEl.innerHTML = '<span class="ready-pulse">✓ 100% READY</span> — Press any key to enter Capitol City';
       hintEl.classList.add('ready');
     }
     

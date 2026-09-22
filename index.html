@@ -54,18 +54,26 @@
     <div class="loading-title">CAPITAL CITY STREETS</div>
     <div class="loading-sub">Loading all game files before lobby entry</div>
     
+    <!-- BIG PERCENTAGE DISPLAY - 70% style prominent -->
+    <div class="loading-percent-big-wrap">
+      <div id="loading-big-percent" class="loading-big-percent">0%</div>
+      <div class="loading-big-label">LOADED</div>
+    </div>
+
     <div class="loading-bar-wrap" aria-hidden="true">
       <div class="loading-bar-bg">
-        <div id="loading-bar-fill" class="loading-bar-fill" style="width:0%"></div>
+        <div id="loading-bar-fill" class="loading-bar-fill" style="width:0%">
+          <span id="loading-bar-text" class="loading-bar-text">0%</span>
+        </div>
         <div class="loading-bar-glow"></div>
       </div>
       <div class="loading-bar-info">
-        <span id="loading-percent">0%</span>
+        <span id="loading-percent">0% loaded</span>
         <span id="loading-status">Initializing...</span>
       </div>
     </div>
 
-    <div id="loading-detail" class="loading-detail">Starting file preload...</div>
+    <div id="loading-detail" class="loading-detail">Starting file preload... 0% loaded</div>
 
     <div id="loading-checklist" class="loading-checklist" aria-hidden="true">
       <div id="chk-data" class="chk loading"><span class="chk-icon">📄</span> Game Data <span class="chk-pct">0%</span></div>
@@ -75,8 +83,8 @@
       <div id="chk-engine" class="chk"><span class="chk-icon">⚙️</span> Game Engine <span class="chk-pct">—</span></div>
     </div>
 
-    <div id="loading-hint" class="loading-hint">Loading... please wait, lobby blocked until 100%</div>
-    <div class="loading-block-msg">🛡️ Lobby entry blocked until all files properly loaded</div>
+    <div id="loading-hint" class="loading-hint">Loading... 0% — please wait, lobby blocked until 100%</div>
+    <div class="loading-block-msg">🛡️ Lobby entry blocked until all files properly loaded — <span id="loading-block-pct">0%</span> complete</div>
   </div>
 
   <!-- ══ Paschall Game Hub — studio splash ══ -->

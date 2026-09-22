@@ -770,3 +770,37 @@ body.focus-mode #city-3d { filter: brightness(.45) grayscale(.5); }
   .loading-checklist { gap: 6px; }
   .loading-checklist .chk { min-width: 110px; font-size: .68rem; padding: 5px 8px; }
 }
+
+/* ══ BIG PERCENTAGE DISPLAY — 70% style prominent — Asfand Ali ══ */
+.loading-percent-big-wrap {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  margin: 12px 0 6px;
+  background: radial-gradient(ellipse at center, rgba(245,185,66,.12), transparent 70%);
+  padding: 14px 28px; border-radius: 16px;
+  border: 1px solid rgba(245,185,66,.18);
+  min-width: 180px;
+}
+.loading-big-percent {
+  font-size: clamp(2.8rem, 10vw, 4.2rem);
+  font-weight: 900; line-height: 1;
+  color: var(--accent);
+  text-shadow: 0 0 20px rgba(245,185,66,.5), 0 0 40px rgba(245,185,66,.25), 0 3px 12px #000;
+  letter-spacing: .04em;
+  transition: all .3s ease;
+  font-variant-numeric: tabular-nums;
+}
+.loading-big-label {
+  font-size: .75rem; letter-spacing: .45em; text-indent: .45em;
+  color: #c9c2b0; margin-top: 4px; font-weight: 600; opacity: .85;
+}
+#loading-screen.ready .loading-big-percent {
+  color: #4ab08a;
+  text-shadow: 0 0 20px rgba(74,176,138,.6), 0 0 40px rgba(74,176,138,.3);
+}
+.loading-bar-text {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  font-size: .70rem; font-weight: 800; color: #1a1405;
+  text-shadow: 0 1px 0 rgba(255,255,255,.3);
+  letter-spacing: .04em;
+}
+.loading-bar-fill { position: relative; }
