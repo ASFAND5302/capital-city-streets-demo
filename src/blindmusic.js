@@ -360,8 +360,9 @@ const BlindMusic = (() => {
   }
 
   function init() {
-    console.log(`[BlindMusic v2.1 Bug Fixed] Initialized - 15 leitmotifs, 4 layers, no overlap, ducking`);
-    try { ac(); } catch (e) {}
+    console.log(`[BlindMusic v2.1] Lightweight init - no AudioContext yet, prevents lag`);
+    // PERFORMANCE FIX: Don't create AudioContext on init - heavy, causes lobby lag
+    // ac() will be called only when actually playing
     if (isMobile) {
       const unlockEvents = ['touchstart', 'touchend', 'click'];
       const unlockOnce = () => { unlockMobile(); unlockEvents.forEach(ev => document.removeEventListener(ev, unlockOnce)); };

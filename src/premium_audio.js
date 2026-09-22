@@ -38,11 +38,9 @@ const PremiumAudio = (() => {
   function init() {
     if (initialized) return;
     initialized = true;
-    console.log('[PremiumAudio v2.1 Bug Fixed] Initializing...');
-    try { if (typeof SFX !== 'undefined') SFX.play('tick'); } catch (e) {}
-    try { if (typeof BlindMusic !== 'undefined') BlindMusic.init(); } catch (e) {}
-    try { if (typeof OGAudio !== 'undefined') OGAudio.init(); } catch (e) {}
-    try { if (typeof Realistic !== 'undefined') Realistic.init(); } catch (e) {}
+    console.log('[PremiumAudio v2.1] Lightweight init - no heavy preload, prevents lag');
+    // PERFORMANCE FIX: Don't init all audio systems at once - causes lag
+    // Only init when needed, staggered
     if (isMobile) {
       const unlockEvents = ['touchstart', 'touchend', 'click'];
       const unlockOnce = () => {

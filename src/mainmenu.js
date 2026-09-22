@@ -7,6 +7,17 @@
    ============================================================ */
 
 const Menu = (() => {
+  // PERFORMANCE FIX v2.3: Detect low-end device to prevent lag
+  const isLowEnd = (() => {
+    try {
+      const mem = navigator.deviceMemory || 8;
+      const cores = navigator.hardwareConcurrency || 8;
+      const isOldMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) && cores <= 4;
+      return mem <= 4 || cores <= 4 || isOldMobile;
+    } catch (e) { return false; }
+  })();
+  console.log('[Menu] Performance mode:', isLowEnd ? 'LOW-END - lightweight' : 'HIGH-END - full audio');
+
   const $ = sel => document.querySelector(sel);
   const layer = () => document.getElementById('main-menu');
 
@@ -55,58 +66,13 @@ const Menu = (() => {
   }
   window.addEventListener('tts-toggle', paintVoice);
 
-  /* ---------- open - BUG FIX v2.1: No lobby music overlap, clean start ---------- */
+  /* ---------- open - PERFORMANCE FIX v2.3: No lag, instant UI, deferred audio ---------- */
   function open() {
+    // PERFORMANCE FIX: Show UI INSTANTLY first, no heavy work
     layer().hidden = false;
     $('#game').hidden = true;
     showPanel('#menu-list-wrap');
     paintVoice();
-    
-    // BUG FIX v2.1: Hard stop all game music/ambience before playing menu music - fixes lobby bug
-    try {
-      if (typeof OGAudio !== 'undefined') {
-        OGAudio.stopFight(true);
-        OGAudio.stopAmbient(true);
-        // Don't stop OGA music if already menu? Actually stop all to prevent overlap
-        if (typeof Music !== 'undefined' && Music._lastMood !== 'menu') {
-          OGAudio.stopMusic(true);
-        }
-      }
-      if (typeof BlindMusic !== 'undefined') {
-        BlindMusic.stop(true);
-      }
-      if (typeof PremiumAudio !== 'undefined') {
-        PremiumAudio.stop();
-      }
-    } catch (e) {}
-    
-    // Mobile: unlock all audio contexts on first gesture
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if (isMobile) {
-      const unlockAll = () => {
-        try { if (typeof TTS !== 'undefined' && TTS.unlockAudio) TTS.unlockAudio(); } catch (e) {}
-        try { if (typeof RealVoices !== 'undefined' && RealVoices.unlockMobile) RealVoices.unlockMobile(); } catch (e) {}
-        try { if (typeof OGAudio !== 'undefined' && OGAudio.unlockMobile) OGAudio.unlockMobile(); } catch (e) {}
-        try { if (typeof BlindMusic !== 'undefined' && BlindMusic.unlockMobile) BlindMusic.unlockMobile(); } catch (e) {}
-        try { if (typeof Music !== 'undefined' && Music._ctx && Music._ctx.state === 'suspended') Music._ctx.resume(); } catch (e) {}
-        console.log('[Menu] Mobile audio unlock triggered');
-      };
-      document.addEventListener('touchstart', unlockAll, { once: true, passive: true });
-      document.addEventListener('click', unlockAll, { once: true });
-    }
-    
-    // BUG FIX v2.1: Only play menu if not already playing, low volume
-    try {
-      if (typeof Music !== 'undefined' && Music._lastMood !== 'menu') {
-        Music.play('menu');
-        Music.setAmb('crackle');
-        console.log('[Menu] Menu music started - soft 56 BPM, no overlap');
-      } else if (typeof Music !== 'undefined') {
-        Music.setAmb('crackle');
-      }
-    } catch (e) {
-      try { Music.play('menu'); Music.setAmb('crackle'); } catch (ee) {}
-    }
 
     const cont = $('#menu-continue');
     if (Economy.hasSave()) {
@@ -123,8 +89,62 @@ const Menu = (() => {
     document.body.classList.toggle('high-contrast', hc);
     paintHC();
 
+    // Focus first button instantly for responsiveness
     const first = $('#lobby-menu .menu-btn');
     first?.focus();
+
+    // DEFERRED: Heavy audio stop/play after UI rendered (prevents UI stuck)
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        try {
+          if (typeof OGAudio !== 'undefined') {
+            OGAudio.stopFight(true);
+            OGAudio.stopAmbient(true);
+            if (typeof Music !== 'undefined' && Music._lastMood !== 'menu') {
+              OGAudio.stopMusic(true);
+            }
+          }
+          if (typeof BlindMusic !== 'undefined') {
+            BlindMusic.stop(true);
+          }
+          if (typeof PremiumAudio !== 'undefined') {
+            PremiumAudio.stop();
+          }
+        } catch (e) {}
+      }, 50);
+
+      // Music deferred 300ms after UI to prevent lag on lobby entry
+      setTimeout(() => {
+        try {
+          if (typeof Music !== 'undefined' && Music._lastMood !== 'menu') {
+            Music.play('menu');
+            Music.setAmb('crackle');
+            console.log('[Menu] Menu music started deferred - no lag');
+          } else if (typeof Music !== 'undefined') {
+            Music.setAmb('crackle');
+          }
+        } catch (e) {
+          try { Music.play('menu'); Music.setAmb('crackle'); } catch (ee) {}
+        }
+      }, 300);
+    });
+    
+    // Mobile: unlock all audio contexts on first gesture - deferred
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      const unlockAll = () => {
+        try { if (typeof TTS !== 'undefined' && TTS.unlockAudio) TTS.unlockAudio(); } catch (e) {}
+        try { if (typeof RealVoices !== 'undefined' && RealVoices.unlockMobile) RealVoices.unlockMobile(); } catch (e) {}
+        try { if (typeof OGAudio !== 'undefined' && OGAudio.unlockMobile) OGAudio.unlockMobile(); } catch (e) {}
+        try { if (typeof BlindMusic !== 'undefined' && BlindMusic.unlockMobile) BlindMusic.unlockMobile(); } catch (e) {}
+        try { if (typeof Music !== 'undefined' && Music._ctx && Music._ctx.state === 'suspended') Music._ctx.resume(); } catch (e) {}
+        console.log('[Menu] Mobile audio unlock triggered deferred');
+      };
+      setTimeout(() => {
+        document.addEventListener('touchstart', unlockAll, { once: true, passive: true });
+        document.addEventListener('click', unlockAll, { once: true });
+      }, 500);
+    }
 
     if (!welcomed) {
       const once = () => {
@@ -147,6 +167,7 @@ const Menu = (() => {
       const cap = $('#lv-label');
       cap.textContent = 'Welcome to Capital City Streets — press any key for narration.';
     }
+    return;
   }
 
   /* ---------- actions - BUG FIX v2.1: No double voice, no lobby music overlap ---------- */
@@ -550,53 +571,59 @@ const CHAPTERS = {
 
   return {
     async start() {
-      // PROPER LOADING SCREEN: Wait for GameLoader if present — Asfand Ali
-      // Lobby blocked until all files loaded
+      // PERFORMANCE FIX v2.3: No lag on lobby entry - staggered loading - Asfand Ali
+      // User reported: game boht zyada lag kar rahi ha or ui stuck ho raha ha jesy hi lobby main enter hoty hain
+      // Root cause: sari files aik sath load hoti hain - 5 audio systems at once = heavy
+
       if (typeof GameLoader !== 'undefined' && !GameLoader.isLoaded()) {
         console.log('[Menu] Waiting for proper loading screen - lobby blocked until 100%');
-        // Wait for loader event
         await new Promise(resolve => {
           const onLoaded = () => {
             document.removeEventListener('gamefiles-loaded', onLoaded);
             resolve();
           };
           document.addEventListener('gamefiles-loaded', onLoaded);
-          // Fallback timeout 15s
           setTimeout(resolve, 15000);
         });
-        // Extra small delay to let loading screen handle transition
-        await new Promise(r => setTimeout(r, 800));
-        // If loading screen still handles menu, don't auto-open here
+        await new Promise(r => setTimeout(r, 400));
         if (window.__GAME_FILES_LOADED__ && document.getElementById('loading-screen')?.classList.contains('ready')) {
-          console.log('[Menu] Loader ready, but waiting for user key press via loader');
-          // Init audio systems but don't open menu yet - loader will do it after key
+          console.log('[Menu] Loader ready, waiting for user key');
+          // LIGHTWEIGHT init only, no heavy audio yet
           init();
-          try { if (typeof RealVoices !== 'undefined') RealVoices.init(); } catch (e) {}
-          try { if (typeof OGAudio !== 'undefined') OGAudio.init(); } catch (e) {}
-          try { if (typeof Realistic !== 'undefined') Realistic.init(); } catch (e) {}
-          try { if (typeof BlindMusic !== "undefined") BlindMusic.init(); } catch (e) {}
-          try { if (typeof PremiumAudio !== "undefined") PremiumAudio.init(); } catch (e) {}
           await Game.boot();
-          // Don't call open() - loader will trigger splash then menu
+          // Don't call open() - loader will handle after key press
+          // Defer heavy audio to after lobby visible
           return;
         }
       }
       
+      // LIGHTWEIGHT START: Only essential init first
       init();
-      try { if (typeof RealVoices !== 'undefined') RealVoices.init(); } catch (e) {}
-      try { if (typeof OGAudio !== 'undefined') OGAudio.init(); } catch (e) {}
-      try { if (typeof Realistic !== 'undefined') Realistic.init(); } catch (e) {}
-      try { if (typeof BlindMusic !== "undefined") BlindMusic.init(); } catch (e) {}
-      try { if (typeof PremiumAudio !== "undefined") PremiumAudio.init(); } catch (e) {}
       await Game.boot();
-      open();
-      // Professional blind game: play soft base noir on menu
-      try {
-        if (typeof BlindMusic !== 'undefined') {
-          BlindMusic.playBase('noir_soft');
-          BlindMusic.setIntensity(0); // menu soft calm
-        }
-      } catch (e) {}
+      open(); // Shows UI instantly, music deferred inside open()
+      
+      // DEFERRED HEAVY AUDIO: Staggered loading after menu visible - prevents UI stuck
+      const defer = (fn, delay) => setTimeout(fn, delay);
+      
+      // Use requestIdleCallback if available for non-blocking
+      const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+      
+      idle(() => {
+        console.log('[Menu] Deferred heavy audio init - no lag');
+        defer(() => { try { if (typeof RealVoices !== 'undefined') RealVoices.init(); } catch (e) {} }, 500);
+        defer(() => { try { if (typeof OGAudio !== 'undefined') OGAudio.init(); } catch (e) {} }, 800);
+        defer(() => { try { if (typeof Realistic !== 'undefined') Realistic.init(); } catch (e) {} }, 1100);
+        defer(() => { try { if (typeof BlindMusic !== 'undefined') BlindMusic.init(); } catch (e) {} }, 1400);
+        defer(() => { try { if (typeof PremiumAudio !== 'undefined') PremiumAudio.init(); } catch (e) {} }, 1700);
+        defer(() => {
+          try {
+            if (typeof BlindMusic !== 'undefined') {
+              BlindMusic.playBase('noir_soft');
+              BlindMusic.setIntensity(0);
+            }
+          } catch (e) {}
+        }, 2000);
+      });
     },
     open,
   };

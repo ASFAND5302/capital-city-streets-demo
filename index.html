@@ -492,24 +492,26 @@
   </div>
 
 
+  <!-- PERFORMANCE FIX v2.3: Essential scripts sync for instant lobby, heavy deferred -->
   <script src="src/loader.js"></script>
   <script src="src/tts.js"></script>
-  <script src="src/realvoices.js"></script>
-  <script src="src/ogaudio.js"></script>
-  <script src="src/realistic.js"></script>
-  <script src="src/blindmusic.js"></script>
   <script src="src/audio.js"></script>
   <script src="src/spatial.js"></script>
   <script src="src/music.js"></script>
-  <script src="src/premium_audio.js"></script>
   <script src="src/input.js"></script>
   <script src="src/economy.js"></script>
   <script src="src/game.js"></script>
-  <script src="vendor/three.min.js"></script>
-  <script src="src/audio3d.js"></script>
-  <script src="src/city3d.js"></script>
-  <script src="src/city.js"></script>
   <script src="src/mainmenu.js"></script>
+  <!-- Heavy audio & 3D deferred - prevents lag on lobby entry, loads after UI -->
+  <script defer src="src/realvoices.js"></script>
+  <script defer src="src/ogaudio.js"></script>
+  <script defer src="src/realistic.js"></script>
+  <script defer src="src/blindmusic.js"></script>
+  <script defer src="src/premium_audio.js"></script>
+  <script defer src="vendor/three.min.js"></script>
+  <script defer src="src/audio3d.js"></script>
+  <script defer src="src/city3d.js"></script>
+  <script defer src="src/city.js"></script>
 
 
   <!-- Mobile Browser Fix: Unlock audio + improve TTS voice loading -->
