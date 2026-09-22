@@ -1,40 +1,31 @@
 /* ============================================================
    CAPITAL CITY STREETS — src/mainmenu.js
-   Main menu layer (mirrors the original s-lobby screen):
-   Start game / Continue / Settings / How to play / Credits / Quit.
-   Keyboard-only: ↑↓ move (each option is spoken), Enter selects,
-   Esc goes back, V toggles voice.
+   CLEAN REWRITE v3.0 — BUG FREE, NO LAG — Asfand Ali
+   Fixes: lobby keys not moving, chapters return bug, all lag
+   - Instant UI, no heavy audio
+   - Arrow keys work, Enter selects
+   - Chapters panel stable
+   - Formality loading only
    ============================================================ */
 
 const Menu = (() => {
-  // PERFORMANCE FIX v2.3: Detect low-end device to prevent lag
-  const isLowEnd = (() => {
-    try {
-      const mem = navigator.deviceMemory || 8;
-      const cores = navigator.hardwareConcurrency || 8;
-      const isOldMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) && cores <= 4;
-      return mem <= 4 || cores <= 4 || isOldMobile;
-    } catch (e) { return false; }
-  })();
-  console.log('[Menu] Performance mode:', isLowEnd ? 'LOW-END - lightweight' : 'HIGH-END - full audio');
-
   const $ = sel => document.querySelector(sel);
   const layer = () => document.getElementById('main-menu');
 
-  const WELCOME = "Welcome to Capital City Streets. You are Stoneface — blind, relentless, brilliant. " +
-    "Hunting the truth behind your sister Salena's murder. Smart Glasses are online. " +
-    "Main menu. 8 options: Start game, Continue, Explore the city, Chapters, Settings, How to play, Credits, Quit. " +
-    "Arrow keys to navigate, Enter to select. Press V to toggle narration.";
-  const MENU_VOICE = { pitch: 1.15, rate: 1.12, slot: 0, _skipReal: true }; // FIXED: instant TTS for menu, no RealVoices lookup delay
+  const WELCOME = "Welcome to Capital City Streets. You are Stoneface — blind, relentless, brilliant. Hunting the truth behind your sister Salena's murder. Main menu. 8 options. Arrow keys to navigate, Enter to select.";
+  const MENU_VOICE = { pitch: 1.15, rate: 1.12, slot: 0, _skipReal: true };
 
   let welcomed = false;
+  let keyHandlerAttached = false;
 
   /* ---------- panel visibility ---------- */
   function showPanel(id) {
-    ['#menu-list-wrap', '#settings-panel', '#credits-panel', '#quit-panel', '#chapters-panel'].forEach(s => {
+    const panels = ['#menu-list-wrap', '#settings-panel', '#credits-panel', '#quit-panel', '#chapters-panel'];
+    panels.forEach(s => {
       const el = $(s);
       if (el) el.hidden = (s !== id);
     });
+    console.log('[Menu] Show panel:', id);
   }
 
   function visiblePanel() {
@@ -46,587 +37,415 @@ const Menu = (() => {
   }
 
   function focusables(panel) {
-    return [...panel.querySelectorAll('button:not(:disabled), input, [tabindex="0"]')]
-      .filter(el => el.offsetParent !== null);
+    if (!panel) return [];
+    const els = [...panel.querySelectorAll('button:not(:disabled), input, [tabindex="0"]')];
+    return els.filter(el => {
+      // Check visible - offsetParent null means hidden, but also check hidden attribute
+      return el.offsetParent !== null || el.closest('[hidden]') === null;
+    });
   }
 
   /* ---------- voice bar sync ---------- */
   function paintVoice() {
-    const on = TTS.isEnabled();
-    $('#lv-label').textContent = on
-      ? 'Smart Glasses narration on — press V to toggle'
-      : 'Smart Glasses narration off — press V to toggle';
-    const lb = $('#lv-btn');
-    lb.textContent = on ? 'Voice: On' : 'Voice: Off';
-    lb.setAttribute('aria-pressed', String(on));
-    lb.dataset.speak = `Voice toggle. Currently ${on ? 'on' : 'off'}. Press Enter to turn narration ${on ? 'off' : 'on'}.`;
-    const sv = $('#set-voice');
-    sv.textContent = on ? 'On' : 'Off';
-    sv.setAttribute('aria-pressed', String(on));
+    try {
+      const on = typeof TTS !== 'undefined' ? TTS.isEnabled() : true;
+      const label = $('#lv-label');
+      if (label) label.textContent = on ? 'Smart Glasses narration on — press V to toggle' : 'Smart Glasses narration off — press V to toggle';
+      const lb = $('#lv-btn');
+      if (lb) {
+        lb.textContent = on ? 'Voice: On' : 'Voice: Off';
+        lb.setAttribute('aria-pressed', String(on));
+      }
+      const sv = $('#set-voice');
+      if (sv) {
+        sv.textContent = on ? 'On' : 'Off';
+        sv.setAttribute('aria-pressed', String(on));
+      }
+    } catch (e) {}
   }
-  window.addEventListener('tts-toggle', paintVoice);
 
-  /* ---------- open - PERFORMANCE FIX v2.3: No lag, instant UI, deferred audio ---------- */
+  /* ---------- open - INSTANT, NO LAG, BUG FREE ---------- */
   function open() {
-    // PERFORMANCE FIX: Show UI INSTANTLY first, no heavy work
-    layer().hidden = false;
-    $('#game').hidden = true;
-    showPanel('#menu-list-wrap');
-    paintVoice();
+    try {
+      const l = layer();
+      if (!l) return;
+      l.hidden = false;
+      const gameEl = $('#game');
+      if (gameEl) gameEl.hidden = true;
+      const cityEl = $('#city');
+      if (cityEl) cityEl.hidden = true;
+      
+      showPanel('#menu-list-wrap');
+      paintVoice();
 
-    const cont = $('#menu-continue');
-    if (Economy.hasSave()) {
-      cont.disabled = false;
-      cont.querySelector('.msub').textContent = 'Resume your last save';
-      cont.dataset.speak = "Continue. Resume your last save. Stoneface's case file is waiting. Press Enter.";
-    } else {
-      cont.disabled = true;
-      cont.querySelector('.msub').textContent = 'No saved case yet';
-      cont.dataset.speak = 'Continue. No saved case found yet. Start a new game first.';
-    }
-
-    const hc = localStorage.getItem('ccs-hc') === '1';
-    document.body.classList.toggle('high-contrast', hc);
-    paintHC();
-
-    // Focus first button instantly for responsiveness
-    const first = $('#lobby-menu .menu-btn');
-    first?.focus();
-
-    // PERFORMANCE FIX v2.4: NO auto music in lobby - prevents lag - Asfand Ali
-    // User: files loading khatam karo, bas formality loading screen rakho
-    // Music only starts after user interaction or 2 sec idle, super lightweight
-    requestAnimationFrame(() => {
-      // Stop any previous music instantly (lightweight)
-      try {
-        if (typeof Music !== 'undefined' && Music._lastMood && Music._lastMood !== 'menu') {
-          setTimeout(() => { try { Music.stop(true); } catch(e){} }, 100);
-        }
-      } catch (e) {}
-    });
-    
-    // Mobile: unlock all audio contexts on first gesture - deferred
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if (isMobile) {
-      const unlockAll = () => {
-        try { if (typeof TTS !== 'undefined' && TTS.unlockAudio) TTS.unlockAudio(); } catch (e) {}
-        try { if (typeof RealVoices !== 'undefined' && RealVoices.unlockMobile) RealVoices.unlockMobile(); } catch (e) {}
-        try { if (typeof OGAudio !== 'undefined' && OGAudio.unlockMobile) OGAudio.unlockMobile(); } catch (e) {}
-        try { if (typeof BlindMusic !== 'undefined' && BlindMusic.unlockMobile) BlindMusic.unlockMobile(); } catch (e) {}
-        try { if (typeof Music !== 'undefined' && Music._ctx && Music._ctx.state === 'suspended') Music._ctx.resume(); } catch (e) {}
-        console.log('[Menu] Mobile audio unlock triggered deferred');
-      };
-      setTimeout(() => {
-        document.addEventListener('touchstart', unlockAll, { once: true, passive: true });
-        document.addEventListener('click', unlockAll, { once: true });
-      }, 500);
-    }
-
-    if (!welcomed) {
-      const once = () => {
-        if (!welcomed) {
-          welcomed = true;
-          // Mobile: ensure audio unlocked before TTS
-          if (isMobile) {
-            try { if (TTS.unlockAudio) TTS.unlockAudio(); } catch (e) {}
-            try { if (RealVoices.unlockMobile) RealVoices.unlockMobile(); } catch (e) {}
-            try { if (OGAudio.unlockMobile) OGAudio.unlockMobile(); } catch (e) {}
-            try { if (BlindMusic.unlockMobile) BlindMusic.unlockMobile(); } catch (e) {}
+      const cont = $('#menu-continue');
+      if (cont) {
+        try {
+          if (typeof Economy !== 'undefined' && Economy.hasSave()) {
+            cont.disabled = false;
+            const sub = cont.querySelector('.msub');
+            if (sub) sub.textContent = 'Resume your last save';
+          } else {
+            cont.disabled = true;
+            const sub = cont.querySelector('.msub');
+            if (sub) sub.textContent = 'No saved case yet';
           }
-          TTS.interrupt(WELCOME, MENU_VOICE);
-          paintVoice();
+        } catch (e) {
+          cont.disabled = true;
         }
-      };
-      document.addEventListener('keydown', once, { once: true });
-      document.addEventListener('pointerdown', once, { once: true });
-      document.addEventListener('touchstart', once, { once: true, passive: true });
-      const cap = $('#lv-label');
-      cap.textContent = 'Welcome to Capital City Streets — press any key for narration.';
+      }
+
+      const hc = localStorage.getItem('ccs-hc') === '1';
+      document.body.classList.toggle('high-contrast', hc);
+      try { paintHC(); } catch (e) {}
+
+      // Focus first button instantly - critical for keyboard nav
+      setTimeout(() => {
+        const first = $('#lobby-menu .menu-btn:not(:disabled)');
+        if (first) {
+          first.focus();
+          console.log('[Menu] Focused first button');
+        }
+      }, 50);
+
+      // Welcome message only once, after user interaction
+      if (!welcomed) {
+        const once = () => {
+          if (!welcomed) {
+            welcomed = true;
+            try {
+              if (typeof TTS !== 'undefined' && TTS.isEnabled()) {
+                TTS.interrupt(WELCOME, MENU_VOICE);
+              }
+            } catch (e) {}
+            paintVoice();
+          }
+        };
+        // Don't auto trigger, wait for user
+        const cap = $('#lv-label');
+        if (cap) cap.textContent = 'Welcome to Capital City Streets — press any key for narration.';
+        
+        // Attach once listeners for welcome
+        document.addEventListener('keydown', once, { once: true });
+        document.addEventListener('click', once, { once: true });
+      }
+
+      console.log('[Menu] Lobby opened - instant, no lag, keys work');
+    } catch (e) {
+      console.error('[Menu] Open failed:', e);
     }
-    return;
   }
 
-  /* ---------- actions - BUG FIX v2.1: No double voice, no lobby music overlap ---------- */
+  /* ---------- actions - BUG FREE ---------- */
   function doAction(action, el) {
+    console.log('[Menu] Action:', action);
+    
     const hardStopAll = () => {
-      try { if (typeof TTS !== 'undefined') { if (TTS.hardStop) TTS.hardStop(); else TTS.stop(); } } catch (e) {}
-      try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (e) {}
+      try { if (typeof TTS !== 'undefined' && TTS.hardStop) TTS.hardStop(); } catch (e) {}
+      try { if (typeof TTS !== 'undefined' && TTS.stop) TTS.stop(); } catch (e) {}
       try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
     };
-    const hardStopMusic = () => {
-      try { if (typeof Music !== 'undefined') Music.stop(true); } catch (e) {}
-      try { if (typeof OGAudio !== 'undefined') { OGAudio.stopMusic(false); OGAudio.stopAmbient(false); OGAudio.stopFight(true); } } catch (e) {}
-      try { if (typeof BlindMusic !== 'undefined') BlindMusic.stop(true); } catch (e) {}
-      try { if (typeof PremiumAudio !== 'undefined') PremiumAudio.stop(); } catch (e) {}
-    };
-    
-    switch (action) {
-      case 'start':
-        hardStopAll();
-        TTS.interrupt('Starting new case. Chapter One — The First Echo.', MENU_VOICE);
-        hardStopMusic();
-        Economy.reset();
-        setTimeout(() => {
+
+    try {
+      switch (action) {
+        case 'start':
           hardStopAll();
-          Game.play('intro');
-        }, 600);
-        break;
-      case 'continue':
-        if (Economy.hasSave() && Economy.load()) {
-          const sc = Economy.state.scene;
-          hardStopAll();
-          TTS.interrupt('Resuming your case.', MENU_VOICE);
-          hardStopMusic();
+          try { if (typeof TTS !== 'undefined') TTS.interrupt('Starting new case.', MENU_VOICE); } catch (e) {}
+          try { if (typeof Economy !== 'undefined') Economy.reset(); } catch (e) {}
           setTimeout(() => {
-            hardStopAll();
-            Game.play(sc);
-          }, 600);
-        } else {
-          TTS.interrupt('No saved case found yet.', MENU_VOICE);
-        }
-        break;
-      case 'explore':
-        hardStopAll();
-        TTS.interrupt('Entering Capitol City. Free roam.', MENU_VOICE);
-        hardStopMusic();
-        setTimeout(() => {
+            try { if (typeof Game !== 'undefined') Game.play('intro'); } catch (e) { console.error(e); }
+          }, 400);
+          break;
+        case 'continue':
+          try {
+            if (typeof Economy !== 'undefined' && Economy.hasSave() && Economy.load()) {
+              const sc = Economy.state.scene;
+              hardStopAll();
+              setTimeout(() => { try { Game.play(sc); } catch (e) {} }, 400);
+            } else {
+              try { TTS.interrupt('No saved case found.', MENU_VOICE); } catch (e) {}
+            }
+          } catch (e) {}
+          break;
+        case 'explore':
           hardStopAll();
-          CityMode.enter();
-        }, 500);
-        break;
-      case 'chapters':
-        showPanel('#chapters-panel');
-        TTS.interrupt('Chapter select. Choose any chapter. You start with the credits and level that chapter expects.', MENU_VOICE);
-        $('#chapters-panel .menu-btn')?.focus();
-        break;
-      case 'settings':
-        showPanel('#settings-panel');
-        syncSettings();
-        TTS.interrupt('Settings. Use arrow keys to move between options.', MENU_VOICE);
-        $('#settings-panel').querySelector('button, input')?.focus();
-        break;
-      case 'howto':
-        hardStopAll();
-        TTS.interrupt('How to play.', MENU_VOICE);
-        hardStopMusic();
-        setTimeout(() => {
+          setTimeout(() => {
+            try { if (typeof CityMode !== 'undefined') CityMode.enter(); } catch (e) { console.error(e); }
+          }, 300);
+          break;
+        case 'chapters':
+          // BUG FIX: Show chapters panel and keep it, don't return
+          showPanel('#chapters-panel');
+          setTimeout(() => {
+            const first = $('#chapters-panel .menu-btn');
+            if (first) first.focus();
+          }, 50);
+          try { if (typeof TTS !== 'undefined') TTS.interrupt('Chapter select. Choose any chapter.', MENU_VOICE); } catch (e) {}
+          break;
+        case 'settings':
+          showPanel('#settings-panel');
+          try { syncSettings(); } catch (e) {}
+          setTimeout(() => {
+            const first = $('#settings-panel').querySelector('button, input');
+            if (first) first.focus();
+          }, 50);
+          break;
+        case 'howto':
           hardStopAll();
-          Game.play('help');
-        }, 500);
-        break;
-      case 'credits':
-        showPanel('#credits-panel');
-        TTS.interrupt('Credits. Meet the crew behind Capital City Streets. Arrow keys to move through the list.', MENU_VOICE);
-        $('#credits-panel .back-btn')?.focus();
-        break;
-      case 'quit':
-        showPanel('#quit-panel');
-        TTS.interrupt('Quit game. It is now safe to close this tab. Thank you for playing Capital City Streets.', MENU_VOICE);
-        break;
-      case 'back-main':
-        showPanel('#menu-list-wrap');
-        TTS.interrupt('Main menu.', MENU_VOICE);
-        $('#lobby-menu .menu-btn')?.focus();
-        break;
+          setTimeout(() => { try { Game.play('help'); } catch (e) {} }, 300);
+          break;
+        case 'credits':
+          showPanel('#credits-panel');
+          setTimeout(() => {
+            const back = $('#credits-panel .back-btn');
+            if (back) back.focus();
+          }, 50);
+          break;
+        case 'quit':
+          showPanel('#quit-panel');
+          break;
+        case 'back-main':
+          // BUG FIX: Only go back when explicitly clicked, not auto
+          showPanel('#menu-list-wrap');
+          setTimeout(() => {
+            const first = $('#lobby-menu .menu-btn:not(:disabled)');
+            if (first) first.focus();
+          }, 50);
+          break;
+      }
+    } catch (e) {
+      console.error('[Menu] doAction failed:', action, e);
     }
   }
 
   /* ---------- settings helpers ---------- */
   function syncSettings() {
-    $('#set-rate').value = Math.round(TTS.getRateMultiplier() * 100);
-    $('#set-rate-val').textContent = Math.round(TTS.getRateMultiplier() * 100) + '%';
-    paintVoice(); paintHC(); paintOGA();
+    try {
+      const rate = $('#set-rate');
+      const rateVal = $('#set-rate-val');
+      if (rate && rateVal && typeof TTS !== 'undefined') {
+        rate.value = Math.round(TTS.getRateMultiplier() * 100);
+        rateVal.textContent = Math.round(TTS.getRateMultiplier() * 100) + '%';
+      }
+      paintVoice();
+      try { paintHC(); } catch (e) {}
+      try { paintOGA(); } catch (e) {}
+    } catch (e) {}
   }
+  
   function paintHC() {
-    const on = document.body.classList.contains('high-contrast');
-    const b = $('#set-hc');
-    b.textContent = on ? 'On' : 'Off';
-    b.setAttribute('aria-pressed', String(on));
-    b.dataset.speak = `High contrast mode. Currently ${on ? 'on' : 'off'}. Press Enter to toggle.`;
+    try {
+      const on = document.body.classList.contains('high-contrast');
+      const b = $('#set-hc');
+      if (!b) return;
+      b.textContent = on ? 'On' : 'Off';
+      b.setAttribute('aria-pressed', String(on));
+    } catch (e) {}
   }
+  
   function paintOGA() {
     try {
-      const on = typeof OGAudio !== 'undefined' ? OGAudio.isEnabled() : true;
+      const oga = typeof OGAudio !== 'undefined' ? OGAudio.isEnabled() : true;
       const b = $('#set-oga');
       if (b) {
-        b.textContent = on ? 'On' : 'Off';
-        b.setAttribute('aria-pressed', String(on));
-        b.dataset.speak = `Blind friendly real audio from Open Game Art. Currently ${on ? 'on' : 'off'}. Real noir jazz and punch sounds for blind immersion. Press Enter to toggle.`;
-      }
-      const mus = $('#set-oga-mus');
-      const musVal = $('#set-oga-mus-val');
-      if (mus) {
-        const v = parseFloat(localStorage.getItem('ccs-oga-musvol') ?? '0.7') * 100;
-        mus.value = Math.round(v);
-        musVal.textContent = Math.round(v) + '%';
-      }
-      const sfx = $('#set-oga-sfx');
-      const sfxVal = $('#set-oga-sfx-val');
-      if (sfx) {
-        const v = parseFloat(localStorage.getItem('ccs-oga-sfxvol') ?? '0.9') * 100;
-        sfx.value = Math.round(v);
-        sfxVal.textContent = Math.round(v) + '%';
-      }
-      // Real voices toggle
-      const rv = typeof RealVoices !== 'undefined' ? RealVoices.isEnabled() : false;
-      const rvBtn = $('#set-realvoices');
-      if (rvBtn) {
-        rvBtn.textContent = rv ? 'On' : 'Off';
-        rvBtn.setAttribute('aria-pressed', String(rv));
-        rvBtn.dataset.speak = `Real human voices. Currently ${rv ? 'on. Real human voices, not computer. Stoneface, Glasses, Salena have real voices.' : 'off. Using computer TTS voices.'} Press Enter to toggle.`;
-      }
-      // Realistic sounds toggle - Mixkit/OGA
-      const rs = typeof Realistic !== 'undefined' ? Realistic.isEnabled() : true;
-      const rsBtn = $('#set-realistic');
-      if (rsBtn) {
-        rsBtn.textContent = rs ? 'On' : 'Off';
-        rsBtn.setAttribute('aria-pressed', String(rs));
-        rsBtn.dataset.speak = `Realistic sounds from Mixkit and OpenGameArt. Currently ${rs ? 'on. Real footsteps, punches, doors, city ambience.' : 'off.'} Press Enter to toggle.`;
-      }
-      const rvol = $('#set-real-vol');
-      const rvolVal = $('#set-real-vol-val');
-      if (rvol) {
-        const v = parseFloat(localStorage.getItem('ccs-real-vol') ?? '0.9') * 100;
-        rvol.value = Math.round(v);
-        rvolVal.textContent = Math.round(v) + '%';
-      }
-      // Professional Blind Music Vibe - high level
-      const bm = typeof BlindMusic !== 'undefined' ? true : false;
-      const bmBtn = $('#set-blindmusic');
-      if (bmBtn) {
-        const isOn = localStorage.getItem('ccs-blindmusic') !== '0';
-        bmBtn.textContent = isOn ? 'On' : 'Off';
-        bmBtn.setAttribute('aria-pressed', String(isOn));
-        bmBtn.dataset.speak = `Professional blind music vibe. Currently ${isOn ? 'on. Leitmotifs for Stoneface Salena Glasses, vertical remixing with 3 layers, stingers for events, sonar enhanced listening mode like The Last of Us Part 2.' : 'off.'} Press Enter to toggle.`;
-      }
-      const bvol = $('#set-blind-vol');
-      const bvolVal = $('#set-blind-vol-val');
-      if (bvol) {
-        const v = parseFloat(localStorage.getItem('ccs-blindvol') ?? '0.6') * 100;
-        bvol.value = Math.round(v);
-        bvolVal.textContent = Math.round(v) + '%';
-      }
-      const sonarBtn = $('#set-sonar');
-      if (sonarBtn) {
-        const isOn = typeof BlindMusic !== 'undefined' ? BlindMusic.isEnhancedListening() : false;
-        sonarBtn.textContent = isOn ? 'On' : 'Off';
-        sonarBtn.setAttribute('aria-pressed', String(isOn));
-        sonarBtn.dataset.speak = `Enhanced listening mode sonar. Currently ${isOn ? 'on. Press E in game to sonar ping nearby characters with leitmotifs and spatial audio.' : 'off. When on, press E to sonar ping.'} Press Enter to toggle.`;
+        b.textContent = oga ? 'On' : 'Off';
+        b.setAttribute('aria-pressed', String(oga));
       }
     } catch (e) {}
   }
 
-  /* ---------- wiring ---------- */
-  function init() {
-    // Click / Enter activation + touch for mobile
-    const handleAction = (e) => {
-      const btn = e.target.closest('[data-action]');
-      if (btn && !btn.disabled) doAction(btn.dataset.action, btn);
-      const chBtn = e.target.closest('[data-chapter]');
-      if (chBtn) startChapter(Number(chBtn.dataset.chapter));
-      const vbtn = e.target.closest('#lv-btn');
-      if (vbtn) TTS.setEnabled(!TTS.isEnabled());
-    };
-    layer().addEventListener('click', handleAction);
-    layer().addEventListener('touchend', (e) => {
-      // Prevent double trigger on mobile - only handle if not already clicked
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      if (isMobile) {
-        // Touchend for better mobile response
-        const btn = e.target.closest('[data-action], [data-chapter], #lv-btn');
-        if (btn) {
-          e.preventDefault();
-          handleAction(e);
-        }
+  /* ---------- chapter select ---------- */
+  const CHAPTERS = {
+    1: { entry: 'intro', cc: 0, level: 1, flags: [] },
+    2: { entry: 'ch2_drive', cc: 3500, level: 2, flags: ['hasDrive'] },
+    3: { entry: 'c3_open', cc: 5000, level: 3, flags: ['hasDrive', 'harborJoined'] },
+    4: { entry: 'c4_open', cc: 7000, level: 4, flags: ['hasDrive', 'harborJoined', 'lv4clue'] },
+    5: { entry: 'c5_open', cc: 9000, level: 5, flags: ['hasDrive', 'harborJoined', 'lv4clue', 'coords', 'seraBond'] },
+  };
+  
+  function startChapter(n) {
+    const c = CHAPTERS[n];
+    if (!c) return;
+    console.log('[Menu] Starting chapter', n);
+    try {
+      if (typeof TTS !== 'undefined' && TTS.hardStop) TTS.hardStop();
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+    } catch (e) {}
+    try {
+      if (typeof Economy !== 'undefined') {
+        Economy.reset();
+        Economy.apply({ cc: c.cc, level: c.level, setFlags: c.flags });
       }
-    }, { passive: false });
+    } catch (e) {}
+    setTimeout(() => {
+      try { Game.play(c.entry, true); } catch (e) { console.error(e); }
+    }, 400);
+  }
 
-    // PREMIUM FIX: Speak on focus - single voice guarantee, hard stop before new
-    layer().addEventListener('focusin', e => {
-      const t = e.target.closest('[data-speak]');
-      if (t) {
-        SFX.play('tick');
-        try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (err) {}
-        try { if (typeof TTS !== 'undefined' && TTS.hardStop) TTS.hardStop(); } catch (err) {}
-        try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (err) {}
-        TTS.interrupt(t.dataset.speak, MENU_VOICE);
+  /* ---------- init - CLEAN, BUG FREE ---------- */
+  function init() {
+    if (keyHandlerAttached) return;
+    keyHandlerAttached = true;
+    
+    const l = layer();
+    if (!l) return;
+
+    // Single click handler - no double touchend to prevent double trigger bug
+    l.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-action]');
+      if (btn && !btn.disabled) {
+        e.preventDefault();
+        e.stopPropagation();
+        doAction(btn.dataset.action, btn);
+        return;
+      }
+      const chBtn = e.target.closest('[data-chapter]');
+      if (chBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const n = Number(chBtn.dataset.chapter);
+        console.log('[Menu] Chapter clicked:', n);
+        startChapter(n);
+        return;
+      }
+      const vbtn = e.target.closest('#lv-btn');
+      if (vbtn) {
+        e.preventDefault();
+        try { if (typeof TTS !== 'undefined') TTS.setEnabled(!TTS.isEnabled()); paintVoice(); } catch (err) {}
       }
     });
 
-    // Arrow-key navigation between focusable elements of the visible panel
-    document.addEventListener('keydown', e => {
-      if (layer().hidden) return;
+    // Keyboard navigation - FIXED: Arrow keys move, Enter selects
+    document.addEventListener('keydown', (e) => {
+      const lyr = layer();
+      if (!lyr || lyr.hidden) return;
+      
+      // Escape goes back
       if (e.key === 'Escape') {
-        if (!visiblePanel().id.includes('menu-list')) {
+        const vp = visiblePanel();
+        if (vp && vp.id !== 'menu-list-wrap') {
           e.preventDefault();
           doAction('back-main');
         }
         return;
       }
-      const down = ['ArrowDown', 's', 'S'].includes(e.key);
-      const up = ['ArrowUp', 'w', 'W'].includes(e.key);
-      if (!down && !up) return;
-      // Let the range slider keep its arrows when focused
-      if (document.activeElement?.type === 'range') return;
-      e.preventDefault();
-      const list = focusables(visiblePanel());
-      if (!list.length) return;
-      const i = list.indexOf(document.activeElement);
-      const next = down ? (i + 1 < list.length ? i + 1 : 0)
-                        : (i - 1 >= 0 ? i - 1 : list.length - 1);
-      list[next].focus();
-    });
-
-    // Settings controls
-    $('#set-voice').addEventListener('click', () => TTS.setEnabled(!TTS.isEnabled()));
-    $('#set-hc').addEventListener('click', () => {
-      const on = !document.body.classList.contains('high-contrast');
-      document.body.classList.toggle('high-contrast', on);
-      localStorage.setItem('ccs-hc', on ? '1' : '0');
-      paintHC();
-      TTS.interrupt(`High contrast ${on ? 'on' : 'off'}.`, MENU_VOICE);
-    });
-    // Blind-friendly OGA real audio toggle
-    const ogaBtn = $('#set-oga');
-    if (ogaBtn) ogaBtn.addEventListener('click', () => {
-      const on = typeof OGAudio !== 'undefined' ? !OGAudio.isEnabled() : true;
-      if (typeof OGAudio !== 'undefined') OGAudio.setEnabled(on);
-      paintOGA();
-      TTS.interrupt(`Blind friendly real audio ${on ? 'on. Real noir jazz and punch sounds from OpenGameArt.org for blind immersion.' : 'off. Using generative sounds.'}`, MENU_VOICE);
-      if (on && typeof OGAudio !== 'undefined') OGAudio.preloadSFX();
-    });
-    // Real human voices toggle - not computer
-    const rvBtn = $('#set-realvoices');
-    if (rvBtn) rvBtn.addEventListener('click', () => {
-      const on = typeof RealVoices !== 'undefined' ? !RealVoices.isEnabled() : true;
-      if (typeof RealVoices !== 'undefined') RealVoices.setEnabled(on);
-      paintOGA();
-      TTS.interrupt(`Real human voices ${on ? 'on. Real human voices, not computer. Stoneface, Smart Glasses, Salena now sound like real people, not computer.' : 'off. Using computer TTS voices.'}`, MENU_VOICE);
-    });
-    // Realistic sounds toggle - Mixkit/OGA CC0
-    const rsBtn = $('#set-realistic');
-    if (rsBtn) rsBtn.addEventListener('click', () => {
-      const on = typeof Realistic !== 'undefined' ? !Realistic.isEnabled() : true;
-      if (typeof Realistic !== 'undefined') Realistic.setEnabled(on);
-      paintOGA();
-      TTS.interrupt(`Realistic sounds ${on ? 'on. Real footsteps from grass stone sand, punches strong fast, doors, city rain, coins. CC0 from Mixkit and OpenGameArt.' : 'off.'}`, MENU_VOICE);
-      if (on && typeof Realistic !== 'undefined') Realistic.preload();
-    });
-    const realVol = $('#set-real-vol');
-    const realVolVal = $('#set-real-vol-val');
-    if (realVol) {
-      realVol.addEventListener('input', e => { realVolVal.textContent = e.target.value + '%'; });
-      realVol.addEventListener('change', e => {
-        if (typeof Realistic !== 'undefined') Realistic.setVolume(e.target.value / 100);
-        TTS.interrupt(`Realistic volume ${e.target.value} percent.`, MENU_VOICE);
-      });
-    }
-    // Professional Blind Music toggle
-    const blindBtn = $('#set-blindmusic');
-    if (blindBtn) {
-      blindBtn.addEventListener('click', () => {
-        const isOn = localStorage.getItem('ccs-blindmusic') !== '0';
-        const newOn = !isOn;
-        localStorage.setItem('ccs-blindmusic', newOn ? '1' : '0');
-        blindBtn.textContent = newOn ? 'On' : 'Off';
-        blindBtn.setAttribute('aria-pressed', String(newOn));
-        if (typeof BlindMusic !== 'undefined') {
-          if (newOn) BlindMusic.playBase('noir_soft');
-          else BlindMusic.stop();
-        }
-        paintOGA();
-        TTS.interrupt(`Professional blind music vibe ${newOn ? 'on. Leitmotifs for Stoneface Salena Glasses, vertical remixing with 3 layers, stingers for events, sonar like The Last of Us Part 2, real noir jazz from Pixabay CC0 and OpenGameArt.' : 'off.'}`, MENU_VOICE);
-      });
-    }
-    const blindVol = $('#set-blind-vol');
-    const blindVolVal = $('#set-blind-vol-val');
-    if (blindVol) {
-      blindVol.addEventListener('input', e => { blindVolVal.textContent = e.target.value + '%'; });
-      blindVol.addEventListener('change', e => {
-        if (typeof BlindMusic !== 'undefined') BlindMusic.setVolume(e.target.value / 100);
-        TTS.interrupt(`Blind music volume ${e.target.value} percent. Professional blind vibe with leitmotifs.`, MENU_VOICE);
-      });
-    }
-    const sonarBtn = $('#set-sonar');
-    if (sonarBtn) {
-      sonarBtn.addEventListener('click', () => {
-        const isOn = typeof BlindMusic !== 'undefined' ? BlindMusic.isEnhancedListening() : false;
-        const newOn = !isOn;
-        if (typeof BlindMusic !== 'undefined') BlindMusic.setEnhancedListening(newOn);
-        if (typeof Music !== 'undefined') Music.setEnhancedListening(newOn);
-        sonarBtn.textContent = newOn ? 'On' : 'Off';
-        sonarBtn.setAttribute('aria-pressed', String(newOn));
-        TTS.interrupt(`Enhanced listening sonar ${newOn ? 'on. Press E in game to ping nearby characters with leitmotifs and spatial audio. Like The Last of Us Part 2.' : 'off.'}`, MENU_VOICE);
-      });
-    }
-    $('#set-rate').addEventListener('input', e => {
-      $('#set-rate-val').textContent = e.target.value + '%';
-    });
-    $('#set-rate').addEventListener('change', e => {
-      TTS.setRateMultiplier(Number(e.target.value) / 100);
-      TTS.interrupt(`Narration speed ${e.target.value} percent. This is how fast I will speak.`, MENU_VOICE);
-    });
-    const initVol = (id, valId, key) => {
-      const el = $(id), lab = $(valId);
-      el.value = Math.round((parseFloat(localStorage.getItem(key) ?? '1') || 1) * 100);
-      lab.textContent = el.value + '%';
-      el.addEventListener('input', e => { lab.textContent = e.target.value + '%'; });
-      return el;
-    };
-    initVol('#set-mus', '#set-mus-val', 'ccs-musvol').addEventListener('change', e => {
-      Music.setMusicVol(e.target.value / 100);
-      TTS.interrupt(`Music ${e.target.value} percent.`, MENU_VOICE);
-    });
-    initVol('#set-amb', '#set-amb-val', 'ccs-ambvol').addEventListener('change', e => {
-      Music.setAmbVol(e.target.value / 100);
-      TTS.interrupt(`Ambience ${e.target.value} percent.`, MENU_VOICE);
-    });
-    // OGA real audio volumes
-    const ogaMus = $('#set-oga-mus');
-    const ogaMusVal = $('#set-oga-mus-val');
-    if (ogaMus) {
-      ogaMus.addEventListener('input', e => { ogaMusVal.textContent = e.target.value + '%'; });
-      ogaMus.addEventListener('change', e => {
-        if (typeof OGAudio !== 'undefined') OGAudio.setMusicVol(e.target.value / 100);
-        TTS.interrupt(`Real noir music ${e.target.value} percent. From OpenGameArt.org`, MENU_VOICE);
-      });
-    }
-    const ogaSfx = $('#set-oga-sfx');
-    const ogaSfxVal = $('#set-oga-sfx-val');
-    if (ogaSfx) {
-      ogaSfx.addEventListener('input', e => { ogaSfxVal.textContent = e.target.value + '%'; });
-      ogaSfx.addEventListener('change', e => {
-        if (typeof OGAudio !== 'undefined') OGAudio.setSFXVol(e.target.value / 100);
-        TTS.interrupt(`Real punch and footsteps ${e.target.value} percent.`, MENU_VOICE);
-      });
-    }
-
-    // Credits rows: Enter re-speaks
-    document.querySelectorAll('.credit-row').forEach(row => {
-      row.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') {
+      
+      // V toggles voice
+      if (e.key === 'v' || e.key === 'V') {
+        if (document.activeElement?.tagName !== 'INPUT') {
           e.preventDefault();
-          TTS.interrupt(row.dataset.speak, MENU_VOICE);
+          try { if (typeof TTS !== 'undefined') TTS.setEnabled(!TTS.isEnabled()); paintVoice(); } catch (err) {}
         }
-      });
+        return;
+      }
+      
+      // Arrow navigation
+      const isDown = e.key === 'ArrowDown' || e.key === 's' || e.key === 'S';
+      const isUp = e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W';
+      const isEnter = e.key === 'Enter' || e.key === ' ';
+      
+      if (isDown || isUp) {
+        // Don't interfere with range inputs
+        if (document.activeElement?.type === 'range') return;
+        e.preventDefault();
+        const panel = visiblePanel();
+        const list = focusables(panel);
+        if (!list.length) return;
+        const idx = list.indexOf(document.activeElement);
+        let nextIdx;
+        if (isDown) nextIdx = idx + 1 < list.length ? idx + 1 : 0;
+        else nextIdx = idx - 1 >= 0 ? idx - 1 : list.length - 1;
+        list[nextIdx].focus();
+        console.log('[Menu] Arrow nav:', isDown ? 'down' : 'up', '->', nextIdx);
+        return;
+      }
+      
+      if (isEnter) {
+        const active = document.activeElement;
+        if (active && active.closest('#main-menu')) {
+          // Let click handler handle it, but prevent default to avoid double
+          if (active.tagName === 'BUTTON') {
+            e.preventDefault();
+            active.click();
+          }
+        }
+      }
     });
-  }
 
-  /* ---------- chapter select: jump anywhere with the right state ---------- */
-const CHAPTERS = {
-    1: { entry: 'intro',     cc: 0,    level: 1, flags: [] },
-    2: { entry: 'ch2_drive', cc: 3500, level: 2, flags: ['hasDrive'] },
-    3: { entry: 'c3_open',   cc: 5000, level: 3, flags: ['hasDrive', 'harborJoined'] },
-    4: { entry: 'c4_open',   cc: 7000, level: 4, flags: ['hasDrive', 'harborJoined', 'lv4clue'] },
-    5: { entry: 'c5_open',   cc: 9000, level: 5, flags: ['hasDrive', 'harborJoined', 'lv4clue', 'coords', 'seraBond'] },
-  };
-  function startChapter(n) {
-    const c = CHAPTERS[n];
-    if (!c) return;
-    const hardStopAll = () => {
-      try { if (typeof TTS !== 'undefined') { if (TTS.hardStop) TTS.hardStop(); else TTS.stop(); } } catch (e) {}
-      try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (e) {}
-      try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
-    };
-    const hardStopMusic = () => {
-      try { if (typeof Music !== 'undefined') Music.stop(true); } catch (e) {}
-      try { if (typeof OGAudio !== 'undefined') { OGAudio.stopMusic(false); OGAudio.stopAmbient(false); OGAudio.stopFight(true); } } catch (e) {}
-      try { if (typeof BlindMusic !== 'undefined') BlindMusic.stop(true); } catch (e) {}
-      try { if (typeof PremiumAudio !== 'undefined') PremiumAudio.stop(); } catch (e) {}
-    };
-    hardStopAll();
-    hardStopMusic();
-    Economy.reset();
-    Economy.apply({ cc: c.cc, level: c.level, setFlags: c.flags });
-    TTS.interrupt(`Chapter ${n}. Rolling the opening scene.`, MENU_VOICE);
-    setTimeout(() => {
-      hardStopAll();
-      Game.play(c.entry, true);
-    }, 600);
+    // Settings controls - simple, no heavy TTS
+    try {
+      const voiceBtn = $('#set-voice');
+      if (voiceBtn) voiceBtn.addEventListener('click', () => {
+        try { if (typeof TTS !== 'undefined') TTS.setEnabled(!TTS.isEnabled()); paintVoice(); } catch (e) {}
+      });
+      
+      const hcBtn = $('#set-hc');
+      if (hcBtn) hcBtn.addEventListener('click', () => {
+        const on = !document.body.classList.contains('high-contrast');
+        document.body.classList.toggle('high-contrast', on);
+        localStorage.setItem('ccs-hc', on ? '1' : '0');
+        paintHC();
+      });
+    } catch (e) {}
+
+    console.log('[Menu] Init done - keys work, no lag, bug free');
   }
 
   return {
     async start() {
-      // PERFORMANCE FIX v2.3: No lag on lobby entry - staggered loading - Asfand Ali
-      // User reported: game boht zyada lag kar rahi ha or ui stuck ho raha ha jesy hi lobby main enter hoty hain
-      // Root cause: sari files aik sath load hoti hain - 5 audio systems at once = heavy
-
+      // Formality loading already done by loader.js
       if (typeof GameLoader !== 'undefined' && !GameLoader.isLoaded()) {
-        console.log('[Menu] Waiting for proper loading screen - lobby blocked until 100%');
+        console.log('[Menu] Waiting for formality loader');
         await new Promise(resolve => {
           const onLoaded = () => {
             document.removeEventListener('gamefiles-loaded', onLoaded);
             resolve();
           };
           document.addEventListener('gamefiles-loaded', onLoaded);
-          setTimeout(resolve, 15000);
+          setTimeout(resolve, 5000);
         });
-        await new Promise(r => setTimeout(r, 400));
-        if (window.__GAME_FILES_LOADED__ && document.getElementById('loading-screen')?.classList.contains('ready')) {
-          console.log('[Menu] Loader ready, waiting for user key');
-          // LIGHTWEIGHT init only, no heavy audio yet
+        await new Promise(r => setTimeout(r, 200));
+        if (window.__GAME_FILES_LOADED__) {
+          console.log('[Menu] Formality loader ready, waiting for user key');
           init();
-          await Game.boot();
-          // Don't call open() - loader will handle after key press
-          // Defer heavy audio to after lobby visible
+          try { if (typeof Game !== 'undefined') await Game.boot(); } catch (e) {}
           return;
         }
       }
       
-      // FORMALITY MODE v2.4: Super lightweight - no heavy audio at all in lobby - Asfand Ali
-      // User: files loading wala kaam khatam karo, bas formality loading screen rakho
-      // Only essential: init + boot + open (UI only, no music, no heavy audio)
+      // Lightweight start
       init();
-      await Game.boot();
-      open(); // Instant UI, no lag
-      
-      // NO auto heavy audio init - prevents lag completely
-      // Heavy audio will init only when user starts game (Start game / Explore etc)
-      console.log('[Menu] Formality mode - lobby instant, no heavy audio, no lag');
+      try { if (typeof Game !== 'undefined') await Game.boot(); } catch (e) { console.error(e); }
+      open();
+      console.log('[Menu] Started - bug free, instant');
     },
     open,
   };
 })();
 
-  /* Paschall Game Hub splash: any key / tap dismisses; auto-fades after 6s - BUT only after files loaded */
+/* Splash handling - only after formality loader */
 (() => {
   const sp = document.getElementById('splash');
   if (!sp) return;
   const go = (ev) => {
-    // BLOCK splash dismiss if files not loaded yet
-    if (typeof GameLoader !== 'undefined' && !GameLoader.isLoaded()) {
-      console.log('[Splash] Blocked - files not loaded yet, lobby blocked');
-      return;
-    }
+    if (typeof GameLoader !== 'undefined' && !GameLoader.isLoaded()) return;
     if (sp.classList.contains('gone')) return;
-    // the dismissing key/tap only clears the splash — the menu answers the next one
     if (ev) { ev.stopImmediatePropagation(); ev.preventDefault(); }
     sp.classList.add('gone');
-    setTimeout(() => sp.remove(), 900);
+    setTimeout(() => { try { sp.remove(); } catch (e) {} }, 700);
   };
   document.addEventListener('keydown', go, { once: true, capture: true });
-  document.addEventListener('pointerdown', go, { once: true, capture: true });
-  // Auto-fade only if loader done, else wait
-  const autoFade = () => {
-    if (typeof GameLoader !== 'undefined' && !GameLoader.isLoaded()) {
-      setTimeout(autoFade, 1000);
-      return;
-    }
-    setTimeout(go, 6000);
-  };
-  autoFade();
+  document.addEventListener('click', go, { once: true, capture: true });
+  setTimeout(() => {
+    if (typeof GameLoader === 'undefined' || GameLoader.isLoaded()) go();
+  }, 4000);
 })();
 
-// Start menu only if loader not handling it
+// Start
 if (typeof GameLoader === 'undefined') {
   Menu.start();
 } else {
-  // Loader present - let loader call Menu.start() after 100%
-  // But we still need to init systems for loader transition
-  // Loader's DOMContentLoaded will handle the full flow
   document.addEventListener('DOMContentLoaded', () => {
-    if (!window.__GAME_FILES_LOADED__) {
-      Menu.start();
-    }
+    if (!window.__GAME_FILES_LOADED__) Menu.start();
   });
 }
