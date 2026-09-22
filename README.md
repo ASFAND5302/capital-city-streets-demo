@@ -2,10 +2,14 @@
 
 > Hunt the truth. Avenge the silence.
 
-**🎮 Play Now:** https://asfand5302.github.io/capital-city-streets/  
+### 🎮 **[▶️ CLICK HERE TO PLAY NOW](https://asfand5302.github.io/capital-city-streets-demo/)**
+
+**Direct Play Link:** https://asfand5302.github.io/capital-city-streets-demo/
+
 **Developer:** Asfand Ali
 
-![Noir Detective](https://img.shields.io/badge/Game-Noir_Detective-black?style=for-the-badge) ![Blind Friendly](https://img.shields.io/badge/Blind_Friendly-Audio_First-7fd4ff?style=for-the-badge) ![Premium Audio](https://img.shields.io/badge/Audio-Premium-f5b942?style=for-the-badge)
+[![Play Now](https://img.shields.io/badge/🎮_PLAY_NOW-Click_To_Start-green?style=for-the-badge)](https://asfand5302.github.io/capital-city-streets-demo/)
+![Noir](https://img.shields.io/badge/Game-Noir_Detective-black?style=for-the-badge) ![Blind Friendly](https://img.shields.io/badge/Blind_Friendly-Audio_First-7fd4ff?style=for-the-badge)
 
 ---
 
@@ -15,94 +19,50 @@ Your sister Salena was murdered. The city called it an accident. You know better
 
 You are **Stoneface** — blind, relentless, brilliant. With your Smart Glasses narrating the world and your crew-built SUV Bonnie at your side, you dig through five chapters of lies, from a seized apartment to a mansion gala where everything ends.
 
-Every block has a secret. Every choice has a price.
-
 **This is not a visual game with audio added on. This is an audio game where you see with sound.**
 
 ---
 
-### ▶️ Play The Demo
+### ▶️ How to Play Instantly
 
-No download. No install. Just click and play.
+1. Click here: **https://asfand5302.github.io/capital-city-streets-demo/**
+2. Game loads directly — no download, no install
+3. Press any key to start, use arrow keys + Enter
 
-**👉 https://asfand5302.github.io/capital-city-streets/**
-
-Best with headphones and Chrome/Edge. Works on mobile too.
-
----
-
-### ✨ What Makes It Special
-
-**🎧 Built for Blind Players, Loved by Everyone**
-- Full narration — every line, every option, every menu speaks
-- Navigate by ear — binaural 3D audio tells you where things are
-- 100% keyboard playable — no mouse ever needed
-
-**🎼 Cinematic Noir Atmosphere**
-- Live jazz score that reacts to your story
-- Real noir jazz, rain, city ambience, footsteps that change with surface
-- Premium studio-grade sound design
-
-**🗺️ Two Ways to Play**
-- **Story Mode:** 5 chapters, branching choices, 3 different endings
-- **Explore The City:** Free-roam 20×20 blocks, find landmarks by sound, ride Bonnie, set markers
-
-**🎮 Simple Controls, Deep Story**
-- Arrow keys to move, Enter to select, E for sonar ping
-- Your crew — Harbor, Vale twins, Priest, Sera — each with their own voice and story
-- Wallet, health, heat, crew level — every decision matters
+That's it. Stoneface is waiting.
 
 ---
 
-### 🎮 How to Play
+### ✨ Features
 
-**Story:**
-- ↑ ↓ to hear options, Enter to choose
-- 1-9 to jump to a choice
-- R to replay, V for voice toggle, F for focus mode
+**🎧 Blind-Accessible, Premium Audio**
+- Full voice narration, binaural 3D sound, 100% keyboard playable
 
-**City Exploration:**
-- WASD / Arrow keys to walk block by block
-- L to look around, P to sonar ping, K for district guide
-- G to go anywhere, M to set marker, B to call Bonnie
+**🎼 Cinematic Noir**
+- Live jazz score, real noir tracks, rain, city ambience
 
-That's it. The city will teach you the rest.
+**🗺️ Story + Open World**
+- 5 chapters, 3 endings, free-roam city, Bonnie rides
 
 ---
 
-### 🏙️ The Chapters
+### 🎮 Controls
 
-1. **The First Echo** — Salena's apartment, a jingle lock puzzle, first blood
-2. **The Block** — Southside, the Velvet Room stickup, new allies
-3. **Waterfront / Island** — Road ambush, the casino, a choice called Sera
-4. **The Takedown** — Precinct shootout, five hitmen, court ambush
-5. **The Grand Finale** — Mansion gala, Wexler & Voss, three endings
-
-Plus free-roam Capitol City with districts, secrets, and stories on every corner.
+- ↑ ↓ = hear options, Enter = select
+- 1-9 = jump to choice, R = replay, V = voice toggle
+- WASD = walk city, L = look around, P = sonar ping, B = call Bonnie
 
 ---
 
 ### 👤 Created By
 
-**Asfand Ali**
-
-Solo developer — story, design, audio, code.
-
-I built Capital City Streets because I believe games should be for everyone. Blind players deserve premium experiences, not afterthoughts. This game is my proof that audio-first can be cinematic.
+**Asfand Ali** — Solo Developer
 
 - GitHub: [@ASFAND5302](https://github.com/ASFAND5302)
-- Live Game: https://asfand5302.github.io/capital-city-streets/
+- Play: https://asfand5302.github.io/capital-city-streets-demo/
 
 ---
 
-### 📄 License
+**🎮 [PLAY NOW - https://asfand5302.github.io/capital-city-streets-demo/](https://asfand5302.github.io/capital-city-streets-demo/)**
 
-MIT — Play, share, enjoy.
-
----
-
-**One city. One truth. One chance to avenge her.**
-
-*Press Play. Stoneface is waiting.*
-
-**🎮 https://asfand5302.github.io/capital-city-streets/**
+*Hunt the truth. Avenge the silence.*
