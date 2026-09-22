@@ -1,0 +1,234 @@
+{
+  "_help": "EDIT ME: each key is a speaker id used in chapters.json. 'name' is shown in captions; 'voice' controls TTS: pitch (0-2), rate (0.5-2), slot picks which system voice to use. Add new characters freely.",
+  "characters": {
+    "narrator": {
+      "name": "Narrator",
+      "voice": {
+        "pitch": 0.9,
+        "rate": 1.02,
+        "slot": 0
+      },
+      "color": "#c9c2b0"
+    },
+    "glasses": {
+      "name": "Smart Glasses",
+      "voice": {
+        "pitch": 1.1,
+        "rate": 1.16,
+        "slot": 1
+      },
+      "stinger": "v-glasses",
+      "color": "#7fd4ff"
+    },
+    "stoneface": {
+      "name": "Stoneface",
+      "voice": {
+        "pitch": 0.62,
+        "rate": 0.95,
+        "slot": 2
+      },
+      "stinger": "v-stoneface",
+      "color": "#f5b942"
+    },
+    "salena": {
+      "name": "Salena",
+      "voice": {
+        "pitch": 1.35,
+        "rate": 1.0,
+        "slot": 3
+      },
+      "stinger": "v-salena",
+      "color": "#ff9ecf"
+    },
+    "sam": {
+      "name": "Sam Caldwell",
+      "voice": {
+        "pitch": 0.95,
+        "rate": 1.04,
+        "slot": 4
+      },
+      "stinger": "v-sam",
+      "color": "#8fd48f"
+    },
+    "priest": {
+      "name": "Priest Malachai",
+      "voice": {
+        "pitch": 0.7,
+        "rate": 0.9,
+        "slot": 5
+      },
+      "stinger": "v-priest",
+      "color": "#d8b06a"
+    },
+    "harbor": {
+      "name": "Harbor",
+      "voice": {
+        "pitch": 0.75,
+        "rate": 0.92,
+        "slot": 6
+      },
+      "stinger": "v-harbor",
+      "color": "#7fa8d4"
+    },
+    "nyx": {
+      "name": "Nyx Vale",
+      "voice": {
+        "pitch": 1.05,
+        "rate": 0.98,
+        "slot": 7
+      },
+      "stinger": "v-nyx",
+      "color": "#b09aff"
+    },
+    "nia": {
+      "name": "Nia Vale",
+      "voice": {
+        "pitch": 1.45,
+        "rate": 1.18,
+        "slot": 8
+      },
+      "stinger": "v-nia",
+      "color": "#ff8fa8"
+    },
+    "ledger": {
+      "name": "Ledger",
+      "voice": {
+        "pitch": 1.0,
+        "rate": 1.06,
+        "slot": 9
+      },
+      "stinger": "v-ledger",
+      "color": "#ffd166"
+    },
+    "bonnie": {
+      "name": "Bonnie",
+      "voice": {
+        "pitch": 1.2,
+        "rate": 1.05,
+        "slot": 10
+      },
+      "stinger": "v-bonnie",
+      "color": "#9fd4ff"
+    },
+    "wexler": {
+      "name": "Mayor Wexler",
+      "voice": {
+        "pitch": 0.95,
+        "rate": 1.0,
+        "slot": 11
+      },
+      "stinger": "v-wexler",
+      "color": "#e0c9a0"
+    },
+    "defender": {
+      "name": "Armed Defender",
+      "voice": {
+        "pitch": 1.0,
+        "rate": 1.1,
+        "slot": 12
+      },
+      "stinger": "v-defender",
+      "color": "#ff7a5c"
+    },
+    "thug": {
+      "name": "Club Muscle",
+      "voice": {
+        "pitch": 0.85,
+        "rate": 1.05,
+        "slot": 13
+      },
+      "stinger": "v-thug",
+      "color": "#ff9a7a"
+    },
+    "news": {
+      "name": "Radio",
+      "voice": {
+        "pitch": 1.2,
+        "rate": 1.12,
+        "slot": 14
+      },
+      "stinger": "v-news",
+      "color": "#c0c9e0"
+    },
+    "voss": {
+      "name": "Chief Voss",
+      "voice": {
+        "pitch": 0.8,
+        "rate": 0.95,
+        "slot": 15
+      },
+      "stinger": "v-voss",
+      "color": "#9ab0c9"
+    },
+    "tess": {
+      "name": "Tess 'Area Six'",
+      "voice": {
+        "pitch": 1.15,
+        "rate": 1.12,
+        "slot": 16
+      },
+      "stinger": "v-tess",
+      "color": "#8fe3c0"
+    },
+    "dan": {
+      "name": "Dig It Dan",
+      "voice": {
+        "pitch": 1.05,
+        "rate": 1.15,
+        "slot": 17
+      },
+      "stinger": "v-dan",
+      "color": "#a8e08f"
+    },
+    "marlow": {
+      "name": "Old Marlow",
+      "voice": {
+        "pitch": 0.72,
+        "rate": 0.86,
+        "slot": 18
+      },
+      "stinger": "v-marlow",
+      "color": "#c9a88f"
+    },
+    "sera": {
+      "name": "Sera",
+      "voice": {
+        "pitch": 1.25,
+        "rate": 0.96,
+        "slot": 19
+      },
+      "stinger": "v-sera",
+      "color": "#7fe3b0"
+    },
+    "marrs": {
+      "name": "Detective Marrs",
+      "voice": {
+        "pitch": 0.95,
+        "rate": 1.0,
+        "slot": 20
+      },
+      "stinger": "v-defender",
+      "color": "#d4a0c9"
+    },
+    "cole": {
+      "name": "Detective Cole",
+      "voice": {
+        "pitch": 0.88,
+        "rate": 1.08,
+        "slot": 21
+      },
+      "stinger": "v-thug",
+      "color": "#e0a08f"
+    },
+    "ruiz": {
+      "name": "Detective Ruiz",
+      "voice": {
+        "pitch": 1.0,
+        "rate": 1.05,
+        "slot": 22
+      },
+      "stinger": "v-defender",
+      "color": "#a0c9d4"
+    }
+  }
+}
