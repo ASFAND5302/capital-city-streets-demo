@@ -164,16 +164,32 @@ const TTS = (() => {
     return chunks.length ? chunks : [text];
   }
 
-  // PREMIUM FIX: Hard stop - single voice guarantee, invalidate all previous
+  // BUG FIX v2.2: Ultra hard stop - single voice guarantee, prevents option click double voice
   function hardStop() {
-    speakGen++; // invalidate all pending chunks
+    speakGen++; // invalidate all pending chunks - generation token
     clearTimeout(interruptTimer);
     clearTimeout(chunkTimer);
     interruptTimer = null;
     chunkTimer = null;
-    try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
+    // Triple cancel for robustness - speechSynthesis cancel is async
+    try {
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+        // Chrome sometimes needs pause + cancel + resume + cancel
+        try { window.speechSynthesis.pause(); } catch (e) {}
+        window.speechSynthesis.cancel();
+        try { window.speechSynthesis.resume(); } catch (e) {}
+        window.speechSynthesis.cancel();
+      }
+    } catch (e) {}
     try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (e) {}
     isSpeakingReal = false;
+    // Unduck immediately to prevent music staying ducked
+    try {
+      if (typeof Music !== 'undefined') Music.duck(false);
+      if (typeof BlindMusic !== 'undefined') BlindMusic.duck(false);
+      if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(false);
+    } catch (e) {}
   }
 
   function speak(text, profile = {}) {
@@ -269,6 +285,7 @@ const TTS = (() => {
         
         if (typeof Music !== 'undefined') Music.duck(true);
         if (typeof BlindMusic !== 'undefined') BlindMusic.duck(true);
+        if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(true);
         if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(true);
         
         u.onend = () => {
@@ -373,8 +390,11 @@ const TTS = (() => {
     
     const unduckAll = () => {
       setTimeout(() => {
-        if (typeof Music !== 'undefined') Music.duck(false);
-        if (typeof BlindMusic !== 'undefined') BlindMusic.duck(false);
+        try {
+          if (typeof Music !== 'undefined') Music.duck(false);
+          if (typeof BlindMusic !== 'undefined') BlindMusic.duck(false);
+          if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(false);
+        } catch (e) {}
       }, isMobile ? 300 : 200);
     };
     
@@ -405,6 +425,7 @@ const TTS = (() => {
       
         if (typeof Music !== 'undefined') Music.duck(true);
         if (typeof BlindMusic !== 'undefined') BlindMusic.duck(true);
+        if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(true);
         if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(true);
       
       u.onend = () => {

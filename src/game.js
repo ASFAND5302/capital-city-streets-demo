@@ -40,6 +40,7 @@ const Game = (() => {
   let lastChapter = -1;
   let lastAmb = null;
   let lastLocation = null;
+  let optionsTTSTimer = null; // BUG FIX: track options announcement timer
   /* every place gets its own color grade + music vibe, cross-fading as you travel */
   const GRADE = {
     room: '#c9a86a', radio: '#7fa8d4', crackle: '#d8c9a0', night: '#3a4a7a',
@@ -438,12 +439,15 @@ const Game = (() => {
     }
     const first = box.querySelector('.choice');
     first?.focus();
-    // PREMIUM FIX: Hard stop before options prompt - single voice guarantee
+    // BUG FIX v2.2: Hard stop before options prompt - single voice guarantee, clear previous timer
     const firstLabel = first ? first.dataset.label : '';
     try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (e) {}
     try { if (typeof TTS !== 'undefined' && TTS.hardStop) TTS.hardStop(); } catch (e) {}
     try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
-    setTimeout(() => {
+    // BUG FIX: Clear any pending options TTS timer to prevent double voice
+    if (optionsTTSTimer) { clearTimeout(optionsTTSTimer); optionsTTSTimer = null; }
+    optionsTTSTimer = setTimeout(() => {
+      optionsTTSTimer = null;
       TTS.speak(
         `${visible} options available. Option 1: ${firstLabel}. Use arrow keys to hear all options.`,
         { pitch: 1.15, rate: 1.1, slot: 0, _skipReal: true }
@@ -472,9 +476,17 @@ const Game = (() => {
   function pick(choice) {
     if (speaking) return;
     armed = false;
+    // BUG FIX v2.2: Clear options TTS timer immediately when option clicked - prevents double voice
+    if (optionsTTSTimer) { clearTimeout(optionsTTSTimer); optionsTTSTimer = null; }
+    // BUG FIX v2.2: Hard stop ALL TTS before processing choice - ensures option TTS stops
     try { if (typeof TTS !== 'undefined') { if (TTS.hardStop) TTS.hardStop(); else TTS.stop(); } } catch (e) {}
     try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (e) {}
     try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
+    // Extra cancel after 10ms to catch any race condition where speechSynthesis still speaking
+    setTimeout(() => {
+      try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
+      try { if (typeof TTS !== 'undefined' && TTS.hardStop) TTS.hardStop(); } catch (e) {}
+    }, 10);
 
     // Optional random risk (combat dodges, lockpicks...) - WRONG OPTION HALKI AWAZ
     if (choice.chance && Math.random() < choice.chance.fail) {
@@ -689,7 +701,10 @@ const Game = (() => {
     }
 
     if (Economy.state.health <= 0) return knockedOut();
-    go(choice.goto);
+    // BUG FIX v2.2: Small delay to ensure TTS fully stopped before next line - prevents double voice
+    setTimeout(() => {
+      go(choice.goto);
+    }, 35);
   }
 
   function knockedOut() {
