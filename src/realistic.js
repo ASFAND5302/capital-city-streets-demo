@@ -269,8 +269,8 @@ const Realistic = (() => {
   function init() {
     const saved = localStorage.getItem('ccs-realistic');
     if (saved !== null) enabled = saved === '1';
-    console.log(`[Realistic Premium v2.0] Lightweight init - no auto preload, prevents lag - ${Object.keys(SOUNDS).length} sounds`);
-    // PERFORMANCE FIX: Don't auto preload - causes lag, preload only on game start
+    console.log(`[Realistic Premium v2.0] Initialized - Mobile: ${isMobile} - ${Object.keys(SOUNDS).length} premium sounds - studio grade`);
+    if (enabled) setTimeout(() => preload(), 1000);
     if (isMobile) {
       const unlockEvents = ['touchstart','touchend','click'];
       const unlockOnce = () => {

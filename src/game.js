@@ -101,18 +101,11 @@ const Game = (() => {
 
   const $ = sel => document.querySelector(sel);
 
-  /* ---------- data loading (with editor overrides + preloaded cache from loader) ---------- */
+  /* ---------- data loading (with editor overrides) ---------- */
   async function loadData() {
     const files = ['characters.json', 'chapters.json'];
     const out = {};
     for (const f of files) {
-      // Use preloaded data from loading screen if available — Asfand Ali proper loading
-      const preKey = 'data/' + f;
-      if (window.__PRELOADED_DATA && window.__PRELOADED_DATA[preKey]) {
-        out[f] = window.__PRELOADED_DATA[preKey];
-        console.log('[Game] Using preloaded data from loader:', f);
-        continue;
-      }
       const override = localStorage.getItem('ccs-data:' + f);
       if (override) { out[f] = JSON.parse(override); continue; }
       const res = await fetch('data/' + f);
@@ -120,7 +113,6 @@ const Game = (() => {
     }
     chars = out['characters.json'].characters;
     story = out['chapters.json'];
-    console.log('[Game] Data loaded — lobby ready, all files proper');
   }
 
   /* ---------- HUD ---------- */

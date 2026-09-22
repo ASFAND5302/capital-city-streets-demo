@@ -14,54 +14,6 @@
     #choices button, .menu-btn, .v-toggle, .back-btn { touch-action: manipulation; -webkit-tap-highlight-color: rgba(245,185,66,0.3); }
     audio { display: none !important; }
   </style>
-
-  <style>
-  /* CRITICAL LOADING SCREEN CSS - inline to prevent FOUC and layout break - Asfand Ali */
-  #loading-screen {
-    position: fixed !important;
-    top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
-    width: 100vw !important; height: 100vh !important; height: 100dvh !important;
-    z-index: 99999 !important;
-    background: radial-gradient(ellipse at 50% 30%, #151528 0%, #0c0c14 45%, #050508 85%) !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 16px !important;
-    text-align: center !important;
-    padding: 20px !important;
-    margin: 0 !important;
-    box-sizing: border-box !important;
-    overflow-y: auto !important;
-    transition: opacity .6s ease, visibility .6s !important;
-  }
-  #loading-screen.gone { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; display: none !important; }
-  #loading-screen * { box-sizing: border-box; }
-  .loading-logo { width: 140px !important; height: 140px !important; flex-shrink: 0; }
-  .loading-studio { font-size: .9rem !important; letter-spacing: .5em !important; color: #c9c2b0 !important; font-weight: 600; }
-  .loading-title { font-size: clamp(1.4rem, 4vw, 2.2rem) !important; font-weight: 800 !important; letter-spacing: .18em !important; color: #f5b942 !important; text-shadow: 0 0 28px rgba(245,185,66,.4) !important; line-height: 1.2; }
-  .loading-sub { font-size: .85rem !important; color: #7fd4ff !important; opacity: .85; font-style: italic; }
-  .loading-percent-big-wrap { display: flex !important; flex-direction: column !important; align-items: center !important; background: rgba(245,185,66,.08) !important; border: 1px solid rgba(245,185,66,.2) !important; border-radius: 16px !important; padding: 16px 32px !important; min-width: 180px; }
-  .loading-big-percent { font-size: clamp(2.8rem, 10vw, 4rem) !important; font-weight: 900 !important; color: #f5b942 !important; line-height: 1 !important; text-shadow: 0 0 20px rgba(245,185,66,.5) !important; }
-  .loading-big-label { font-size: .7rem !important; letter-spacing: .4em !important; color: #c9c2b0 !important; margin-top: 4px; font-weight: 600; }
-  .loading-bar-wrap { width: min(460px, 90vw) !important; }
-  .loading-bar-bg { width: 100% !important; height: 16px !important; background: #1a1a28 !important; border: 1px solid #2a2a3a !important; border-radius: 999px !important; overflow: hidden !important; position: relative; }
-  .loading-bar-fill { height: 100% !important; width: 0% !important; background: linear-gradient(90deg, #f5b942, #ffd87a, #f5b942) !important; border-radius: 999px !important; transition: width .3s ease !important; position: relative; }
-  .loading-bar-text { position: absolute !important; right: 10px !important; top: 50% !important; transform: translateY(-50%) !important; font-size: .7rem !important; font-weight: 800 !important; color: #1a1405 !important; }
-  .loading-bar-info { display: flex !important; justify-content: space-between !important; margin-top: 8px !important; font-size: .78rem !important; width: 100%; }
-  #loading-percent { color: #f5b942 !important; font-weight: 700 !important; }
-  #loading-status { color: #b8b2a2 !important; margin-left: 12px; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .loading-detail { font-size: .75rem !important; color: #8a8578 !important; background: rgba(0,0,0,.4) !important; padding: 8px 12px !important; border-radius: 8px !important; border: 1px solid #1e1e2a !important; width: min(460px, 90vw) !important; text-align: left !important; font-family: monospace; min-height: 1.5em; }
-  .loading-hint { margin-top: 12px !important; font-size: .78rem !important; letter-spacing: .2em !important; color: #7fd4ff !important; animation: hintBlink 1.6s ease-in-out infinite; }
-  .loading-block-msg { margin-top: 8px !important; font-size: .7rem !important; color: #6a6558 !important; background: rgba(245,185,66,.08) !important; border: 1px dashed #3a3528 !important; padding: 6px 12px !important; border-radius: 6px !important; }
-  @keyframes hintBlink { 0%,100% { opacity: .4; } 50% { opacity: 1; } }
-  /* Hide main menu and splash during loading */
-  body.loading-active #main-menu { display: none !important; }
-  body.loading-active #splash { display: none !important; }
-  body.loading-active #game { display: none !important; }
-  body.loading-active #city { display: none !important; }
-  </style>
-
   <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="%230c0c14" stroke="%23f5b942" stroke-width="6"/><rect x="30" y="60" width="40" height="6" fill="%23f5b942"/><rect x="30" y="40" width="17" height="9" rx="4.5" fill="none" stroke="%237fd4ff" stroke-width="4"/><rect x="53" y="40" width="17" height="9" rx="4.5" fill="none" stroke="%237fd4ff" stroke-width="4"/></svg>' />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -94,38 +46,7 @@
     </symbol>
   </svg>
 
-
-  <!-- ══ PROPER LOADING SCREEN — All files must load before lobby — Asfand Ali — FIXED LAYOUT & LAG ══ -->
-  <div id="loading-screen" role="alert" aria-label="Loading Capital City Streets">
-    <svg class="loading-logo" aria-hidden="true"><use href="#ccs-logo"/></svg>
-    <div class="loading-studio">PASCHALL GAME HUB</div>
-    <div class="loading-title">CAPITAL CITY STREETS</div>
-    <div class="loading-sub">Loading all game files before lobby entry</div>
-    
-    <div class="loading-percent-big-wrap">
-      <div id="loading-big-percent" class="loading-big-percent">0%</div>
-      <div class="loading-big-label">LOADED</div>
-    </div>
-
-    <div class="loading-bar-wrap">
-      <div class="loading-bar-bg">
-        <div id="loading-bar-fill" class="loading-bar-fill" style="width:0%">
-          <span id="loading-bar-text" class="loading-bar-text">0%</span>
-        </div>
-      </div>
-      <div class="loading-bar-info">
-        <span id="loading-percent">0% loaded</span>
-        <span id="loading-status">Initializing...</span>
-      </div>
-    </div>
-
-    <div id="loading-detail" class="loading-detail">Starting... 0% loaded</div>
-    <div id="loading-hint" class="loading-hint">Loading... 0% — lobby blocked until 100%</div>
-    <div class="loading-block-msg">🛡️ Lobby blocked until 100% — <span id="loading-block-pct">0%</span> complete</div>
-  </div>
-
   <!-- ══ Paschall Game Hub — studio splash ══ -->
-
   <div id="splash" role="alert" aria-label="Paschall Game Hub presents Capital City Streets. Press any key to continue.">
     <svg class="splash-logo" aria-hidden="true"><use href="#ccs-logo"/></svg>
     <div class="splash-studio">PASCHALL GAME HUB</div>
@@ -136,7 +57,7 @@
   </div>
 
   <!-- ══════════ MAIN MENU (mirrors original s-lobby) ══════════ -->
-  <div id="main-menu" hidden role="main" aria-label="Capital City Streets — main menu">
+  <div id="main-menu" role="main" aria-label="Capital City Streets — main menu">
     <div class="menu-container">
       <h2 class="sr-only">Capital City Streets. Main menu. 7 options. Use arrow keys to navigate, Enter to select. Press V to toggle voice.</h2>
 
@@ -492,26 +413,23 @@
   </div>
 
 
-  <!-- PERFORMANCE FIX v2.3: Essential scripts sync for instant lobby, heavy deferred -->
-  <script src="src/loader.js"></script>
   <script src="src/tts.js"></script>
+  <script src="src/realvoices.js"></script>
+  <script src="src/ogaudio.js"></script>
+  <script src="src/realistic.js"></script>
+  <script src="src/blindmusic.js"></script>
   <script src="src/audio.js"></script>
   <script src="src/spatial.js"></script>
   <script src="src/music.js"></script>
+  <script src="src/premium_audio.js"></script>
   <script src="src/input.js"></script>
   <script src="src/economy.js"></script>
   <script src="src/game.js"></script>
+  <script src="vendor/three.min.js"></script>
+  <script src="src/audio3d.js"></script>
+  <script src="src/city3d.js"></script>
+  <script src="src/city.js"></script>
   <script src="src/mainmenu.js"></script>
-  <!-- Heavy audio & 3D deferred - prevents lag on lobby entry, loads after UI -->
-  <script defer src="src/realvoices.js"></script>
-  <script defer src="src/ogaudio.js"></script>
-  <script defer src="src/realistic.js"></script>
-  <script defer src="src/blindmusic.js"></script>
-  <script defer src="src/premium_audio.js"></script>
-  <script defer src="vendor/three.min.js"></script>
-  <script defer src="src/audio3d.js"></script>
-  <script defer src="src/city3d.js"></script>
-  <script defer src="src/city.js"></script>
 
 
   <!-- Mobile Browser Fix: Unlock audio + improve TTS voice loading -->

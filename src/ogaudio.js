@@ -611,9 +611,15 @@ const OGAudio = (() => {
   function init() {
     const saved = localStorage.getItem('ccs-oga-enabled');
     if (saved !== null) enabled = saved === 'true';
-    // PERFORMANCE FIX v2.3: Don't auto preload SFX on init - causes lag in lobby
-    // Only unlock mobile, preload only when needed in game (lazy)
-    console.log('[OGAudio] Lightweight init - no auto preload, prevents lobby lag');
+    const preloadOnce = () => {
+      preloadSFX(); unlockMobile();
+      document.removeEventListener('click', preloadOnce);
+      document.removeEventListener('keydown', preloadOnce);
+      document.removeEventListener('touchstart', preloadOnce);
+    };
+    document.addEventListener('click', preloadOnce, { once: true });
+    document.addEventListener('keydown', preloadOnce, { once: true });
+    document.addEventListener('touchstart', preloadOnce, { once: true, passive: true });
     if (isMobile) {
       const unlockEvents = ['touchstart', 'touchend', 'click'];
       const unlockOnce = () => {
