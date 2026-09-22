@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>Capital City Streets — Paschall Game Hub</title>
+  <style>
+    * { -webkit-tap-highlight-color: transparent; }
+    html { touch-action: manipulation; }
+    body { overscroll-behavior: none; }
+    #choices button, .menu-btn, .v-toggle, .back-btn { touch-action: manipulation; -webkit-tap-highlight-color: rgba(245,185,66,0.3); }
+    audio { display: none !important; }
+  </style>
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="%230c0c14" stroke="%23f5b942" stroke-width="6"/><rect x="30" y="60" width="40" height="6" fill="%23f5b942"/><rect x="30" y="40" width="17" height="9" rx="4.5" fill="none" stroke="%237fd4ff" stroke-width="4"/><rect x="53" y="40" width="17" height="9" rx="4.5" fill="none" stroke="%237fd4ff" stroke-width="4"/></svg>' />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ══ Custom logo emblem: the city seen through Smart Glasses ══ -->
+  <svg style="display:none" aria-hidden="true">
+    <symbol id="ccs-logo" viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="92" fill="#0c0c14" stroke="#f5b942" stroke-width="4"/>
+      <circle cx="100" cy="100" r="82" fill="none" stroke="#2a2a3a" stroke-width="2"/>
+      <path d="M40 76 a60 60 0 0 1 120 0" fill="none" stroke="#7fd4ff" stroke-width="3" opacity=".85"/>
+      <path d="M55 76 a45 45 0 0 1 90 0" fill="none" stroke="#7fd4ff" stroke-width="3" opacity=".55"/>
+      <path d="M70 76 a30 30 0 0 1 60 0" fill="none" stroke="#7fd4ff" stroke-width="3" opacity=".3"/>
+      <g fill="#1b1b28">
+        <rect x="38" y="92" width="18" height="52"/><rect x="60" y="78" width="16" height="66"/>
+        <rect x="80" y="98" width="14" height="46"/><rect x="98" y="70" width="18" height="74"/>
+        <rect x="120" y="88" width="16" height="56"/><rect x="140" y="100" width="18" height="44"/>
+      </g>
+      <g fill="#f5b942">
+        <rect x="43" y="100" width="3" height="4"/><rect x="50" y="112" width="3" height="4"/>
+        <rect x="65" y="86" width="3" height="4"/><rect x="70" y="100" width="3" height="4"/>
+        <rect x="103" y="78" width="3" height="4"/><rect x="110" y="92" width="3" height="4"/>
+        <rect x="103" y="108" width="3" height="4"/><rect x="125" y="96" width="3" height="4"/>
+        <rect x="146" y="108" width="3" height="4"/>
+      </g>
+      <rect x="62" y="116" width="34" height="15" rx="7.5" fill="#0c0c14" stroke="#7fd4ff" stroke-width="2.5"/>
+      <rect x="104" y="116" width="34" height="15" rx="7.5" fill="#0c0c14" stroke="#7fd4ff" stroke-width="2.5"/>
+      <rect x="96" y="121" width="8" height="5" fill="#7fd4ff"/>
+      <rect x="34" y="146" width="132" height="4" fill="#f5b942"/>
+    </symbol>
+  </svg>
+
+  <!-- ══ Paschall Game Hub — studio splash ══ -->
+  <div id="splash" role="alert" aria-label="Paschall Game Hub presents Capital City Streets. Press any key to continue.">
+    <svg class="splash-logo" aria-hidden="true"><use href="#ccs-logo"/></svg>
+    <div class="splash-studio">PASCHALL GAME HUB</div>
+    <div class="splash-presents">— presents —</div>
+    <div class="splash-title">CAPITAL CITY STREETS</div>
+    <div class="splash-tag">Hunt the truth. Avenge the silence.</div>
+    <div class="splash-hint">press any key</div>
+  </div>
+
+  <!-- ══════════ MAIN MENU (mirrors original s-lobby) ══════════ -->
+  <div id="main-menu" role="main" aria-label="Capital City Streets — main menu">
+    <div class="menu-container">
+      <h2 class="sr-only">Capital City Streets. Main menu. 7 options. Use arrow keys to navigate, Enter to select. Press V to toggle voice.</h2>
+
+      <div class="menu-hero" aria-hidden="true">
+        <img src="img/title.jpg" alt="" />
+        <div class="menu-hero-overlay"></div>
+        <div class="game-logo">
+          <h1><svg class="logo-mark" aria-hidden="true"><use href="#ccs-logo"/></svg>Capital City Streets</h1>
+          <p>You are Stoneface. The truth about your sister's murder won't bury itself.</p>
+        </div>
+      </div>
+
+      <!-- Main list -->
+      <div id="menu-list-wrap">
+        <p class="lbl" aria-hidden="true">Main menu</p>
+        <ul class="menu-list" role="listbox" aria-label="Main menu" id="lobby-menu">
+          <li role="none"><button class="menu-btn" role="option" data-action="start"
+            data-speak="Start game. Begin a new case as Stoneface. Press Enter.">
+            <span class="micon" aria-hidden="true">▶</span>
+            <span class="mlabel"><span class="mtitle">Start game</span><span class="msub">Begin a new case as Stoneface</span></span>
+            <span class="kbadge" aria-hidden="true">Enter</span>
+          </button></li>
+          <li role="none"><button class="menu-btn" role="option" data-action="continue" id="menu-continue"
+            data-speak="Continue. Resume your last save. Stoneface's case file is waiting. Press Enter.">
+            <span class="micon" aria-hidden="true">🕘</span>
+            <span class="mlabel"><span class="mtitle">Continue</span><span class="msub">Resume your last save</span></span>
+            <span class="kbadge" aria-hidden="true">Enter</span>
+          </button></li>
+          <li role="none"><button class="menu-btn" role="option" data-action="explore"
+            data-speak="Explore the city. Free roam Capitol City block by block. Landmarks, markers, and Bonnie. Press Enter.">
+            <span class="micon" aria-hidden="true">🗺</span>
+            <span class="mlabel"><span class="mtitle">Explore the city</span><span class="msub">Free roam Capitol City — landmarks, markers &amp; Bonnie</span></span>
+            <span class="kbadge" aria-hidden="true">Enter</span>
+          </button></li>
+          <li role="none"><button class="menu-btn" role="option" data-action="chapters"
+            data-speak="Chapters. Jump straight into any chapter of the story. Press Enter.">
+            <span class="micon" aria-hidden="true">📼</span>
+            <span class="mlabel"><span class="mtitle">Chapters</span><span class="msub">Play any chapter — One through Five</span></span>
+            <span class="kbadge" aria-hidden="true">Enter</span>
+          </button></li>
+          <li role="none"><button class="menu-btn" role="option" data-action="settings"
+            data-speak="Settings. Adjust voice, narration speed, accessibility and display options. Press Enter.">
+            <span class="micon" aria-hidden="true">⚙</span>
+            <span class="mlabel"><span class="mtitle">Settings</span><span class="msub">Voice, narration, accessibility &amp; display</span></span>
+            <span class="kbadge" aria-hidden="true">Enter</span>
+          </button></li>
+          <li role="none"><button class="menu-btn" role="option" data-action="howto"
+            data-speak="How to play. Learn the controls, Smart Glasses system, audio cues, and city navigation. Press Enter.">
+            <span class="micon" aria-hidden="true">📖</span>
+            <span class="mlabel"><span class="mtitle">How to play</span><span class="msub">Controls, Smart Glasses, audio cues &amp; navigation</span></span>
+            <span class="kbadge" aria-hidden="true">Enter</span>
+          </button></li>
+          <li role="none"><button class="menu-btn" role="option" data-action="credits"
+            data-speak="Credits. Meet the crew behind Capital City Streets. Press Enter.">
+            <span class="micon" aria-hidden="true">👥</span>
+            <span class="mlabel"><span class="mtitle">Credits</span><span class="msub">Meet the crew</span></span>
+            <span class="kbadge" aria-hidden="true">Enter</span>
+          </button></li>
+          <li role="none"><button class="menu-btn" role="option" data-action="quit"
+            data-speak="Quit game. Exit to desktop. Press Enter.">
+            <span class="micon" aria-hidden="true">🚪</span>
+            <span class="mlabel"><span class="mtitle">Quit game</span><span class="msub">Exit to desktop</span></span>
+            <span class="kbadge" aria-hidden="true">Enter</span>
+          </button></li>
+        </ul>
+
+        <div class="voicebar">
+          <span aria-hidden="true" class="vb-icon">🔊</span>
+          <span id="lv-label">Smart Glasses narration on — press V to toggle</span>
+          <button class="v-toggle" id="lv-btn" aria-pressed="true"
+            data-speak="Voice toggle. Currently on. Press Enter to turn narration off.">Voice: On</button>
+        </div>
+        <p class="kbd-hint">↑ ↓ arrows or Tab · Enter to select · V = toggle voice</p>
+      </div>
+
+      <!-- Chapters panel -->
+      <div id="chapters-panel" class="menu-panel" hidden aria-label="Chapter select">
+        <div class="panel-top">
+          <button class="back-btn" data-action="back-main"
+            data-speak="Back. Return to main menu. Press Enter.">← Back</button>
+          <h2 class="panel-title">Select chapter</h2>
+        </div>
+        <ul class="menu-list">
+          <li><button class="menu-btn" data-chapter="1"
+            data-speak="Chapter One, The First Echo. Salena's apartment, the jingle lock, first blood. Press Enter to play.">
+            <span class="micon" aria-hidden="true">1</span>
+            <span class="mlabel"><span class="mtitle">The First Echo</span><span class="msub">Salena's apartment · the jingle lock · the data drive</span></span></button></li>
+          <li><button class="menu-btn" data-chapter="2"
+            data-speak="Chapter Two, The Block. Southside, Harbor, the Velvet Room stickup. Press Enter to play.">
+            <span class="micon" aria-hidden="true">2</span>
+            <span class="mlabel"><span class="mtitle">The Block</span><span class="msub">Southside · Harbor · the Velvet stickup</span></span></button></li>
+          <li><button class="menu-btn" data-chapter="3"
+            data-speak="Chapter Three, Waterfront and Island. Road ambush, nuclear Bonnie, the casino. Press Enter to play.">
+            <span class="micon" aria-hidden="true">3</span>
+            <span class="mlabel"><span class="mtitle">Waterfront / Island</span><span class="msub">Road ambush · nuclear Bonnie · the casino</span></span></button></li>
+          <li><button class="menu-btn" data-chapter="4"
+            data-speak="Chapter Four, The Takedown. Precinct shootout, five hitmen, the court ambush. Press Enter to play.">
+            <span class="micon" aria-hidden="true">4</span>
+            <span class="mlabel"><span class="mtitle">The Takedown</span><span class="msub">Precinct shootout · five hitmen · the court ambush</span></span></button></li>
+          <li><button class="menu-btn" data-chapter="5"
+            data-speak="Chapter Five, The Grand Finale. The mansion gala, Wexler and Voss, three endings. Press Enter to play.">
+            <span class="micon" aria-hidden="true">5</span>
+            <span class="mlabel"><span class="mtitle">The Grand Finale</span><span class="msub">Mansion gala · Wexler &amp; Voss · three endings</span></span></button></li>
+                                      </ul>
+      </div>
+
+      <!-- Settings panel -->
+      <div id="settings-panel" class="menu-panel" hidden aria-label="Settings">
+        <div class="panel-top">
+          <button class="back-btn" data-action="back-main"
+            data-speak="Back. Return to main menu. Press Enter.">← Back</button>
+          <h2 class="panel-title">Settings</h2>
+        </div>
+        <div class="setting-row">
+          <span class="sicon" aria-hidden="true">🔊</span>
+          <span class="slabel"><span class="sname">Smart Glasses narration</span>
+          <span class="sdesc">Spoken narration of every line and option</span></span>
+          <button class="v-toggle" id="set-voice" aria-pressed="true"
+            data-speak="Smart Glasses narration. Currently on. Press Enter to toggle.">On</button>
+        </div>
+        <div class="setting-row">
+          <span class="sicon" aria-hidden="true">⏩</span>
+          <span class="slabel"><span class="sname">Narration speed</span>
+          <span class="sdesc">How fast the Smart Glasses speak</span></span>
+          <input type="range" id="set-rate" class="sslider" min="70" max="150" step="10"
+            aria-label="Narration speed percent"
+            data-speak="Narration speed slider. Use left and right arrow keys to change the speed.">
+          <span class="sval" id="set-rate-val">100%</span>
+        </div>
+        <div class="setting-row">
+          <span class="sicon" aria-hidden="true">🎼</span>
+          <span class="slabel"><span class="sname">Music volume</span>
+          <span class="sdesc">Generative score loudness</span></span>
+          <input type="range" id="set-mus" class="sslider" min="0" max="100" step="5"
+            aria-label="Music volume percent"
+            data-speak="Music volume slider. Use left and right arrows to change.">
+          <span class="sval" id="set-mus-val">100%</span>
+        </div>
+        <div class="setting-row">
+          <span class="sicon" aria-hidden="true">🌆</span>
+          <span class="slabel"><span class="sname">Ambience volume</span>
+          <span class="sdesc">Room tones, rain, city life</span></span>
+          <input type="range" id="set-amb" class="sslider" min="0" max="100" step="5"
+            aria-label="Ambience volume percent"
+            data-speak="Ambience volume slider. Use left and right arrows to change.">
+          <span class="sval" id="set-amb-val">100%</span>
+        </div>
+        <div class="setting-row">
+          <span class="sicon" aria-hidden="true">🌓</span>
+          <span class="slabel"><span class="sname">High contrast</span>
+          <span class="sdesc">Brighter colors, stronger outlines — key H anytime</span></span>
+          <button class="v-toggle" id="set-hc" aria-pressed="false"
+            data-speak="High contrast mode. Currently off. Press Enter to toggle.">Off</button>
+        </div>
+        <div class="setting-row">
+          <span class="sicon" aria-hidden="true">🎧</span>
+          <span class="slabel"><span class="sname">Focus Mode</span>
+          <span class="sdesc">Dims visuals during play — press F anytime in game</span></span>
+        </div>
+        <div class="setting-row" style="border:2px solid #f5b942; background: rgba(245,185,66,0.08);">
+          <span class="sicon" aria-hidden="true">🦯</span>
+          <span class="slabel"><span class="sname">Blind-Friendly Real Audio — OpenGameArt.org</span>
+          <span class="sdesc">Real noir jazz (Future Noir, Velvet Sax, Noire Crime Time) + real punch SFX + footsteps + city ambience. For blind immersion — CC0/CC-BY</span></span>
+          <button class="v-toggle" id="set-oga" aria-pressed="true"
+            data-speak="Blind friendly real audio from Open Game Art. Currently on. Real noir jazz and punch sounds for blind immersion. Press Enter to toggle.">On</button>
+        </div>
+        <div class="setting-row">
+          <span class="sicon" aria-hidden="true">🎵</span>
+          <span class="slabel"><span class="sname">Real Music Volume</span>
+          <span class="sdesc">Noir jazz tracks from OpenGameArt.org</span></span>
+          <input type="range" id="set-oga-mus" class="sslider" min="0" max="100" step="5"
+            aria-label="Real music volume"
+            data-speak="Real noir music volume slider.">
+          <span class="sval" id="set-oga-mus-val">70%</span>
+        </div>
+        <div class="setting-row">
+          <span class="sicon" aria-hidden="true">🥊</span>
+          <span class="slabel"><span class="sname">Real SFX Volume</span>
+          <span class="sdesc">Real punch, footsteps, doors from OpenGameArt.org</span></span>
+          <input type="range" id="set-oga-sfx" class="sslider" min="0" max="100" step="5"
+            aria-label="Real SFX volume"
+            data-speak="Real punch and footsteps volume slider.">
+          <span class="sval" id="set-oga-sfx-val">90%</span>
+        </div>
+        <div class="setting-row" style="border:2px solid #7fd4ff; background: rgba(127,212,255,0.08);">
+          <span class="sicon" aria-hidden="true">🎙️</span>
+          <span class="slabel"><span class="sname">Real Human Voices — Not Computer!</span>
+          <span class="sdesc">Stoneface, Glasses, Salena, Sam, Priest now sound like REAL people, not computer TTS. Generated with AI voice actors. Hybrid: real for main, improved TTS for others.</span></span>
+          <button class="v-toggle" id="set-realvoices" aria-pressed="true"
+            data-speak="Real human voices. Currently on. Real human voices, not computer. Stoneface, Glasses, Salena have real voices. Press Enter to toggle.">On</button>
+        </div>
+        <div class="setting-row" style="border:2px solid #ff6b6b; background: rgba(255,107,107,0.08);">
+          <span class="sicon" aria-hidden="true">🔊</span>
+          <span class="slabel"><span class="sname">Realistic Sounds — Mixkit / OGA CC0</span>
+          <span class="sdesc">Real recorded footsteps (grass, stone, sand, concrete), punches (strong, fast, body), doors, city rain, coins, swords. CC0 realistic, not synthetic. From Mixkit-style packs.</span></span>
+          <button class="v-toggle" id="set-realistic" aria-pressed="true"
+            data-speak="Realistic sounds from Mixkit and OpenGameArt. Currently on. Real footsteps, punches, doors, city ambience. Press Enter to toggle.">On</button>
+        </div>
+        <div class="setting-row">
+          <span class="sicon" aria-hidden="true">🎚️</span>
+          <span class="slabel"><span class="sname">Realistic Volume</span>
+          <span class="sdesc">Footsteps, punches, doors, city - realistic SFX</span></span>
+          <input type="range" id="set-real-vol" class="sslider" min="0" max="100" step="5"
+            aria-label="Realistic volume"
+            data-speak="Realistic sounds volume slider.">
+          <span class="sval" id="set-real-vol-val">90%</span>
+        </div>
+        <div class="setting-row" style="border:2px solid #a78bfa; background: rgba(167,139,250,0.12);">
+          <span class="sicon" aria-hidden="true">🎼</span>
+          <span class="slabel"><span class="sname">Professional Blind Music Vibe — High Level</span>
+          <span class="sdesc">Leitmotifs (character themes), Vertical Remixing (base+tension+combat layers), Stingers (objective/danger), Sonar Enhanced Listening, Binaural spatial music. Like TLOU2 + Hades + A Plague Tale. Real noir jazz from Pixabay CC0 + OGA.</span></span>
+          <button class="v-toggle" id="set-blindmusic" aria-pressed="true"
+            data-speak="Professional blind music vibe. Currently on. Leitmotifs for Stoneface Salena Glasses, vertical remixing with 3 layers, stingers for events, sonar enhanced listening mode like The Last of Us Part 2. Press Enter to toggle.">On</button>
+        </div>
+        <div class="setting-row">
+          <span class="sicon" aria-hidden="true">🎹</span>
+          <span class="slabel"><span class="sname">Blind Music Volume</span>
+          <span class="sdesc">Leitmotifs + vertical layers + stingers - professional blind vibe</span></span>
+          <input type="range" id="set-blind-vol" class="sslider" min="0" max="100" step="5"
+            aria-label="Blind music volume"
+            data-speak="Professional blind music volume slider. Leitmotifs and vertical remixing.">
+          <span class="sval" id="set-blind-vol-val">60%</span>
+        </div>
+        <div class="setting-row">
+          <span class="sicon" aria-hidden="true">📡</span>
+          <span class="slabel"><span class="sname">Enhanced Listening Mode (Sonar)</span>
+          <span class="sdesc">Sonar sweep like TLOU2 - press E in game to ping nearby characters/objects with spatial audio + leitmotifs. For blind navigation.</span></span>
+          <button class="v-toggle" id="set-sonar" aria-pressed="false"
+            data-speak="Enhanced listening mode sonar. Currently off. When on, press E to sonar ping nearby characters with leitmotifs and spatial audio. Like The Last of Us Part 2. Press Enter to toggle.">Off</button>
+        </div>
+      </div>
+
+      <!-- Credits panel -->
+      <div id="credits-panel" class="menu-panel" hidden aria-label="Credits">
+        <div class="panel-top">
+          <button class="back-btn" data-action="back-main"
+            data-speak="Back. Return to main menu. Press Enter.">← Back</button>
+          <h2 class="panel-title">Credits — Meet the crew</h2>
+        </div>
+        <ul class="menu-list" id="credits-list">
+          <li><div class="menu-btn credit-row" tabindex="0" data-speak="Stoneface. You. Blind crew leader. Grief sharpened into purpose. Every move, for Salena.">
+            <span class="micon" aria-hidden="true">🕶</span>
+            <span class="mlabel"><span class="mtitle">Stoneface</span><span class="msub">You — blind crew leader, grief sharpened into purpose</span></span></div></li>
+          <li><div class="menu-btn credit-row" tabindex="0" data-speak="Bonnie. Your bulletproof S U V. Crew built, A I voiced. She steers, she fights, she waits outside.">
+            <span class="micon" aria-hidden="true">🚙</span>
+            <span class="mlabel"><span class="mtitle">Bonnie</span><span class="msub">Bulletproof SUV — crew-built, AI-voiced</span></span></div></li>
+          <li><div class="menu-btn credit-row" tabindex="0" data-speak="Sam Caldwell. Inside cop ally. Subtle hints by phone. Your eyes inside the law.">
+            <span class="micon" aria-hidden="true">📞</span>
+            <span class="mlabel"><span class="mtitle">Sam Caldwell</span><span class="msub">Inside-cop ally — your eyes inside the law</span></span></div></li>
+          <li><div class="menu-btn credit-row" tabindex="0" data-speak="Priest Malachai. Moral compass with street knowledge. The only honest gatekeeper.">
+            <span class="micon" aria-hidden="true">🕯</span>
+            <span class="mlabel"><span class="mtitle">Priest Malachai</span><span class="msub">Moral compass — the only honest gatekeeper</span></span></div></li>
+          <li><div class="menu-btn credit-row" tabindex="0" data-speak="Marcus Harbor Kane. Navy Seal. Undercover in plain sight. Waiting for a reason to live.">
+            <span class="micon" aria-hidden="true">🏀</span>
+            <span class="mlabel"><span class="mtitle">Marcus "Harbor" Kane</span><span class="msub">Navy Seal — undercover in plain sight</span></span></div></li>
+          <li><div class="menu-btn credit-row" tabindex="0" data-speak="Nyx and Nia Vale. Twin assassins. Nyx, calm voice, surgical violence. Nia, playful voice, terrifying impulse control. Point them.">
+            <span class="micon" aria-hidden="true">🗡</span>
+            <span class="mlabel"><span class="mtitle">Nyx &amp; Nia Vale</span><span class="msub">Twin assassins — point them</span></span></div></li>
+          <li><div class="menu-btn credit-row" tabindex="0" data-speak="Elias Ledger. Pawn shop investor. Bankroll brain, upgrade broker.">
+            <span class="micon" aria-hidden="true">💰</span>
+            <span class="mlabel"><span class="mtitle">Elias "Ledger"</span><span class="msub">Pawn shop investor — upgrade broker</span></span></div></li>
+          <li><div class="menu-btn credit-row" tabindex="0" data-speak="Tess Area Six. Computer engineer. Builds Bonnie's systems, armor upgrades, and the healing chamber.">
+            <span class="micon" aria-hidden="true">🔧</span>
+            <span class="mlabel"><span class="mtitle">Tess "Area Six"</span><span class="msub">Computer engineer — builds Bonnie's systems</span></span></div></li>
+          <li><div class="menu-btn credit-row" tabindex="0" data-speak="Seraphine Sera. The island. Romance that becomes a choice, not a cutscene.">
+            <span class="micon" aria-hidden="true">🏝</span>
+            <span class="mlabel"><span class="mtitle">Seraphine "Sera"</span><span class="msub">The island — a romance you choose</span></span></div></li>
+          <li><div class="menu-btn credit-row" tabindex="0" data-speak="Mayor Wexler. Charismatic. Ruthless. Addicted to legacy.">
+            <span class="micon" aria-hidden="true">🏛</span>
+            <span class="mlabel"><span class="mtitle">Mayor Wexler</span><span class="msub">Charismatic, ruthless, addicted to legacy</span></span></div></li>
+          <li><div class="menu-btn credit-row" tabindex="0" data-speak="Chief Voss. Cold. Procedural. Convinced the city belongs to him.">
+            <span class="micon" aria-hidden="true">🚔</span>
+            <span class="mlabel"><span class="mtitle">Chief Voss</span><span class="msub">Cold, procedural — the city is his, he thinks</span></span></div></li>
+        </ul>
+        <div class="setting-row" style="margin-top:12px">
+          <span class="sicon" aria-hidden="true">🖤</span>
+          <span class="slabel">
+            <span class="sname">A Paschall Games production</span>
+            <span class="sdesc">Designed accessibility-first · Hand-built noir engine: WebAudio generative score, HRTF spatial sound, Three.js streets · Every voice synthesized, every pixel data-driven · For Salena.</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Quit notice -->
+      <div id="quit-panel" class="menu-panel" hidden aria-label="Quit">
+        <div class="game-logo">
+          <h1>🏙 Capital City Streets</h1>
+          <p id="quit-text">It is now safe to close this tab. Justice is coming — one block at a time.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="game" hidden>
+    <!-- Top bar -->
+    <header id="topbar" role="status" aria-label="Status bar">
+      <span id="hud-location" class="hud-chip">📍 —</span>
+      <span id="hud-cc" class="hud-chip cc">🪙 0 CC</span>
+      <span id="hud-health" class="hud-chip health" aria-label="Health">
+        ❤️ <span class="bar"><span id="health-fill"></span></span>
+      </span>
+      <span id="hud-heat" class="hud-chip heat" hidden>🔥 Heat 0</span>
+      <span id="hud-focus" class="hud-chip focus" hidden>🎧 Focus</span>
+      <button id="btn-menu" class="hud-chip hud-btn" aria-label="Back to main menu (Escape key)"
+        title="Main menu (Esc)">☰</button>
+      <button id="btn-fullscreen" class="hud-chip hud-btn" aria-label="Toggle fullscreen"
+        title="Toggle fullscreen">⛶</button>
+    </header>
+
+    <!-- Scene viewport -->
+    <main id="stage" aria-label="Scene" tabindex="0">
+      <svg id="scene-art" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+      <div id="grade" aria-hidden="true"></div>
+      <div id="fx" aria-hidden="true"></div>
+      <div id="subtitle" aria-live="polite"></div>
+    </main>
+
+    <!-- Choices -->
+    <nav id="choices" aria-label="Choices"></nav>
+
+    <!-- Cinematic chapter title card -->
+    <div id="chapter-card" aria-hidden="true"></div>
+
+    <!-- Narration log (Smart Glasses feed) -->
+    <section id="narration-log" aria-label="Smart Glasses narration log" aria-live="off">
+      <h2>Smart Glasses Feed</h2>
+      <ol id="log-lines"></ol>
+    </section>
+  </div>
+
+  <!-- ══════════ OPEN-WORLD CITY (free roam) ══════════ -->
+  <div id="city" hidden>
+    <header id="city-hud" role="status" aria-label="City status">
+      <span id="city-mode" class="hud-chip">—</span>
+      <span id="city-loc" class="hud-chip">📍 —</span>
+      <span id="city-cc" class="hud-chip cc">🪙 0 CC</span>
+      <span class="hud-chip health" aria-label="Health">❤️ <span class="bar"><span id="city-health-fill"></span></span></span>
+      <span id="city-ride" class="hud-chip ride" hidden>🚙 Riding Bonnie</span>
+      <span id="city-marker-chip" class="hud-chip markerchip" hidden></span>
+    </header>
+    <main id="city-stage" tabindex="0" aria-label="Capitol City">
+      <svg id="city-svg" viewBox="0 0 720 540" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <g id="city-world"></g>
+      </svg>
+      <canvas id="city-3d" hidden aria-hidden="true"></canvas>
+      <div id="city-caption" aria-live="polite"></div>
+    </main>
+    <p class="city-keys">
+      ↑ ↓ ← → move · Enter interact · L look · P sonar ping · K district guide · G go-to landmark · U your trail<br/>
+      M set marker · N hear the way · X clear marker · B ride Bonnie · C 3D/map view · O 3D sound · I case file · Esc menu
+      · <span id="city-ver"></span>
+    </p>
+  </div>
+
+
+  <script src="src/tts.js"></script>
+  <script src="src/realvoices.js"></script>
+  <script src="src/ogaudio.js"></script>
+  <script src="src/realistic.js"></script>
+  <script src="src/blindmusic.js"></script>
+  <script src="src/audio.js"></script>
+  <script src="src/spatial.js"></script>
+  <script src="src/music.js"></script>
+  <script src="src/premium_audio.js"></script>
+  <script src="src/input.js"></script>
+  <script src="src/economy.js"></script>
+  <script src="src/game.js"></script>
+  <script src="vendor/three.min.js"></script>
+  <script src="src/audio3d.js"></script>
+  <script src="src/city3d.js"></script>
+  <script src="src/city.js"></script>
+  <script src="src/mainmenu.js"></script>
+
+
+  <!-- Mobile Browser Fix: Unlock audio + improve TTS voice loading -->
+  <script>
+  (function() {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (!isMobile) return;
+    console.log('[Mobile] Browser detected - applying mobile fixes iOS='+isIOS);
+    let unlocked = false;
+    const unlockAllAudio = () => {
+      if (unlocked) return;
+      unlocked = true;
+      console.log('[Mobile] First gesture - unlocking audio');
+      try {
+        if (typeof TTS !== 'undefined' && TTS.unlockAudio) TTS.unlockAudio();
+        if (typeof RealVoices !== 'undefined' && RealVoices.unlockMobile) RealVoices.unlockMobile();
+        if (typeof OGAudio !== 'undefined' && OGAudio.unlockMobile) OGAudio.unlockMobile();
+        if (typeof BlindMusic !== 'undefined' && BlindMusic.unlockMobile) BlindMusic.unlockMobile();
+        if (window.speechSynthesis) {
+          try {
+            const u = new SpeechSynthesisUtterance('');
+            u.volume = 0;
+            window.speechSynthesis.speak(u);
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.getVoices();
+          } catch (e) {}
+        }
+      } catch (e) { console.warn('[Mobile] Unlock failed:', e); }
+    };
+    ['touchstart','touchend','click','keydown'].forEach(ev => {
+      document.addEventListener(ev, unlockAllAudio, { once: true, passive: true, capture: true });
+    });
+    if (isIOS && window.speechSynthesis) {
+      const forceVoiceLoad = () => { try { window.speechSynthesis.getVoices(); } catch (e) {} };
+      setTimeout(forceVoiceLoad, 100);
+      setTimeout(forceVoiceLoad, 500);
+      setTimeout(forceVoiceLoad, 1000);
+      window.speechSynthesis.onvoiceschanged = forceVoiceLoad;
+    }
+    document.body.classList.add('mobile-browser');
+    if (isIOS) document.body.classList.add('ios-browser');
+    console.log('[Mobile] Fixes applied - voice will work after first tap');
+  })();
+  </script>
+
+</body>
+</html>

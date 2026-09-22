@@ -1,0 +1,151 @@
+CAPITAL CITY STREETS - OpenGameArt.org Audio Credits
+====================================================
+Blind-Friendly Noir Vibe - Real Audio Integration
+All sounds from https://opengameart.org
+
+MUSIC TRACKS (Noir Jazz - Detective Atmosphere):
+------------------------------------------------
+1. Future Noir (Looping)
+   Author: Eric Matyas
+   URL: https://opengameart.org/content/future-noir-looping
+   License: CC-BY 4.0
+   File: Future_Noir.mp3 (2.2 MB)
+   Usage: Main noir theme, Capitol City night, apartment
+   Credit: "Future Noir" by Eric Matyas - soundimage.org
+
+2. Noire Crime Time
+   Author: Alexandr Zhelanov
+   URL: https://opengameart.org/content/noire-crime-time
+   License: CC-BY 3.0
+   File: Noire_Crime_Time.mp3 (1 MB)
+   Usage: Crime investigation, tense scenes, Southside
+   Credit: https://soundcloud.com/alexandr-zhelanov
+
+3. Velvet Sax (Band Version)
+   Author: Bogart VGM
+   URL: https://opengameart.org/content/velvet-sax-three-arangments-solo-band-synth
+   License: CC-BY 4.0
+   File: Velvet_Sax_Band.mp3 (2.2 MB)
+   Usage: Velvet Room, casino, mansion gala, menu
+   Description: Moody detective sax, jazz band
+
+4. Velvet Sax (Synthgaze Version)
+   Author: Bogart VGM
+   URL: https://opengameart.org/content/velvet-sax-three-arangments-solo-band-synth
+   License: CC-BY 4.0
+   File: Velvet_Sax_Synth.mp3 (2.5 MB)
+   Usage: Mystery, safehouse, island, apartment
+   Description: Synth noir, dreamy detective
+
+5. Coffee Black
+   Author: Unknown (CC0)
+   URL: https://opengameart.org/content/coffee-black
+   License: CC0
+   File: Coffee_Black.ogg (1.6 MB)
+   Usage: Diner, church, garden, pier - late night vibe
+
+6. Long Night Drive
+   Author: Unknown (CC-BY)
+   URL: https://opengameart.org/content/long-night-drive
+   License: CC-BY
+   File: Long_Night_Drive.mp3 (13 MB)
+   Usage: Driving scenes, Bonnie en route, Coast Road
+   Description: Night driving, city lights blur
+
+7. Night Prowler
+   Author: Unknown (CC0)
+   URL: https://opengameart.org/content/cc0-music-0
+   License: CC0
+   File: Night_Prowler.mp3 (34 KB sample)
+   Usage: Night city, lurking shadows, industrial
+
+
+SOUND EFFECTS (Real Fight & City Life):
+---------------------------------------
+Punch SFX Pack - Real Meaty Impacts:
+  Author: DavidW
+  URL: https://opengameart.org/content/punch-sfx
+  License: CC-BY 3.0 / CC-BY 4.0 / OGA-BY 3.0
+  Files: punch_1.wav (252 KB), punch_2.wav (174 KB), punch_3.wav, punch_4.wav, punch_5.wav
+  Usage: Real punch, heavy punch, fight combos - blind players feel direction via stereo pan
+  Description: Meaty, hard impacts for punching, hits, melee combat
+
+100 CC0 SFX Pack #2:
+  Author: rubberduck
+  URL: https://opengameart.org/content/100-cc0-sfx-2
+  License: CC0 (Public Domain)
+  File: sfx_100_v2.zip (2.4 MB) - 100 sounds
+  Usage: Blind-friendly city navigation
+  
+  Included sounds used:
+  - hit_01/02/03.ogg - body hits, taking damage
+  - footstep_01/02.ogg - walking on concrete (alternating left/right)
+  - footstep_wood_01-04.ogg - church, mansion, old buildings
+  - footstep_wet_01-03.ogg - harbor, rain, industrial wet
+  - door_01-05.ogg - entering buildings, spatial audio cues
+  - lock_open_01.ogg - safe, jingle lock, puzzle solved
+  - glass_01-06.ogg - window break, bottle, casino
+  - loop_ambient_01-04.ogg - city background, blind immersion
+  - loop_highway.ogg - Midtown traffic, Coast Road
+  - loop_construction_site.ogg - Industrial Row
+  - loop_water_01-03.ogg - Harbor, rain, island
+  - loop_machine_01-04.ogg - Tess workshop, garage
+  - metal_hit_01/02.ogg - metal doors, Bonnie
+  - wood_hit_01-03.ogg - wooden doors, court
+  - switch_01/02.ogg - UI beacons, sonar ping
+  - items_01/02.ogg - coin pickup, items
+  - stones, metal, wood, air, etc.
+
+BLIND-FRIENDLY VIBE DESIGN:
+---------------------------
+For blind players, real audio provides crucial spatial and atmospheric info:
+
+1. MUSIC VIBE (Noir Jazz):
+   - Each district has its own real track (Future Noir for main, Velvet Sax for Velvet Room, etc.)
+   - Crossfade between locations so blind player knows they entered new area
+   - Real saxophone and jazz = authentic detective feeling vs synthetic
+   - TTS announces track description for context
+
+2. FOOTSTEPS (Navigation):
+   - Real footstep sounds alternate left/right (stereo) - blind player feels walking
+   - Different surfaces: concrete (southside), wood (chapel/mansion), wet (harbor)
+   - Walking pace 450ms interval - natural rhythm
+   - Stops when riding Bonnie
+
+3. DOORS & LOCKS (Spatial Cues):
+   - Real door open/close when entering POI - tells blind player they arrived
+   - Lock open sound for puzzles (jingle lock, safe)
+   - Glass break for action scenes
+
+4. FIGHT SFX (Combat Feel):
+   - Real meaty punch sounds from DavidW pack - 5 variations random
+   - Stereo pan random for realism (punch from left/right)
+   - Heavy punch louder, different file
+   - Grunt layered for exertion
+
+5. AMBIENT LOOPS (City Life):
+   - Highway loop for Midtown traffic - blind player hears city alive
+   - Construction for Industrial Row
+   - Water for Harbor
+   - City ambient for Southside
+   - Plays subtly under music
+
+6. BEACONS (Navigation Aid):
+   - Switch sound panned left/right to indicate direction to landmark
+   - Volume decreases with distance
+   - Sonar ping in 3D space
+
+All real audio can be toggled in Settings -> Blind-Friendly Real Audio
+Falls back to generative synthesis if disabled or files missing.
+
+CREDITS IN GAME:
+----------------
+Settings panel shows: "Blind-Friendly Real Audio — OpenGameArt.org"
+Credits panel should list OGA authors.
+
+License compliance:
+- CC0: No attribution required but credited anyway
+- CC-BY 3.0/4.0: Attribution required - listed here and in game credits
+- OGA-BY: Same as CC-BY, attribution required
+
+For full game, include this file in distribution.
