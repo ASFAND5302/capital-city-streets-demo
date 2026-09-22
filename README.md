@@ -80,7 +80,7 @@ Plus free-roam Capitol City.
 
 ## Development
 
-I'm Asfand Ali, solo dev from Islamabad. I built this over a few months because I wanted to make something that actually works well for blind players, not just checks a box.
+I'm Asfand Ali, solo dev from Pakistan, Punjab, Mianwali. I built this over a few months because I wanted to make something that actually works well for blind players, not just checks a box.
 
 If you want to see how it's put together, the code is all here. `data/chapters.json` has the entire story. `src/` has the engine. It's not perfect, but it works.
 
