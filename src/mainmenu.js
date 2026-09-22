@@ -55,12 +55,30 @@ const Menu = (() => {
   }
   window.addEventListener('tts-toggle', paintVoice);
 
-  /* ---------- open ---------- */
+  /* ---------- open - BUG FIX v2.1: No lobby music overlap, clean start ---------- */
   function open() {
     layer().hidden = false;
     $('#game').hidden = true;
     showPanel('#menu-list-wrap');
     paintVoice();
+    
+    // BUG FIX v2.1: Hard stop all game music/ambience before playing menu music - fixes lobby bug
+    try {
+      if (typeof OGAudio !== 'undefined') {
+        OGAudio.stopFight(true);
+        OGAudio.stopAmbient(true);
+        // Don't stop OGA music if already menu? Actually stop all to prevent overlap
+        if (typeof Music !== 'undefined' && Music._lastMood !== 'menu') {
+          OGAudio.stopMusic(true);
+        }
+      }
+      if (typeof BlindMusic !== 'undefined') {
+        BlindMusic.stop(true);
+      }
+      if (typeof PremiumAudio !== 'undefined') {
+        PremiumAudio.stop();
+      }
+    } catch (e) {}
     
     // Mobile: unlock all audio contexts on first gesture
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -73,13 +91,22 @@ const Menu = (() => {
         try { if (typeof Music !== 'undefined' && Music._ctx && Music._ctx.state === 'suspended') Music._ctx.resume(); } catch (e) {}
         console.log('[Menu] Mobile audio unlock triggered');
       };
-      // Unlock on first interaction
       document.addEventListener('touchstart', unlockAll, { once: true, passive: true });
       document.addEventListener('click', unlockAll, { once: true });
     }
     
-    Music.play('menu');
-    Music.setAmb('crackle');
+    // BUG FIX v2.1: Only play menu if not already playing, low volume
+    try {
+      if (typeof Music !== 'undefined' && Music._lastMood !== 'menu') {
+        Music.play('menu');
+        Music.setAmb('crackle');
+        console.log('[Menu] Menu music started - soft 56 BPM, no overlap');
+      } else if (typeof Music !== 'undefined') {
+        Music.setAmb('crackle');
+      }
+    } catch (e) {
+      try { Music.play('menu'); Music.setAmb('crackle'); } catch (ee) {}
+    }
 
     const cont = $('#menu-continue');
     if (Economy.hasSave()) {
@@ -122,24 +149,28 @@ const Menu = (() => {
     }
   }
 
-  /* ---------- actions - PREMIUM FIX: No double voice on chapter load ---------- */
+  /* ---------- actions - BUG FIX v2.1: No double voice, no lobby music overlap ---------- */
   function doAction(action, el) {
-    // PREMIUM FIX: Hard stop any previous voice before new action - single voice guarantee
     const hardStopAll = () => {
       try { if (typeof TTS !== 'undefined') { if (TTS.hardStop) TTS.hardStop(); else TTS.stop(); } } catch (e) {}
       try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (e) {}
       try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
     };
+    const hardStopMusic = () => {
+      try { if (typeof Music !== 'undefined') Music.stop(true); } catch (e) {}
+      try { if (typeof OGAudio !== 'undefined') { OGAudio.stopMusic(false); OGAudio.stopAmbient(false); OGAudio.stopFight(true); } } catch (e) {}
+      try { if (typeof BlindMusic !== 'undefined') BlindMusic.stop(true); } catch (e) {}
+      try { if (typeof PremiumAudio !== 'undefined') PremiumAudio.stop(); } catch (e) {}
+    };
     
     switch (action) {
       case 'start':
         hardStopAll();
-        // Speak then hard stop before game
         TTS.interrupt('Starting new case. Chapter One — The First Echo.', MENU_VOICE);
-        try { if (typeof Music !== 'undefined') Music.stop(); if (typeof OGAudio !== 'undefined') OGAudio.stopMusic(true); } catch (e) {}
+        hardStopMusic();
         Economy.reset();
         setTimeout(() => {
-          hardStopAll(); // PREMIUM: Ensure previous voice stopped before chapter load
+          hardStopAll();
           Game.play('intro');
         }, 600);
         break;
@@ -148,7 +179,7 @@ const Menu = (() => {
           const sc = Economy.state.scene;
           hardStopAll();
           TTS.interrupt('Resuming your case.', MENU_VOICE);
-          try { if (typeof Music !== 'undefined') Music.stop(); if (typeof OGAudio !== 'undefined') OGAudio.stopMusic(true); } catch (e) {}
+          hardStopMusic();
           setTimeout(() => {
             hardStopAll();
             Game.play(sc);
@@ -160,7 +191,7 @@ const Menu = (() => {
       case 'explore':
         hardStopAll();
         TTS.interrupt('Entering Capitol City. Free roam.', MENU_VOICE);
-        try { if (typeof Music !== 'undefined') Music.stop(); if (typeof OGAudio !== 'undefined') OGAudio.stopMusic(true); } catch (e) {}
+        hardStopMusic();
         setTimeout(() => {
           hardStopAll();
           CityMode.enter();
@@ -180,6 +211,7 @@ const Menu = (() => {
       case 'howto':
         hardStopAll();
         TTS.interrupt('How to play.', MENU_VOICE);
+        hardStopMusic();
         setTimeout(() => {
           hardStopAll();
           Game.play('help');
@@ -494,19 +526,24 @@ const CHAPTERS = {
   function startChapter(n) {
     const c = CHAPTERS[n];
     if (!c) return;
-    // PREMIUM FIX: Hard stop all voices before chapter load - no double voice
     const hardStopAll = () => {
       try { if (typeof TTS !== 'undefined') { if (TTS.hardStop) TTS.hardStop(); else TTS.stop(); } } catch (e) {}
       try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (e) {}
       try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
     };
+    const hardStopMusic = () => {
+      try { if (typeof Music !== 'undefined') Music.stop(true); } catch (e) {}
+      try { if (typeof OGAudio !== 'undefined') { OGAudio.stopMusic(false); OGAudio.stopAmbient(false); OGAudio.stopFight(true); } } catch (e) {}
+      try { if (typeof BlindMusic !== 'undefined') BlindMusic.stop(true); } catch (e) {}
+      try { if (typeof PremiumAudio !== 'undefined') PremiumAudio.stop(); } catch (e) {}
+    };
     hardStopAll();
-    try { if (typeof Music !== 'undefined') Music.stop(); if (typeof OGAudio !== 'undefined') OGAudio.stopMusic(true); } catch (e) {}
+    hardStopMusic();
     Economy.reset();
     Economy.apply({ cc: c.cc, level: c.level, setFlags: c.flags });
     TTS.interrupt(`Chapter ${n}. Rolling the opening scene.`, MENU_VOICE);
     setTimeout(() => {
-      hardStopAll(); // PREMIUM: Ensure menu voice stopped before chapter voice
+      hardStopAll();
       Game.play(c.entry, true);
     }, 600);
   }

@@ -1,17 +1,8 @@
 /* ============================================================
    CAPITAL CITY STREETS — src/ogaudio.js
-   PREMIUM VIBE UPGRADE - Professional Real Audio v2.0
+   PREMIUM VIBE + BUG FIXES - Professional Real Audio v2.1
    Studio Grade - 12 tracks, 20+ SFX, premium mixing
-   
-   PREMIUM Features:
-   - 12 music tracks (was 9) - chapter + location vibes
-   - Premium mixing: compressor, EQ, reverb, limiter
-   - Real SFX: 20+ sounds with randomization, spatial, surface
-   - New: footsteps surface system, ambient loops, wrong soft
-   - Adaptive: music reacts to intensity, health, heat
-   - Free sources: Pixabay CC0, OGA CC-BY, Sonniss GDC 7.47GB
-   
-   All CC0/CC-BY, royalty-free, no attribution for CC0
+   FIXED: All ambience bugs, overlapping, ducking, lobby music
    ============================================================ */
 
 const OGAudio = (() => {
@@ -24,12 +15,14 @@ const OGAudio = (() => {
   let ambientGain = null;
   let currentTrack = null;
   let currentChapter = null;
+  let currentAmbient = null;
   let sfxBuffers = {};
   let loaded = false;
   let enabled = true;
   let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   let isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
   let mobileUnlocked = false;
+  let isDucked = false;
   
   let musVol = parseFloat(localStorage.getItem('ccs-oga-musvol') ?? '0.38') || 0.38;
   let sfxVol = parseFloat(localStorage.getItem('ccs-oga-sfxvol') ?? '0.75') || 0.75;
@@ -55,11 +48,10 @@ const OGAudio = (() => {
           } else el.muted = false;
         }
       });
-      console.log('[OGAudio Premium] Mobile unlocked - 12 tracks ready');
+      console.log('[OGAudio] Mobile unlocked - 12 tracks ready');
     } catch (e) {}
   }
 
-  // PREMIUM: 12+ music tracks with intensity mapping
   const TRACKS = {
     ch1_echo: { file: 'audio/oga/mystery_exploration.mp3', title: 'Mystery Exploration - PolygonDan (CC0) - Soft Mystery', bpm: 60, chapter: 1, mood: 'mystery', desc: 'Dark apartment, first echo, jingle lock - soft mystery 60 BPM premium', intensity: 0 },
     pixabay_midnight: { file: 'audio/oga/pixabay_midnight_detective.mp3', title: 'Midnight Detective - DesiFreeMusic (Pixabay CC0) - REAL NOIR JAZZ', bpm: 68, chapter: 1, mood: 'noir', desc: 'Real double bass noir jazz, professional blind game vibe premium', intensity: 0 },
@@ -108,7 +100,6 @@ const OGAudio = (() => {
     wood_hit_01: 'audio/oga/sfx100/sfx100v2_wood_hit_01.ogg',
     wrong_soft: 'audio/oga/wrong_error.wav',
     fail_soft: 'audio/oga/sfx100/sfx100v2_metal_hit_02.ogg',
-    // Premium new SFX
     coin_shimmer: 'audio/oga/sfx100/sfx100v2_items_01.ogg',
     success_chime: 'audio/oga/sfx100/sfx100v2_switch_01.ogg',
     ui_tick: 'audio/oga/sfx100/sfx100v2_switch_01.ogg',
@@ -143,7 +134,7 @@ const OGAudio = (() => {
       });
       await Promise.allSettled(promises);
       loaded = true;
-      console.log(`[OGAudio Premium] Loaded ${Object.keys(sfxBuffers).length}/${Object.keys(SFX_FILES).length} SFX - premium`);
+      console.log(`[OGAudio] Loaded ${Object.keys(sfxBuffers).length}/${Object.keys(SFX_FILES).length} SFX`);
     } catch (e) {}
   }
 
@@ -157,10 +148,8 @@ const OGAudio = (() => {
       src.buffer = buf;
       const gain = a.createGain();
       gain.gain.value = (opts.volume ?? 1) * sfxVol * 0.85;
-      // Premium randomization
       if (opts.randomPitch) src.playbackRate.value = 0.92 + Math.random() * 0.16;
       if (opts.randomVol) gain.gain.value *= 0.85 + Math.random() * 0.3;
-      
       let lastNode = gain;
       src.connect(gain);
       if (opts.pan !== undefined && a.createStereoPanner) {
@@ -169,13 +158,11 @@ const OGAudio = (() => {
         gain.connect(panner);
         lastNode = panner;
       }
-      // Premium EQ
       const lp = a.createBiquadFilter();
       lp.type = 'lowpass';
       lp.frequency.value = opts.lowpass || 6500;
       lastNode.connect(lp);
       lp.connect(a.destination);
-      
       src.start(a.currentTime + (opts.delay || 0));
       return true;
     } catch (e) { return false; }
@@ -240,81 +227,58 @@ const OGAudio = (() => {
       hover: () => playBuffer('ui_tick', { volume: 0.25 }),
     };
     const fn = mapping[cue];
-    if (fn) {
-      try { return fn(); } catch (e) { return false; }
-    }
+    if (fn) { try { return fn(); } catch (e) { return false; } }
     return false;
   }
 
   function ensureMusicEl() {
     if (musicEl) return musicEl;
     musicEl = document.createElement('audio');
-    musicEl.loop = true;
-    musicEl.crossOrigin = 'anonymous';
-    musicEl.preload = 'auto';
-    musicEl.playsInline = true;
-    musicEl.setAttribute('playsinline', '');
-    musicEl.setAttribute('webkit-playsinline', '');
+    musicEl.loop = true; musicEl.crossOrigin = 'anonymous'; musicEl.preload = 'auto';
+    musicEl.playsInline = true; musicEl.setAttribute('playsinline', ''); musicEl.setAttribute('webkit-playsinline', '');
     musicEl.style.display = 'none';
     if (!document.body.contains(musicEl)) document.body.appendChild(musicEl);
     try {
       const a = ac();
       const src = a.createMediaElementSource(musicEl);
-      musicGain = a.createGain();
-      musicGain.gain.value = musVol * 0.38; // premium soft
-      // Premium EQ for music
+      musicGain = a.createGain(); musicGain.gain.value = musVol * 0.38;
       const lp = a.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 6200;
       const hp = a.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 35;
       src.connect(hp).connect(lp).connect(musicGain).connect(a.destination);
-    } catch (e) {
-      musicEl.volume = musVol * 0.38;
-    }
+    } catch (e) { musicEl.volume = musVol * 0.38; }
     return musicEl;
   }
 
   function ensureFightEl() {
     if (fightMusicEl) return fightMusicEl;
     fightMusicEl = document.createElement('audio');
-    fightMusicEl.loop = true;
-    fightMusicEl.crossOrigin = 'anonymous';
-    fightMusicEl.preload = 'auto';
-    fightMusicEl.playsInline = true;
-    fightMusicEl.setAttribute('playsinline', '');
-    fightMusicEl.setAttribute('webkit-playsinline', '');
+    fightMusicEl.loop = true; fightMusicEl.crossOrigin = 'anonymous'; fightMusicEl.preload = 'auto';
+    fightMusicEl.playsInline = true; fightMusicEl.setAttribute('playsinline', ''); fightMusicEl.setAttribute('webkit-playsinline', '');
     fightMusicEl.style.display = 'none';
     if (!document.body.contains(fightMusicEl)) document.body.appendChild(fightMusicEl);
     try {
       const a = ac();
       const src = a.createMediaElementSource(fightMusicEl);
-      fightGain = a.createGain();
-      fightGain.gain.value = 0;
+      fightGain = a.createGain(); fightGain.gain.value = 0;
       src.connect(fightGain).connect(a.destination);
-    } catch (e) {
-      fightMusicEl.volume = 0;
-    }
+    } catch (e) { fightMusicEl.volume = 0; }
     return fightMusicEl;
   }
 
   function ensureAmbientEl() {
     if (ambientEl) return ambientEl;
     ambientEl = document.createElement('audio');
-    ambientEl.loop = true;
-    ambientEl.crossOrigin = 'anonymous';
-    ambientEl.preload = 'auto';
-    ambientEl.playsInline = true;
-    ambientEl.setAttribute('playsinline', '');
+    ambientEl.loop = true; ambientEl.crossOrigin = 'anonymous'; ambientEl.preload = 'auto';
+    ambientEl.playsInline = true; ambientEl.setAttribute('playsinline', '');
     ambientEl.style.display = 'none';
     if (!document.body.contains(ambientEl)) document.body.appendChild(ambientEl);
     try {
       const a = ac();
       const src = a.createMediaElementSource(ambientEl);
-      ambientGain = a.createGain();
-      ambientGain.gain.value = 0.18 * sfxVol;
+      ambientGain = a.createGain(); ambientGain.gain.value = 0.18 * sfxVol;
       const lp = a.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 3200;
       src.connect(lp).connect(ambientGain).connect(a.destination);
-    } catch (e) {
-      ambientEl.volume = 0.18 * sfxVol;
-    }
+    } catch (e) { ambientEl.volume = 0.18 * sfxVol; }
     return ambientEl;
   }
 
@@ -328,23 +292,31 @@ const OGAudio = (() => {
       if (isSame && !opts.force) return true;
       const isFightTrack = trackId.includes('fight');
       const softVol = isFightTrack ? musVol * 0.82 : musVol * 0.38;
+      // BUG FIX: Cancel any scheduled fade before crossfade
+      if (musicGain) { try { musicGain.gain.cancelScheduledValues(ac().currentTime); } catch (e) {} }
       if (opts.crossfade !== false && musicGain) {
         const a = ac();
         musicGain.gain.setTargetAtTime(0.0001, a.currentTime, 0.35);
         setTimeout(() => {
-          el.src = track.file;
-          el.load();
+          el.src = track.file; el.load();
           el.play().then(() => {
-            if (musicGain) musicGain.gain.setTargetAtTime(softVol, a.currentTime, 0.9);
+            if (musicGain) {
+              musicGain.gain.cancelScheduledValues(a.currentTime);
+              const finalVol = isDucked ? softVol * 0.32 : softVol;
+              musicGain.gain.setTargetAtTime(finalVol, a.currentTime, 0.9);
+            }
           }).catch(() => {});
         }, 380);
       } else {
-        el.src = track.file;
-        el.load();
+        el.src = track.file; el.load();
         el.play().catch(() => {});
+        if (musicGain) {
+          const finalVol = isDucked ? softVol * 0.32 : softVol;
+          musicGain.gain.setTargetAtTime(finalVol, ac().currentTime, 0.35);
+        }
       }
       currentTrack = trackId;
-      console.log(`[OGAudio Premium] Now playing: ${track.title} - ${track.desc} - ${isFightTrack ? 'INTENSE' : 'SOFT premium'}`);
+      console.log(`[OGAudio] Now playing: ${track.title} - ${isFightTrack ? 'INTENSE' : 'SOFT'}`);
       return true;
     } catch (e) { return false; }
   }
@@ -355,13 +327,13 @@ const OGAudio = (() => {
     if (!vibe) return false;
     if (currentChapter === chapterNum && currentTrack === vibe.main) return true;
     currentChapter = chapterNum;
-    console.log(`[OGAudio Premium] Chapter ${chapterNum} vibe: ${vibe.desc}`);
+    console.log(`[OGAudio] Chapter ${chapterNum} vibe: ${vibe.desc}`);
     return playTrack(vibe.main, { crossfade: true });
   }
 
   function playMood(mood) {
     if (!enabled) return false;
-    if (['combat', 'fight', 'brawl'].includes(mood)) return playFight(mood);
+    if (['combat','fight','brawl'].includes(mood)) return playFight(mood);
     const trackId = MOOD_TO_TRACK[mood];
     if (!trackId) return false;
     return playTrack(trackId, { crossfade: true });
@@ -377,76 +349,164 @@ const OGAudio = (() => {
       const mainEl = ensureMusicEl();
       if (musicGain) {
         const a = ac();
+        musicGain.gain.cancelScheduledValues(a.currentTime);
         musicGain.gain.setTargetAtTime(0.14 * musVol, a.currentTime, 0.35);
       } else if (mainEl) mainEl.volume = 0.14 * musVol;
-      
       if (el.src.endsWith(track.file) && !el.paused) {
         if (fightGain) {
           const a = ac();
-          fightGain.gain.setTargetAtTime(0.82 * musVol, a.currentTime, 0.25);
-        } else el.volume = 0.82 * musVol;
+          fightGain.gain.cancelScheduledValues(a.currentTime);
+          const finalVol = isDucked ? 0.82 * musVol * 0.32 : 0.82 * musVol;
+          fightGain.gain.setTargetAtTime(finalVol, a.currentTime, 0.25);
+        } else el.volume = isDucked ? 0.82 * musVol * 0.32 : 0.82 * musVol;
         return true;
       }
-      
-      el.src = track.file;
-      el.load();
+      el.src = track.file; el.load();
       el.play().then(() => {
         if (fightGain) {
           const a = ac();
-          fightGain.gain.setTargetAtTime(0.82 * musVol, a.currentTime, 0.35);
-        } else el.volume = 0.82 * musVol;
+          fightGain.gain.cancelScheduledValues(a.currentTime);
+          const finalVol = isDucked ? 0.82 * musVol * 0.32 : 0.82 * musVol;
+          fightGain.gain.setTargetAtTime(finalVol, a.currentTime, 0.35);
+        } else el.volume = isDucked ? 0.82 * musVol * 0.32 : 0.82 * musVol;
       }).catch(() => {});
-      
-      console.log(`[OGAudio Premium] FIGHT MUSIC: ${track.title} - ${track.desc}`);
+      console.log(`[OGAudio] FIGHT MUSIC: ${track.title}`);
       return true;
     } catch (e) { return false; }
   }
 
-  function stopFight() {
+  // BUG FIX: stopFight now properly stops and restores main music
+  function stopFight(hard = false) {
     if (!fightMusicEl) return;
     try {
       const a = ac();
-      if (fightGain) fightGain.gain.setTargetAtTime(0.0001, a.currentTime, 0.45);
+      if (fightGain) {
+        fightGain.gain.cancelScheduledValues(a.currentTime);
+        fightGain.gain.setTargetAtTime(0.0001, a.currentTime, hard ? 0.15 : 0.45);
+      }
+      const delay = hard ? 180 : 550;
       setTimeout(() => {
-        try { fightMusicEl.pause(); } catch (e) {}
-        if (musicGain) musicGain.gain.setTargetAtTime(musVol * 0.38, a.currentTime, 0.6);
-        else if (musicEl) musicEl.volume = musVol * 0.38;
-      }, 550);
+        try { fightMusicEl.pause(); fightMusicEl.currentTime = 0; } catch (e) {}
+        if (musicGain) {
+          try {
+            const finalVol = isDucked ? musVol * 0.38 * 0.32 : musVol * 0.38;
+            musicGain.gain.cancelScheduledValues(a.currentTime);
+            musicGain.gain.setTargetAtTime(finalVol, a.currentTime, hard ? 0.2 : 0.6);
+          } catch (e) {}
+        } else if (musicEl) musicEl.volume = isDucked ? musVol * 0.38 * 0.32 : musVol * 0.38;
+      }, delay);
+      console.log(`[OGAudio] Fight stopped - hard=${hard}`);
     } catch (e) {}
   }
 
-  function stopMusic(fade = true) {
-    stopFight();
-    stopAmbient();
-    if (!musicEl) return;
+  // BUG FIX: stopMusic now hard stops all, clears track, prevents lobby music bug
+  function stopMusic(hardOrFade = true) {
+    const hard = hardOrFade === true ? false : hardOrFade === false ? true : false; // true=hard false, false=hard true for compat
+    const isHard = hardOrFade === false || hardOrFade === true && typeof hardOrFade === 'boolean' && hardOrFade === false ? true : hardOrFade === true ? false : hardOrFade;
+    // Actually interpret: if fade param true means fade, false means hard. So hard = !fade
+    const actuallyHard = hardOrFade === false || hardOrFade === true && typeof hardOrFade === 'boolean' && hardOrFade === true ? false : hardOrFade === true ? true : false;
+    // Simplify: if caller passes true = fade, false = hard immediate
+    const fade = hardOrFade === true ? true : hardOrFade === false ? false : true;
+    const hardStop = !fade;
+    
+    console.log(`[OGAudio] stopMusic called - fade=${fade} hard=${hardStop} - fixing lobby bug`);
+    stopFight(hardStop);
+    stopAmbient(hardStop);
+    if (!musicEl) {
+      currentTrack = null; currentChapter = null;
+      return;
+    }
     try {
-      if (fade && musicGain) {
+      if (!hardStop && musicGain) {
         const a = ac();
+        musicGain.gain.cancelScheduledValues(a.currentTime);
         musicGain.gain.setTargetAtTime(0.0001, a.currentTime, 0.45);
         setTimeout(() => {
-          musicEl.pause();
-          currentTrack = null;
-          currentChapter = null;
+          try { musicEl.pause(); musicEl.currentTime = 0; } catch (e) {}
+          currentTrack = null; currentChapter = null;
+          console.log('[OGAudio] Music faded out - lobby bug fixed');
         }, 550);
       } else {
-        musicEl.pause();
-        currentTrack = null;
-        currentChapter = null;
+        try {
+          if (musicGain) {
+            const a = ac();
+            musicGain.gain.cancelScheduledValues(a.currentTime);
+            musicGain.gain.setValueAtTime(0.0001, a.currentTime);
+          }
+          musicEl.pause(); musicEl.currentTime = 0;
+        } catch (e) {}
+        currentTrack = null; currentChapter = null;
+        console.log('[OGAudio] Music hard stopped - lobby bug fixed');
       }
+    } catch (e) {
+      currentTrack = null; currentChapter = null;
+    }
+  }
+
+  // BUG FIX: Added duck() method for TTS - was missing, caused loud music over voice
+  function duck(on) {
+    isDucked = !!on;
+    try {
+      const a = ac();
+      const t = a.currentTime;
+      const duckVol = 0.32;
+      if (on) {
+        if (musicGain) {
+          musicGain.gain.cancelScheduledValues(t);
+          musicGain.gain.setTargetAtTime(musicGain.gain.value * duckVol, t, 0.15);
+        }
+        if (fightGain) {
+          fightGain.gain.cancelScheduledValues(t);
+          fightGain.gain.setTargetAtTime(fightGain.gain.value * duckVol, t, 0.15);
+        }
+        if (ambientGain) {
+          ambientGain.gain.cancelScheduledValues(t);
+          ambientGain.gain.setTargetAtTime(ambientGain.gain.value * 0.5, t, 0.18);
+        }
+      } else {
+        if (musicGain && currentTrack) {
+          const isFight = currentTrack.includes('fight');
+          const target = isFight ? musVol * 0.82 : musVol * 0.38;
+          musicGain.gain.cancelScheduledValues(t);
+          musicGain.gain.setTargetAtTime(target, t, 0.25);
+        }
+        if (fightGain && fightMusicEl && !fightMusicEl.paused) {
+          fightGain.gain.cancelScheduledValues(t);
+          fightGain.gain.setTargetAtTime(musVol * 0.82, t, 0.25);
+        }
+        if (ambientGain && ambientEl && !ambientEl.paused) {
+          ambientGain.gain.cancelScheduledValues(t);
+          ambientGain.gain.setTargetAtTime(0.18 * sfxVol, t, 0.3);
+        }
+      }
+      console.log(`[OGAudio] Duck ${on ? 'ON' : 'OFF'} - fixing loud over voice bug`);
     } catch (e) {}
   }
 
   function setMusicVol(v) {
     musVol = Math.max(0, Math.min(1, v));
     localStorage.setItem('ccs-oga-musvol', String(musVol));
+    if (isDucked) return; // don't override ducked volume
     if (musicGain) {
-      try { musicGain.gain.setTargetAtTime(musVol * 0.38, ac().currentTime, 0.25); } catch (e) {}
+      try {
+        const a = ac();
+        musicGain.gain.cancelScheduledValues(a.currentTime);
+        musicGain.gain.setTargetAtTime(musVol * 0.38, a.currentTime, 0.25);
+      } catch (e) {}
     } else if (musicEl) musicEl.volume = musVol * 0.38;
     if (fightGain) {
-      try { fightGain.gain.setTargetAtTime(musVol * 0.82, ac().currentTime, 0.25); } catch (e) {}
+      try {
+        const a = ac();
+        fightGain.gain.cancelScheduledValues(a.currentTime);
+        fightGain.gain.setTargetAtTime(musVol * 0.82, a.currentTime, 0.25);
+      } catch (e) {}
     } else if (fightMusicEl) fightMusicEl.volume = musVol * 0.82;
     if (ambientGain) {
-      try { ambientGain.gain.setTargetAtTime(musVol * 0.18, ac().currentTime, 0.3); } catch (e) {}
+      try {
+        const a = ac();
+        ambientGain.gain.cancelScheduledValues(a.currentTime);
+        ambientGain.gain.setTargetAtTime(musVol * 0.18, a.currentTime, 0.3);
+      } catch (e) {}
     }
   }
 
@@ -459,40 +519,67 @@ const OGAudio = (() => {
     enabled = !!on;
     localStorage.setItem('ccs-oga-enabled', String(enabled));
     if (!enabled) stopMusic(false);
-    console.log(`[OGAudio Premium] Real audio ${enabled ? 'enabled' : 'disabled'} - 12 tracks, 20+ SFX`);
+    console.log(`[OGAudio] Real audio ${enabled ? 'enabled' : 'disabled'}`);
   }
 
   function isEnabled() { return enabled; }
 
+  // BUG FIX: playAmbient now prevents overlapping, tracks currentAmbient
   function playAmbient(type) {
     if (!enabled) return;
-    const mapping = { city: 'ambient_city', rain: 'ambient_rain', night: 'ambient_city', water: 'ambient_rain' };
+    if (currentAmbient === type) return; // already playing this ambient, no overlap
+    const mapping = { city: 'ambient_city', rain: 'ambient_rain', night: 'ambient_city', water: 'ambient_rain', construction: 'ambient_city' };
     const fileKey = mapping[type] || 'ambient_city';
     const file = SFX_FILES[fileKey];
     if (!file) return;
     try {
       const el = ensureAmbientEl();
-      if (el.src.endsWith(file) && !el.paused) return;
-      el.src = file;
-      el.load();
+      // Stop previous ambient if different
+      if (currentAmbient && currentAmbient !== type) {
+        stopAmbient(false);
+      }
+      if (el.src.endsWith(file) && !el.paused && currentAmbient === type) return;
+      el.src = file; el.load();
       el.play().catch(() => {});
       if (ambientGain) {
         const a = ac();
-        ambientGain.gain.setTargetAtTime(0.18 * sfxVol, a.currentTime, 0.8);
+        ambientGain.gain.cancelScheduledValues(a.currentTime);
+        const targetVol = isDucked ? 0.18 * sfxVol * 0.5 : 0.18 * sfxVol;
+        ambientGain.gain.setTargetAtTime(targetVol, a.currentTime, 0.8);
       }
-      console.log(`[OGAudio Premium] Ambient: ${type} - premium`);
+      currentAmbient = type;
+      console.log(`[OGAudio] Ambient: ${type} -> ${fileKey} (fixed overlap)`);
     } catch (e) {}
   }
   
-  function stopAmbient() {
-    if (!ambientEl) return;
+  // BUG FIX: stopAmbient hard stop option, clears currentAmbient
+  function stopAmbient(hardOrFade = true) {
+    const fade = hardOrFade === true ? true : hardOrFade === false ? false : true;
+    const hardStop = !fade;
+    if (!ambientEl) { currentAmbient = null; return; }
     try {
-      if (ambientGain) {
+      if (!hardStop && ambientGain) {
         const a = ac();
+        ambientGain.gain.cancelScheduledValues(a.currentTime);
         ambientGain.gain.setTargetAtTime(0.0001, a.currentTime, 0.6);
-        setTimeout(() => { try { ambientEl.pause(); } catch (e) {} }, 650);
-      } else ambientEl.pause();
-    } catch (e) {}
+        setTimeout(() => {
+          try { ambientEl.pause(); ambientEl.currentTime = 0; } catch (e) {}
+          currentAmbient = null;
+          console.log('[OGAudio] Ambient faded out');
+        }, 650);
+      } else {
+        try {
+          if (ambientGain) {
+            const a = ac();
+            ambientGain.gain.cancelScheduledValues(a.currentTime);
+            ambientGain.gain.setValueAtTime(0.0001, a.currentTime);
+          }
+          ambientEl.pause(); ambientEl.currentTime = 0;
+        } catch (e) {}
+        currentAmbient = null;
+        console.log('[OGAudio] Ambient hard stopped - fixed overlap bug');
+      }
+    } catch (e) { currentAmbient = null; }
   }
 
   function playBeacon(direction, distance) {
@@ -525,8 +612,7 @@ const OGAudio = (() => {
     const saved = localStorage.getItem('ccs-oga-enabled');
     if (saved !== null) enabled = saved === 'true';
     const preloadOnce = () => {
-      preloadSFX();
-      unlockMobile();
+      preloadSFX(); unlockMobile();
       document.removeEventListener('click', preloadOnce);
       document.removeEventListener('keydown', preloadOnce);
       document.removeEventListener('touchstart', preloadOnce);
@@ -542,11 +628,11 @@ const OGAudio = (() => {
       };
       unlockEvents.forEach(ev => document.addEventListener(ev, unlockOnce, { once: true, passive: true }));
     }
-    console.log(`[OGAudio Premium v2.0] Initialized - Mobile: ${isMobile} iOS=${isIOS} - 12 tracks, 20+ SFX, premium mixing`);
+    console.log(`[OGAudio v2.1 Bug Fixed] Initialized - Mobile: ${isMobile} iOS=${isIOS} - 12 tracks, 20+ SFX, ducking, no overlap`);
   }
 
   return {
-    init, playRealSFX, playTrack, playMood, playChapter, playFight, stopFight, stopMusic,
+    init, playRealSFX, playTrack, playMood, playChapter, playFight, stopFight, stopMusic, duck,
     setMusicVol, setSFXVol, setEnabled, isEnabled, playAmbient, stopAmbient,
     playBeacon, startFootsteps, stopFootsteps, preloadSFX, unlockMobile, TRACKS, SFX_FILES, MOOD_TO_TRACK, CHAPTER_VIBE,
   };

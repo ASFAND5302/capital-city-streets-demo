@@ -47,9 +47,11 @@ const Game = (() => {
     precinct: '#6a8ab0', boat: '#4a7a8a', court: '#8a6a4a', rain: '#4a6a9a',
   };
   // Location-specific music vibe - each story location has its own separate music
+  // BUG FIX v2.1: Cleaned duplicates, each location unique vibe, no overlap
   const LOCATION_MOOD = {
     'Capitol City': 'noir',
     'Your safehouse': 'safehouse',
+    'Safehouse': 'safehouse',
     'Old Chapel Ward': 'chapel',
     'Old Chapel Ward — the church': 'sacred',
     'Salena\'s apartment': 'apartment',
@@ -58,13 +60,11 @@ const Game = (() => {
     'Salena\'s apartment — bedroom door': 'mystery',
     'The jingle lock': 'warm',
     'Salena\'s apartment — bedroom': 'tense',
-    'Fight — round 1': 'combat',   // 128 BPM - real fight starts
-    'Fight — round 2': 'fight',    // 138 BPM - escalates
-    'Fight — round 3': 'brawl',    // 142 BPM - full brawl
+    'Fight — round 1': 'combat',
+    'Fight — round 2': 'fight',
+    'Fight — round 3': 'brawl',
     'Salena\'s apartment — the safe': 'mystery',
-    'Salena\'s apartment': 'warm',
     'Fire escape': 'tense',
-    'Safehouse': 'safehouse',
     'Bonnie — en route': 'garage',
     'Southside Blocks': 'southside',
     'Southside alley': 'southside',
@@ -87,7 +87,6 @@ const Game = (() => {
     'Casino Bar': 'sera',
     'Midtown Strip': 'midtown',
     'Precinct 9': 'mystery',
-    'Safehouse': 'safehouse',
     'Garden Parks': 'garden',
     'Upper Hills': 'mansion',
     'Mansion Gardens': 'mansion',
@@ -95,7 +94,6 @@ const Game = (() => {
     'The Gala — Ballroom': 'quartet',
     'The Gala — Service Halls': 'mansion',
     'Mansion Roof': 'pulse',
-
     'Blue Note Diner': 'diner',
     'The Study': 'hero',
   };
@@ -278,26 +276,51 @@ const Game = (() => {
     const isFightMood = ['combat','fight','brawl'].includes(chosenMood);
     Music.setHeartbeat(isLowHealth || isFightMood);
     Music.setMuffle(!!scene.muffle);
+    // BUG FIX v2.1: Ambience no overlap, single source, proper stop
     const effAmb = scene.amb || (scene.fx === 'rain' ? 'rain' : null);
+    const isFight = ['combat','fight','brawl'].includes(chosenMood);
     if (effAmb) {
-      Music.setAmb(effAmb);
-      if (effAmb !== lastAmb) Music.arrive(effAmb);   // the place announces itself
+      if (effAmb !== lastAmb) {
+        Music.setAmb(effAmb);
+        Music.arrive(effAmb);
+        console.log(`[Game] Ambience: ${lastAmb || 'none'} -> ${effAmb} (fixed overlap)`);
+      }
       lastAmb = effAmb;
     } else {
-      Music.setAmb(null);
+      if (lastAmb !== null) {
+        Music.setAmb(null);
+        console.log(`[Game] Ambience: ${lastAmb} -> none (stopped)`);
+      }
       lastAmb = null;
     }
     $('#grade').style.background = GRADE[effAmb] || (scene.music === 'sea' || scene.music === 'sera' ? '#4ab08a' : scene.music === 'conspiracy' ? '#5a6a8a' : '#101018');
     
-    // BLIND-FRIENDLY: Real ambient from OpenGameArt.org based on scene
+    // BUG FIX v2.1: OGAudio ambient - single source, no overlap with generative, stop properly
     try {
       if (typeof OGAudio !== 'undefined' && OGAudio.isEnabled()) {
-        // Map scene ambience to real ambient loops
-        if (effAmb === 'rain') OGAudio.playAmbient('water');
-        else if (scene.location && scene.location.toLowerCase().includes('industrial')) OGAudio.playAmbient('construction');
-        else if (scene.location && scene.location.toLowerCase().includes('southside')) OGAudio.playAmbient('city');
-        else if (scene.location && scene.location.toLowerCase().includes('harbor')) OGAudio.playAmbient('water');
-        else if (sceneId.includes('apartment') || sceneId.includes('safehouse')) OGAudio.stopAmbient();
+        if (isFight) {
+          // Fight - stop ambient to keep clarity
+          OGAudio.stopAmbient(true);
+        } else if (effAmb === 'rain') {
+          OGAudio.playAmbient('water');
+        } else if (effAmb === 'room' || sceneId.includes('apartment') || sceneId.includes('safehouse')) {
+          OGAudio.stopAmbient(true); // apartment/safehouse should be quiet, no city noise
+        } else if (scene.location && scene.location.toLowerCase().includes('industrial')) {
+          OGAudio.stopAmbient(true); // industrial - generative is enough
+        } else if (scene.location && scene.location.toLowerCase().includes('southside')) {
+          OGAudio.playAmbient('city');
+        } else if (scene.location && scene.location.toLowerCase().includes('harbor')) {
+          OGAudio.playAmbient('water');
+        } else if (!effAmb) {
+          OGAudio.stopAmbient(true); // no ambience defined -> stop OGA ambient too
+        }
+      }
+    } catch (e) {}
+    
+    // BUG FIX v2.1: Stop fight music when leaving fight scene
+    try {
+      if (!isFight && typeof OGAudio !== 'undefined' && OGAudio.isEnabled()) {
+        OGAudio.stopFight(false);
       }
     } catch (e) {}
     
@@ -766,10 +789,9 @@ const Game = (() => {
     if (menuBtn) menuBtn.addEventListener('click', () => toMenu());
   }
 
-  /** Enter the story from the main menu - PREMIUM FIX: No double voice ever */
+  /** BUG FIX v2.1: Enter story - hard stop ALL music/ambience, no lobby overlap, no double voice */
   function play(sceneId, fresh = false) {
     if (fresh) lastChapter = -1;
-    // PREMIUM FIX: Hard stop ALL voices before chapter load - single voice guarantee
     const hardStopAll = () => {
       try { if (typeof TTS !== 'undefined') { if (TTS.hardStop) TTS.hardStop(); else TTS.stop(); } } catch (e) {}
       try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (e) {}
@@ -778,22 +800,24 @@ const Game = (() => {
     hardStopAll();
     
     try {
-      console.log('[Game] Entering chapter/mission - PREMIUM hard stop all voices');
-      if (typeof Music !== 'undefined') {
-        if (Music._lastMood === 'menu' || typeof Music._lastMood === 'undefined') {
-          Music.stop();
-          setTimeout(() => { try { Music.stop(); } catch (e) {} }, 300);
-        }
-      }
+      console.log('[Game] Entering chapter/mission - BUG FIX v2.1 hard stop all music/ambience');
+      // Hard stop ALL music systems to fix lobby music bug
+      if (typeof Music !== 'undefined') Music.stop(true); // hard=true immediate
       if (typeof OGAudio !== 'undefined') {
-        OGAudio.stopMusic(true);
-        OGAudio.stopAmbient();
+        OGAudio.stopMusic(false); // false = hard stop immediate
+        OGAudio.stopAmbient(false);
+        OGAudio.stopFight(true);
       }
+      if (typeof BlindMusic !== 'undefined') BlindMusic.stop(true);
+      if (typeof PremiumAudio !== 'undefined') PremiumAudio.stop();
+      // Reset ambience tracking
+      lastAmb = null;
+      lastLocation = null;
     } catch (e) { console.warn('[Game] Failed to stop lobby music:', e); }
     
     document.getElementById('main-menu').hidden = true;
     $('#game').hidden = false;
-    hardStopAll(); // second hard stop to ensure menu voice killed
+    hardStopAll();
     showScene(sceneId);
     $('#stage').focus();
     const docEl = document.documentElement;

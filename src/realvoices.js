@@ -201,11 +201,14 @@ const RealVoices = (() => {
       
       if (typeof Music !== 'undefined') Music.duck(true);
       if (typeof BlindMusic !== 'undefined') BlindMusic.duck(true);
+      if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(true);
+      if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(true);
       
       // Check again after load
       if (myGen !== playGen) {
         if (typeof Music !== 'undefined') Music.duck(false);
         if (typeof BlindMusic !== 'undefined') BlindMusic.duck(false);
+        if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(false);
         return false;
       }
       
@@ -217,6 +220,7 @@ const RealVoices = (() => {
       } catch (playErr) {
         if (typeof Music !== 'undefined') Music.duck(false);
         if (typeof BlindMusic !== 'undefined') BlindMusic.duck(false);
+        if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(false);
         if (isMobile && playErr.name === 'NotAllowedError') {
           return false;
         }
@@ -227,6 +231,7 @@ const RealVoices = (() => {
         try { el.pause(); } catch (e) {}
         if (typeof Music !== 'undefined') Music.duck(false);
         if (typeof BlindMusic !== 'undefined') BlindMusic.duck(false);
+        if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(false);
         return false;
       }
       

@@ -269,6 +269,7 @@ const TTS = (() => {
         
         if (typeof Music !== 'undefined') Music.duck(true);
         if (typeof BlindMusic !== 'undefined') BlindMusic.duck(true);
+        if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(true);
         
         u.onend = () => {
           if (finalGen !== speakGen) {
@@ -402,8 +403,9 @@ const TTS = (() => {
       u.rate = Math.min(2, Math.max(0.5, rate * rateMul));
       u.volume = 1.0;
       
-      if (typeof Music !== 'undefined') Music.duck(true);
-      if (typeof BlindMusic !== 'undefined') BlindMusic.duck(true);
+        if (typeof Music !== 'undefined') Music.duck(true);
+        if (typeof BlindMusic !== 'undefined') BlindMusic.duck(true);
+        if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(true);
       
       u.onend = () => {
         if (finalGen !== speakGen) { unduckAll(); resolve(); return; }
