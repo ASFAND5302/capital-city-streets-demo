@@ -46,6 +46,39 @@
     </symbol>
   </svg>
 
+
+  <!-- ══ PROPER LOADING SCREEN — All files must load before lobby — Asfand Ali ══ -->
+  <div id="loading-screen" role="alert" aria-label="Loading Capital City Streets, please wait">
+    <svg class="loading-logo" aria-hidden="true"><use href="#ccs-logo"/></svg>
+    <div class="loading-studio">PASCHALL GAME HUB</div>
+    <div class="loading-title">CAPITAL CITY STREETS</div>
+    <div class="loading-sub">Loading all game files before lobby entry</div>
+    
+    <div class="loading-bar-wrap" aria-hidden="true">
+      <div class="loading-bar-bg">
+        <div id="loading-bar-fill" class="loading-bar-fill" style="width:0%"></div>
+        <div class="loading-bar-glow"></div>
+      </div>
+      <div class="loading-bar-info">
+        <span id="loading-percent">0%</span>
+        <span id="loading-status">Initializing...</span>
+      </div>
+    </div>
+
+    <div id="loading-detail" class="loading-detail">Starting file preload...</div>
+
+    <div id="loading-checklist" class="loading-checklist" aria-hidden="true">
+      <div id="chk-data" class="chk loading"><span class="chk-icon">📄</span> Game Data <span class="chk-pct">0%</span></div>
+      <div id="chk-images" class="chk"><span class="chk-icon">🖼️</span> City Images <span class="chk-pct">0%</span></div>
+      <div id="chk-audio" class="chk"><span class="chk-icon">🔊</span> Audio Files <span class="chk-pct">—</span></div>
+      <div id="chk-voices" class="chk"><span class="chk-icon">🎙️</span> TTS Voices <span class="chk-pct">—</span></div>
+      <div id="chk-engine" class="chk"><span class="chk-icon">⚙️</span> Game Engine <span class="chk-pct">—</span></div>
+    </div>
+
+    <div id="loading-hint" class="loading-hint">Loading... please wait, lobby blocked until 100%</div>
+    <div class="loading-block-msg">🛡️ Lobby entry blocked until all files properly loaded</div>
+  </div>
+
   <!-- ══ Paschall Game Hub — studio splash ══ -->
   <div id="splash" role="alert" aria-label="Paschall Game Hub presents Capital City Streets. Press any key to continue.">
     <svg class="splash-logo" aria-hidden="true"><use href="#ccs-logo"/></svg>
@@ -413,6 +446,7 @@
   </div>
 
 
+  <script src="src/loader.js"></script>
   <script src="src/tts.js"></script>
   <script src="src/realvoices.js"></script>
   <script src="src/ogaudio.js"></script>

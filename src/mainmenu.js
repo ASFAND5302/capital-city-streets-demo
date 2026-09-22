@@ -550,6 +550,38 @@ const CHAPTERS = {
 
   return {
     async start() {
+      // PROPER LOADING SCREEN: Wait for GameLoader if present — Asfand Ali
+      // Lobby blocked until all files loaded
+      if (typeof GameLoader !== 'undefined' && !GameLoader.isLoaded()) {
+        console.log('[Menu] Waiting for proper loading screen - lobby blocked until 100%');
+        // Wait for loader event
+        await new Promise(resolve => {
+          const onLoaded = () => {
+            document.removeEventListener('gamefiles-loaded', onLoaded);
+            resolve();
+          };
+          document.addEventListener('gamefiles-loaded', onLoaded);
+          // Fallback timeout 15s
+          setTimeout(resolve, 15000);
+        });
+        // Extra small delay to let loading screen handle transition
+        await new Promise(r => setTimeout(r, 800));
+        // If loading screen still handles menu, don't auto-open here
+        if (window.__GAME_FILES_LOADED__ && document.getElementById('loading-screen')?.classList.contains('ready')) {
+          console.log('[Menu] Loader ready, but waiting for user key press via loader');
+          // Init audio systems but don't open menu yet - loader will do it after key
+          init();
+          try { if (typeof RealVoices !== 'undefined') RealVoices.init(); } catch (e) {}
+          try { if (typeof OGAudio !== 'undefined') OGAudio.init(); } catch (e) {}
+          try { if (typeof Realistic !== 'undefined') Realistic.init(); } catch (e) {}
+          try { if (typeof BlindMusic !== "undefined") BlindMusic.init(); } catch (e) {}
+          try { if (typeof PremiumAudio !== "undefined") PremiumAudio.init(); } catch (e) {}
+          await Game.boot();
+          // Don't call open() - loader will trigger splash then menu
+          return;
+        }
+      }
+      
       init();
       try { if (typeof RealVoices !== 'undefined') RealVoices.init(); } catch (e) {}
       try { if (typeof OGAudio !== 'undefined') OGAudio.init(); } catch (e) {}
@@ -570,11 +602,16 @@ const CHAPTERS = {
   };
 })();
 
-  /* Paschall Game Hub splash: any key / tap dismisses; auto-fades after 6s */
+  /* Paschall Game Hub splash: any key / tap dismisses; auto-fades after 6s - BUT only after files loaded */
 (() => {
   const sp = document.getElementById('splash');
   if (!sp) return;
   const go = (ev) => {
+    // BLOCK splash dismiss if files not loaded yet
+    if (typeof GameLoader !== 'undefined' && !GameLoader.isLoaded()) {
+      console.log('[Splash] Blocked - files not loaded yet, lobby blocked');
+      return;
+    }
     if (sp.classList.contains('gone')) return;
     // the dismissing key/tap only clears the splash — the menu answers the next one
     if (ev) { ev.stopImmediatePropagation(); ev.preventDefault(); }
@@ -583,7 +620,27 @@ const CHAPTERS = {
   };
   document.addEventListener('keydown', go, { once: true, capture: true });
   document.addEventListener('pointerdown', go, { once: true, capture: true });
-  setTimeout(go, 6000);
+  // Auto-fade only if loader done, else wait
+  const autoFade = () => {
+    if (typeof GameLoader !== 'undefined' && !GameLoader.isLoaded()) {
+      setTimeout(autoFade, 1000);
+      return;
+    }
+    setTimeout(go, 6000);
+  };
+  autoFade();
 })();
 
-Menu.start();
+// Start menu only if loader not handling it
+if (typeof GameLoader === 'undefined') {
+  Menu.start();
+} else {
+  // Loader present - let loader call Menu.start() after 100%
+  // But we still need to init systems for loader transition
+  // Loader's DOMContentLoaded will handle the full flow
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!window.__GAME_FILES_LOADED__) {
+      Menu.start();
+    }
+  });
+}
