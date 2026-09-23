@@ -1,0 +1,484 @@
+{
+  "_help": "EDIT ME: the open-world city. 20x20 grid. Avenues run north-south (x), streets run east-west (y). Districts are rectangles on the grid. POIs are landmarks with actions. Everything here is editable: rename streets, move landmarks, add districts, change prices and lines.",
+  "gridSize": 20,
+  "starterCC": 500,
+  "start": {
+    "x": 2,
+    "y": 7
+  },
+  "avenues": [
+    "Ashline",
+    "Basil",
+    "Corvine",
+    "Dunmore",
+    "Edgecomb",
+    "Fifth",
+    "Grafton",
+    "Harborline",
+    "Ironbound",
+    "Jubilee",
+    "Keystone",
+    "Lumen",
+    "Meridian Cross",
+    "Northgate",
+    "Old Mill",
+    "Providence",
+    "Quarry",
+    "Rookery",
+    "Sable",
+    "Tiernan"
+  ],
+  "streets": [
+    "Ashford",
+    "Brightwater",
+    "Candlewick",
+    "Drummond",
+    "Echoline",
+    "Foundry",
+    "Grovemaker",
+    "Halloway",
+    "Ironrail",
+    "Jasmine",
+    "Kettle",
+    "Larkspur",
+    "Meridian",
+    "Nightshade",
+    "Ossory",
+    "Pemberton",
+    "Quill",
+    "Rustwater",
+    "Silverbell",
+    "Thornwall"
+  ],
+  "districts": [
+    {
+      "id": "old_chapel",
+      "name": "Old Chapel Ward",
+      "x0": 0,
+      "y0": 0,
+      "x1": 7,
+      "y1": 6,
+      "color": "#2a2438",
+      "ambience": "Calm, sacred echoes \u2014 church bells rolling over quiet stone.",
+      "flavor": [
+        "Bells roll out from a stone tower and fade over the rooftops.",
+        "A rosary clicks softly somewhere out on a porch.",
+        "Candle smoke drifts across the street like a slow secret."
+      ],
+      "music": "chapel"
+    },
+    {
+      "id": "midtown",
+      "name": "Midtown Strip",
+      "x0": 8,
+      "y0": 0,
+      "x1": 14,
+      "y1": 6,
+      "color": "#1e2a3a",
+      "ambience": "Music and neon \u2014 clubs breathing bass, restaurants humming.",
+      "flavor": [
+        "Neon buzzes and a club door spills brass notes onto the pavement.",
+        "Laughter and glasses clink from a late kitchen.",
+        "A taxi horn argues with a saxophone. The saxophone is winning."
+      ],
+      "music": "midtown"
+    },
+    {
+      "id": "upperhills",
+      "name": "Upper Hills",
+      "x0": 15,
+      "y0": 0,
+      "x1": 19,
+      "y1": 9,
+      "color": "#26301f",
+      "ambience": "Wealth and security \u2014 mansion gates, private patrols, trimmed hedges.",
+      "flavor": [
+        "A black sedan idles behind wrought iron, engine purring.",
+        "Security lights sweep a manicured lawn.",
+        "Somewhere behind a gate, a fountain counts money in water."
+      ],
+      "music": "mansion"
+    },
+    {
+      "id": "industrial",
+      "name": "Industrial Row",
+      "x0": 0,
+      "y0": 7,
+      "x1": 7,
+      "y1": 9,
+      "color": "#33291f",
+      "ambience": "Metal and engines \u2014 pawn shops, car wash, garages.",
+      "flavor": [
+        "A grinder sings one long note behind a garage door.",
+        "Steam hisses from the car wash like a tired animal.",
+        "Forklifts reverse in a yard that never sleeps."
+      ],
+      "music": "industrial"
+    },
+    {
+      "id": "garden",
+      "name": "Garden Parks",
+      "x0": 8,
+      "y0": 7,
+      "x1": 14,
+      "y1": 9,
+      "color": "#1f3328",
+      "ambience": "Breathing room \u2014 trees, basketball, stealth meetups.",
+      "flavor": [
+        "Leaves turn over in a warm wind.",
+        "A chain net rattles; somebody's shooting late hoops.",
+        "Two voices stop talking when you pass. Then start again."
+      ],
+      "music": "garden"
+    },
+    {
+      "id": "southside",
+      "name": "Southside Blocks",
+      "x0": 0,
+      "y0": 10,
+      "x1": 19,
+      "y1": 16,
+      "color": "#33241f",
+      "ambience": "Danger and pressure \u2014 bass, barking dogs, watchful windows.",
+      "flavor": [
+        "A chain-link fence rattles as a dog makes its opinion known.",
+        "Bass rolls under the street like slow weather.",
+        "Somebody watches from a window \u2014 then the curtain drops."
+      ],
+      "music": "southside"
+    },
+    {
+      "id": "harborfront",
+      "name": "Harborfront",
+      "x0": 0,
+      "y0": 17,
+      "x1": 19,
+      "y1": 19,
+      "color": "#1f2a33",
+      "ambience": "Ropes, gulls, diesel \u2014 speedboats and the way off the map.",
+      "flavor": [
+        "Ropes creak against a mast in the dark.",
+        "Diesel knocks twice from a boat engine, then settles.",
+        "A gull argues with the night and loses."
+      ],
+      "music": "pier"
+    }
+  ],
+  "pois": [
+    {
+      "id": "safehouse",
+      "name": "Stoneface's Safehouse",
+      "icon": "\ud83c\udfda",
+      "x": 2,
+      "y": 7,
+      "describe": "The crew's safehouse. Creaking floorboards, a wall of maps, Salena's case pinned in the center.",
+      "action": {
+        "type": "heal",
+        "speakerLines": [
+          {
+            "speaker": "glasses",
+            "text": "Safehouse. You rest among the maps and the quiet. Health restored."
+          }
+        ]
+      },
+      "music": "safehouse"
+    },
+    {
+      "id": "salena_apartment",
+      "name": "Salena's Apartment",
+      "icon": "\ud83c\udfe2",
+      "x": 4,
+      "y": 3,
+      "describe": "Salena's seized apartment building. Police tape still across the door. The jingle lock waits inside.",
+      "action": {
+        "type": "talk",
+        "speakerLines": [
+          {
+            "speaker": "stoneface",
+            "text": "Her window. Third floor. The tape says seized \u2014 the dust says waiting."
+          },
+          {
+            "speaker": "glasses",
+            "text": "The First Echo case begins here. Start the story from the main menu when you are ready."
+          }
+        ]
+      },
+      "music": "apartment"
+    },
+    {
+      "id": "st_verity_church",
+      "name": "St. Verity Church",
+      "icon": "\u26ea",
+      "x": 6,
+      "y": 2,
+      "describe": "Old stone church. Candle smoke and low hymns. The one honest gatekeeper keeps office here.",
+      "action": {
+        "type": "heal",
+        "speakerLines": [
+          {
+            "speaker": "priest",
+            "text": "Sit, son. The candles don't charge. Rest, and the city will still be cruel when you step back out."
+          },
+          {
+            "speaker": "glasses",
+            "text": "Health restored."
+          }
+        ]
+      },
+      "audio": {
+        "type": "bell",
+        "volume": 0.22,
+        "range": 120,
+        "intervalSec": 240
+      },
+      "music": "sacred"
+    },
+    {
+      "id": "pawnshop_ledger",
+      "name": "Ledger's Pawn Shop",
+      "icon": "\ud83d\udcb0",
+      "x": 12,
+      "y": 4,
+      "describe": "Elias Ledger's pawn shop. Bars on the windows, bargains behind them.",
+      "action": {
+        "type": "talk",
+        "speakerLines": [
+          {
+            "speaker": "ledger",
+            "text": "Stoneface! Windows full of trouble, shelves full of answers. The Hurricane, eight hundred. Iron Chef plate, seven hundred. Priest gates the big purchases \u2014 I just make the city feel real."
+          }
+        ]
+      },
+      "audio": {
+        "type": "radio",
+        "volume": 0.45,
+        "range": 45
+      },
+      "music": "pawnshop"
+    },
+    {
+      "id": "velvet_room",
+      "name": "The Velvet Room",
+      "icon": "\ud83c\udfb6",
+      "x": 14,
+      "y": 6,
+      "describe": "Neon club. Bass you can feel through your shoes. The back office counts the block's money every night.",
+      "action": {
+        "type": "talk",
+        "speakerLines": [
+          {
+            "speaker": "glasses",
+            "text": "The Velvet Room. Three heartbeats in the back office counting cash. In the story, this is where the stickup happens."
+          }
+        ]
+      },
+      "audio": {
+        "type": "bass",
+        "volume": 0.6,
+        "range": 85
+      },
+      "music": "velvet"
+    },
+    {
+      "id": "diner_blue_note",
+      "name": "Blue Note Diner",
+      "icon": "\ud83c\udf7d",
+      "x": 10,
+      "y": 2,
+      "describe": "All-night diner. Coffee, grits, and rumors in equal measures.",
+      "action": {
+        "type": "buff",
+        "cost": 40,
+        "health": 15,
+        "flag": "focusBuff",
+        "notEnough": "Not enough CC for the Focus plate. You need 40.",
+        "speakerLines": [
+          {
+            "speaker": "glasses",
+            "text": "Focus plate served \u2014 black coffee, cornbread, quiet booth. Health up, mind sharp. Minus forty CC."
+          }
+        ]
+      },
+      "audio": {
+        "type": "murmur",
+        "volume": 0.5,
+        "range": 45
+      },
+      "music": "diner"
+    },
+    {
+      "id": "movie_theater",
+      "name": "The Monarch Theater",
+      "icon": "\ud83c\udfac",
+      "x": 11,
+      "y": 5,
+      "describe": "Old movie theater. Marquee flickers. Lobby posters, and lobby whispers.",
+      "action": {
+        "type": "talk",
+        "speakerLines": [
+          {
+            "speaker": "news",
+            "text": "Tonight's feature: the Mayor's charity gala, live coverage. Wexler smiles for the cameras while the budget bleeds somewhere off screen."
+          },
+          {
+            "speaker": "glasses",
+            "text": "Lore logged. The Monarch always knows more than it shows."
+          }
+        ]
+      },
+      "audio": {
+        "type": "music",
+        "volume": 0.45,
+        "range": 55
+      },
+      "music": "theater"
+    },
+    {
+      "id": "basketball_court",
+      "name": "The Ironrail Court",
+      "icon": "\ud83c\udfc0",
+      "x": 5,
+      "y": 14,
+      "describe": "Chain nets, cracked asphalt. The loudest heartbeat on the Southside, and one very quiet one courtside.",
+      "action": {
+        "type": "talk",
+        "speakerLines": [
+          {
+            "speaker": "harbor",
+            "text": "Free-roam, huh? The block's quieter when you walk it slow. Keep your ears honest, Stoneface."
+          }
+        ]
+      },
+      "audio": {
+        "type": "ball",
+        "volume": 0.6,
+        "range": 70
+      },
+      "music": "court"
+    },
+    {
+      "id": "corner_store",
+      "name": "Southside Corner Store",
+      "icon": "\ud83c\udfea",
+      "x": 9,
+      "y": 13,
+      "describe": "Fry oil, citrus cleaner, a radio playing low. The owner watches weather and strangers.",
+      "action": {
+        "type": "buff",
+        "cost": 50,
+        "health": 10,
+        "flag": "gritBuff",
+        "notEnough": "Not enough CC for the buffalo plate. You need 50.",
+        "speakerLines": [
+          {
+            "speaker": "glasses",
+            "text": "Buffalo plate, extra hot. Grit buff granted. Minus fifty CC."
+          },
+          {
+            "speaker": "news",
+            "text": "Counter talk: big quiet man still sits courtside off Ironrail. Never loses. Never talks."
+          }
+        ]
+      },
+      "audio": {
+        "type": "radio",
+        "volume": 0.45,
+        "range": 45
+      },
+      "music": "market"
+    },
+    {
+      "id": "bonnie_garage",
+      "name": "Bonnie's Garage",
+      "icon": "\ud83d\ude99",
+      "x": 16,
+      "y": 15,
+      "describe": "A converted warehouse. Tools, armor plating, and one very patient bulletproof SUV.",
+      "action": {
+        "type": "talk",
+        "speakerLines": [
+          {
+            "speaker": "bonnie",
+            "text": "Garage is home, but the street is where I make sense. Press B anytime and I'll roll up. Three blocks a breath when you ride with me."
+          }
+        ]
+      },
+      "audio": {
+        "type": "engine",
+        "volume": 0.55,
+        "range": 60
+      },
+      "music": "garage"
+    },
+    {
+      "id": "marlow_pier",
+      "name": "Marlow's Pier",
+      "icon": "\u26f5",
+      "x": 10,
+      "y": 18,
+      "describe": "Old Marlow's speedboat, fueled and pretending to be a fishing boat.",
+      "audio": {
+        "type": "engine",
+        "volume": 0.4,
+        "range": 50
+      },
+      "music": "pier"
+    },
+    {
+      "id": "fish_market",
+      "name": "Fish Market",
+      "icon": "\ud83d\udc1f",
+      "x": 4,
+      "y": 18,
+      "describe": "Ice, crates, and rumors priced by the pound.",
+      "audio": {
+        "type": "murmur",
+        "volume": 0.4,
+        "range": 40
+      },
+      "music": "market"
+    },
+    {
+      "id": "mansion",
+      "name": "Wexler's Mansion",
+      "icon": "\ud83c\udfdb",
+      "x": 17,
+      "y": 2,
+      "describe": "The Mayor's mansion \u2014 gates, guards, and a gala that ends a city's lie.",
+      "music": "mansion"
+    },
+    {
+      "id": "tess_workshop",
+      "name": "Tess's Workshop",
+      "icon": "\ud83d\udd27",
+      "x": 3,
+      "y": 8,
+      "describe": "Area Six's garage lab: armor plates, healing chamber, Bonnie's birthplace.",
+      "audio": {
+        "type": "engine",
+        "volume": 0.35,
+        "range": 45
+      },
+      "music": "workshop"
+    },
+    {
+      "id": "carwash",
+      "name": "Ironrail Car Wash",
+      "icon": "\ud83d\udebf",
+      "x": 6,
+      "y": 9,
+      "describe": "Steam, brushes, and a clean way to lose the police's eye.",
+      "music": "carwash"
+    },
+    {
+      "id": "greenhouse",
+      "name": "Garden Greenhouse",
+      "icon": "\ud83c\udf3f",
+      "x": 10,
+      "y": 8,
+      "describe": "Warm glass and wet leaves \u2014 the quiet place crews meet when walls have ears.",
+      "music": "greenhouse"
+    }
+  ],
+  "sonarRange": 7
+}

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a0d18"/><stop offset="1" stop-color="#1c2438"/>
+    </linearGradient>
+    <linearGradient id="deck" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a2f42"/><stop offset="1" stop-color="#12151f"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#sky2)"/>
+  <!-- overpass -->
+  <rect x="0" y="40" width="800" height="70" fill="url(#deck)"/>
+  <rect x="60" y="110" width="46" height="340" fill="#171a26"/>
+  <rect x="694" y="110" width="46" height="340" fill="#171a26"/>
+  <g stroke="#0c0e16" stroke-width="4">
+    <line x1="0" y1="75" x2="800" y2="75"/>
+  </g>
+  <!-- city glow behind -->
+  <g fill="#f5b942" opacity="0.5">
+    <rect x="330" y="140" width="8" height="8"/><rect x="380" y="160" width="8" height="8"/>
+    <rect x="440" y="135" width="8" height="8"/><rect x="490" y="165" width="8" height="8"/>
+    <rect x="540" y="145" width="8" height="8"/>
+  </g>
+  <!-- crew silhouettes: Stoneface center, Harbor left, Nyx & Nia right -->
+  <g fill="#05060a">
+    <!-- Harbor: broad -->
+    <ellipse cx="185" cy="240" rx="20" ry="23"/>
+    <path d="M150,268 q35,-14 70,0 l12,140 -26,4 -10,-70 -12,70 -26,-4 z"/>
+    <!-- Stoneface center, coat -->
+    <ellipse cx="400" cy="225" rx="19" ry="22"/>
+    <path d="M368,252 q32,-13 64,0 l16,165 -30,3 -8,-80 -14,80 -30,-3 z"/>
+    <!-- Nyx -->
+    <ellipse cx="580" cy="245" rx="15" ry="18"/>
+    <path d="M558,268 q22,-10 44,0 l8,130 -20,3 -8,-62 -10,62 -20,-3 z"/>
+    <!-- Nia -->
+    <ellipse cx="645" cy="242" rx="15" ry="18"/>
+    <path d="M623,265 q22,-10 44,0 l10,133 -21,3 -7,-64 -11,64 -21,-3 z"/>
+  </g>
+  <!-- smart glasses glow on Stoneface -->
+  <rect x="384" y="219" width="32" height="7" rx="3" fill="#7fd4ff"/>
+  <rect x="170" y="234" width="30" height="6" rx="3" fill="#3b4a66"/>
+  <rect y="405" width="800" height="45" fill="#07080d"/>
+</svg>

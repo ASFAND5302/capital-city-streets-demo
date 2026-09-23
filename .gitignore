@@ -1,0 +1,28 @@
+# Secrets - NEVER push tokens
+*token*
+*credentials*
+.env
+*.pat
+
+# Cache / generated
+.arena/
+.cache/
+.local/
+__pycache__/
+*.pyc
+node_modules/
+dist/
+build/
+.venv/
+gdrive_mirror/
+
+# But keep important game files
+!audio/
+!img/
+!data/
+!src/
+!*.html
+!*.css
+!*.py
+!*.js
+!*.json
