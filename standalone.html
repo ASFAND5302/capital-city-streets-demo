@@ -173,6 +173,16 @@ body {
   font-weight: 700;
   font-size: .9rem;
 }
+.choice .key-letter {
+  flex: none;
+  width: 28px; height: 28px;
+  display: grid; place-items: center;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: .9rem;
+}
 .choice[aria-selected="true"], .choice:focus-visible {
   border-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 14%, var(--panel));
@@ -680,7 +690,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 0.9,
         "rate": 1.02,
-        "slot": 0
+        "slot": 0,
+        "gender": "female"
       },
       "color": "#c9c2b0"
     },
@@ -689,7 +700,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 1.1,
         "rate": 1.16,
-        "slot": 1
+        "slot": 1,
+        "gender": "female"
       },
       "stinger": "v-glasses",
       "color": "#7fd4ff"
@@ -699,7 +711,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 0.62,
         "rate": 0.95,
-        "slot": 2
+        "slot": 2,
+        "gender": "male"
       },
       "stinger": "v-stoneface",
       "color": "#f5b942"
@@ -709,7 +722,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 1.35,
         "rate": 1.0,
-        "slot": 3
+        "slot": 3,
+        "gender": "female"
       },
       "stinger": "v-salena",
       "color": "#ff9ecf"
@@ -719,7 +733,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 0.95,
         "rate": 1.04,
-        "slot": 4
+        "slot": 4,
+        "gender": "male"
       },
       "stinger": "v-sam",
       "color": "#8fd48f"
@@ -729,7 +744,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 0.7,
         "rate": 0.9,
-        "slot": 5
+        "slot": 5,
+        "gender": "male"
       },
       "stinger": "v-priest",
       "color": "#d8b06a"
@@ -739,7 +755,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 0.75,
         "rate": 0.92,
-        "slot": 6
+        "slot": 6,
+        "gender": "male"
       },
       "stinger": "v-harbor",
       "color": "#7fa8d4"
@@ -749,7 +766,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 1.05,
         "rate": 0.98,
-        "slot": 7
+        "slot": 7,
+        "gender": "female"
       },
       "stinger": "v-nyx",
       "color": "#b09aff"
@@ -759,7 +777,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 1.45,
         "rate": 1.18,
-        "slot": 8
+        "slot": 8,
+        "gender": "female"
       },
       "stinger": "v-nia",
       "color": "#ff8fa8"
@@ -769,7 +788,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 1.0,
         "rate": 1.06,
-        "slot": 9
+        "slot": 9,
+        "gender": "male"
       },
       "stinger": "v-ledger",
       "color": "#ffd166"
@@ -777,9 +797,10 @@ window.__CCS_DATA__["characters.json"]={
     "bonnie": {
       "name": "Bonnie",
       "voice": {
-        "pitch": 1.2,
-        "rate": 1.05,
-        "slot": 10
+        "pitch": 1.45,
+        "rate": 1.08,
+        "slot": 10,
+        "gender": "female"
       },
       "stinger": "v-bonnie",
       "color": "#9fd4ff"
@@ -789,7 +810,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 0.95,
         "rate": 1.0,
-        "slot": 11
+        "slot": 11,
+        "gender": "male"
       },
       "stinger": "v-wexler",
       "color": "#e0c9a0"
@@ -799,7 +821,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 1.0,
         "rate": 1.1,
-        "slot": 12
+        "slot": 12,
+        "gender": "male"
       },
       "stinger": "v-defender",
       "color": "#ff7a5c"
@@ -809,7 +832,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 0.85,
         "rate": 1.05,
-        "slot": 13
+        "slot": 13,
+        "gender": "male"
       },
       "stinger": "v-thug",
       "color": "#ff9a7a"
@@ -829,7 +853,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 0.8,
         "rate": 0.95,
-        "slot": 15
+        "slot": 15,
+        "gender": "male"
       },
       "stinger": "v-voss",
       "color": "#9ab0c9"
@@ -839,7 +864,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 1.15,
         "rate": 1.12,
-        "slot": 16
+        "slot": 16,
+        "gender": "female"
       },
       "stinger": "v-tess",
       "color": "#8fe3c0"
@@ -849,7 +875,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 1.05,
         "rate": 1.15,
-        "slot": 17
+        "slot": 17,
+        "gender": "male"
       },
       "stinger": "v-dan",
       "color": "#a8e08f"
@@ -859,7 +886,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 0.72,
         "rate": 0.86,
-        "slot": 18
+        "slot": 18,
+        "gender": "male"
       },
       "stinger": "v-marlow",
       "color": "#c9a88f"
@@ -869,7 +897,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 1.25,
         "rate": 0.96,
-        "slot": 19
+        "slot": 19,
+        "gender": "female"
       },
       "stinger": "v-sera",
       "color": "#7fe3b0"
@@ -879,7 +908,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 0.95,
         "rate": 1.0,
-        "slot": 20
+        "slot": 20,
+        "gender": "female"
       },
       "stinger": "v-defender",
       "color": "#d4a0c9"
@@ -889,7 +919,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 0.88,
         "rate": 1.08,
-        "slot": 21
+        "slot": 21,
+        "gender": "male"
       },
       "stinger": "v-thug",
       "color": "#e0a08f"
@@ -899,7 +930,8 @@ window.__CCS_DATA__["characters.json"]={
       "voice": {
         "pitch": 1.0,
         "rate": 1.05,
-        "slot": 22
+        "slot": 22,
+        "gender": "female"
       },
       "stinger": "v-defender",
       "color": "#a0c9d4"
@@ -922,15 +954,23 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Controls. Up and down arrows move between choices. Enter or Space selects. Number keys jump straight to an option. Press Enter again while I'm talking to skip to the choices."
+              "text": "Controls. Up and down arrows move between choices and I speak every option — A for this, B for that. Enter or Space selects. Number keys and letter keys jump straight to an option."
             },
             {
               "speaker": "glasses",
-              "text": "R replays the last line I spoke. F toggles Focus Mode. H toggles high contrast. T turns my voice on or off."
+              "text": "R replays the last line I spoke. Backspace repeats all options again. J opens your case journal — chapter, clues, and inventory. E is a sonar ping that names nearby voices. F toggles Focus Mode. H toggles high contrast. T turns my voice on or off."
             },
             {
               "speaker": "glasses",
-              "text": "Free roam mode, Explore the city, has its own keys. Arrow keys move block by block and I announce every street. Enter interacts with landmarks. L looks around. P fires echo-ping sonar toward nearby landmarks. K lists every landmark in your district. G reads a numbered go-to list \u2014 press a landmark's number to mark it. U repeats your trail. M sets a marker, N hears the way, X clears it. B calls Bonnie to ride three blocks a step. Escape returns to the menu. The city is rendered in 3D around you with true spatial sound \u2014 press C to switch between the 3D street view and the overhead map, and O to toggle the 3D city sound. Headphones recommended. In the city, I reads your case file aloud."
+              "text": "Nothing is always first — options shuffle, so listen. Stuck on a puzzle? Look for an option that asks me for a hint. Clues hide in desks, lockers, and holster logs — search everything."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Free roam mode, Explore the city, has its own keys. Arrow keys move block by block and I announce every street. Every district and landmark has its own music and ambience — churches ring, clubs thump, the court bounces."
+            },
+            {
+              "speaker": "glasses",
+              "text": "In the city: L looks around, P is sonar, G is go-to with letters — A for the safehouse, B for the apartment — 0 goes back. M sets a marker, N hears the way, Y turns on a walking beacon, U repeats your trail, B rides Bonnie, J is your journal, C switches 3D and map, I is your case file."
             },
             {
               "speaker": "glasses",
@@ -938,7 +978,7 @@ window.__CCS_DATA__["chapters.json"]={
             },
             {
               "speaker": "glasses",
-              "text": "During the story, press Escape to return to the main menu. I will ask you to confirm \u2014 press Enter to leave, or Escape again to keep playing. Your progress is saved at every scene."
+              "text": "During the story, press Escape to return to the main menu. I will ask you to confirm — press Enter to leave, or Escape again to keep playing."
             }
           ],
           "choices": [
@@ -962,7 +1002,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "narrator",
-              "text": "They call you Stoneface. Blind since birth. Leader of a crew that never needed you to see \u2014 only to decide."
+              "text": "They call you Stoneface. Blind since birth. Leader of a crew that never needed you to see — only to decide."
             },
             {
               "speaker": "narrator",
@@ -1006,7 +1046,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Smart Glasses online. Tactical narration active. I will describe every street, every threat, every clue. Say the word and I repeat myself \u2014 key R, anytime."
+              "text": "Smart Glasses online. Tactical narration active. I will describe every street, every threat, every clue. Say the word and I repeat myself — key R, anytime."
             },
             {
               "speaker": "glasses",
@@ -1046,7 +1086,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "You are on Chapel Row, outside Salena's building. Police tape across the entrance. The ward is quiet \u2014 church bells, wet pavement, one idling car down the block."
+              "text": "You are on Chapel Row, outside Salena's building. Police tape across the entrance. The ward is quiet — church bells, wet pavement, one idling car down the block."
             },
             {
               "speaker": "glasses",
@@ -1102,7 +1142,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Scanning. The idling car: unmarked, engine warm, two heartbeats inside. Watchers. They are not watching the front door \u2014 they are watching the street. Sloppy."
+              "text": "Scanning. The idling car: unmarked, engine warm, two heartbeats inside. Watchers. They are not watching the front door — they are watching the street. Sloppy."
             },
             {
               "speaker": "glasses",
@@ -1146,7 +1186,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The lock resisted. A tumbler clicked loud enough to carry. Heat rising \u2014 I heard a car door open down the block.",
+              "text": "The lock resisted. A tumbler clicked loud enough to carry. Heat rising — I heard a car door open down the block.",
               "sfx": "alarm"
             },
             {
@@ -1195,7 +1235,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Fire escape. Twelve steps up, then a landing. Rusted rungs, solid enough. Third floor \u2014 her window. The latch is painted shut, not locked."
+              "text": "Fire escape. Twelve steps up, then a landing. Rusted rungs, solid enough. Third floor — her window. The latch is painted shut, not locked."
             },
             {
               "speaker": "glasses",
@@ -1232,7 +1272,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Living room. Dust on everything. Cardboard boxes, half-packed \u2014 the city seized this place fast. Too fast.",
+              "text": "Living room. Dust on everything. Cardboard boxes, half-packed — the city seized this place fast. Too fast.",
               "sfx": "door"
             },
             {
@@ -1241,7 +1281,7 @@ window.__CCS_DATA__["chapters.json"]={
             },
             {
               "speaker": "glasses",
-              "text": "Three points of interest. A writing desk, left. A bookshelf, right. And a bedroom door, dead ahead \u2014 sealed with something unusual."
+              "text": "Three points of interest. A writing desk, left. A bookshelf, right. And a bedroom door, dead ahead — sealed with something unusual."
             }
           ],
           "choices": [
@@ -1273,18 +1313,18 @@ window.__CCS_DATA__["chapters.json"]={
     "desk": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Salena's apartment \u2014 desk",
+      "location": "Salena's apartment — desk",
       "art": "img/desk.jpg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Desk. Subpoena drafts. Budget ledgers with circles in red ink \u2014 payments routed through something called the Harbor Fund. And a handwritten note, pinned under a stone paperweight."
+              "text": "Desk. Subpoena drafts. Budget ledgers with circles in red ink — payments routed through something called the Harbor Fund. And a handwritten note, pinned under a stone paperweight."
             },
             {
               "speaker": "salena",
-              "text": "If you're reading this, big brother, then they got louder than me. The door remembers Mama. Faith before the stars I earned \u2014 and her song goes last."
+              "text": "If you're reading this, big brother, then they got louder than me. The door remembers Mama. Faith before the stars I earned — and her song goes last."
             },
             {
               "speaker": "stoneface",
@@ -1310,7 +1350,7 @@ window.__CCS_DATA__["chapters.json"]={
     "bookshelf": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Salena's apartment \u2014 bookshelf",
+      "location": "Salena's apartment — bookshelf",
       "art": "img/musicbox.jpg",
       "nodes": [
         {
@@ -1343,14 +1383,14 @@ window.__CCS_DATA__["chapters.json"]={
     "jingle_door": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Salena's apartment \u2014 bedroom door",
+      "location": "Salena's apartment — bedroom door",
       "art": "img/jingle_safe.jpg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The bedroom door has no keyhole. Instead: a jingle lock \u2014 three brass charms on a rod. A rosary. A detective's badge. A music box crank. Touch them in the right order and the rod slides free."
+              "text": "The bedroom door has no keyhole. Instead: a jingle lock — three brass charms on a rod. A rosary. A detective's badge. A music box crank. Touch them in the right order and the rod slides free."
             },
             {
               "speaker": "glasses",
@@ -1383,7 +1423,7 @@ window.__CCS_DATA__["chapters.json"]={
             },
             {
               "speaker": "glasses",
-              "text": "Reminder from Salena's note, if you found it: faith before the stars she earned \u2014 and Mama's song goes last.",
+              "text": "Reminder from Salena's note, if you found it: faith before the stars she earned — and Mama's song goes last.",
               "condition": {
                 "flag": "readNote"
               }
@@ -1423,7 +1463,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Wrong order. The charms hiss \u2014 a silent alarm pulse. Somewhere in this city, a phone just lit up. Heat rising.",
+              "text": "Wrong order. The charms hiss — a silent alarm pulse. Somewhere in this city, a phone just lit up. Heat rising.",
               "sfx": "alarm"
             },
             {
@@ -1457,7 +1497,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The rosary chimes \u2014 soft, like a church across water. Two charms remain: the badge, and the crank."
+              "text": "The rosary chimes — soft, like a church across water. Two charms remain: the badge, and the crank."
             }
           ],
           "choices": [
@@ -1493,7 +1533,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The badge rings \u2014 bright, like a promise kept. One charm left."
+              "text": "The badge rings — bright, like a promise kept. One charm left."
             },
             {
               "speaker": "glasses",
@@ -1517,14 +1557,14 @@ window.__CCS_DATA__["chapters.json"]={
     "defenders_in": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Salena's apartment \u2014 bedroom",
+      "location": "Salena's apartment — bedroom",
       "art": "img/defenders.jpg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The rod slides free. The door opens onto a wall safe \u2014 and movement. Two armed defenders step out of the hallway closet. The silent alarm was answered faster than it should have been.",
+              "text": "The rod slides free. The door opens onto a wall safe — and movement. Two armed defenders step out of the hallway closet. The silent alarm was answered faster than it should have been.",
               "sfx": "alarm"
             },
             {
@@ -1554,14 +1594,14 @@ window.__CCS_DATA__["chapters.json"]={
     "defenders_listen": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Salena's apartment \u2014 bedroom",
+      "location": "Salena's apartment — bedroom",
       "art": "img/defenders.jpg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Listening. The right one favors his left leg \u2014 old injury, he'll pivot slow. The left one keeps tapping a barrel against his thigh. Cheap pistol, nervous hands."
+              "text": "Listening. The right one favors his left leg — old injury, he'll pivot slow. The left one keeps tapping a barrel against his thigh. Cheap pistol, nervous hands."
             },
             {
               "speaker": "stoneface",
@@ -1582,14 +1622,14 @@ window.__CCS_DATA__["chapters.json"]={
     "fight_r1": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Fight \u2014 round 1",
+      "location": "Fight — round 1",
       "art": "img/fight.jpg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "He swings high from the right \u2014 heavy hook, slow pivot, just like I said."
+              "text": "He swings high from the right — heavy hook, slow pivot, just like I said."
             }
           ],
           "choices": [
@@ -1632,14 +1672,14 @@ window.__CCS_DATA__["chapters.json"]={
     "fight_r2": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Fight \u2014 round 2",
+      "location": "Fight — round 2",
       "art": "img/fight.jpg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The right one drops, wheezing. Footsteps \u2014 the left one rushes in low, trying to tackle.",
+              "text": "The right one drops, wheezing. Footsteps — the left one rushes in low, trying to tackle.",
               "sfx": "hit"
             }
           ],
@@ -1683,14 +1723,14 @@ window.__CCS_DATA__["chapters.json"]={
     "fight_r3": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Fight \u2014 round 3",
+      "location": "Fight — round 3",
       "art": "img/fight.jpg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "He stumbles up \u2014 and his hand goes to his waistband. Metal clearing fabric. Gun.",
+              "text": "He stumbles up — and his hand goes to his waistband. Metal clearing fabric. Gun.",
               "sfx": "alarm"
             }
           ],
@@ -1722,7 +1762,7 @@ window.__CCS_DATA__["chapters.json"]={
     "fight_win": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Salena's apartment \u2014 bedroom",
+      "location": "Salena's apartment — bedroom",
       "art": "img/fight.jpg",
       "nodes": [
         {
@@ -1738,7 +1778,7 @@ window.__CCS_DATA__["chapters.json"]={
             },
             {
               "speaker": "glasses",
-              "text": "The safe is unguarded. Dial is warm \u2014 recently opened by one of them."
+              "text": "The safe is unguarded. Dial is warm — recently opened by one of them."
             }
           ],
           "choices": [
@@ -1755,18 +1795,18 @@ window.__CCS_DATA__["chapters.json"]={
     "datadrive": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Salena's apartment \u2014 the safe",
+      "location": "Salena's apartment — the safe",
       "art": "img/datadrive.jpg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Inside the safe: a single data drive, matte black, labeled in Salena's handwriting \u2014 FIRST ECHO."
+              "text": "Inside the safe: a single data drive, matte black, labeled in Salena's handwriting — FIRST ECHO."
             },
             {
               "speaker": "glasses",
-              "text": "I can feel encrypted partitions on it. Budget routes. Shell accounts. Names. Whatever she died for \u2014 it starts on this drive."
+              "text": "I can feel encrypted partitions on it. Budget routes. Shell accounts. Names. Whatever she died for — it starts on this drive."
             },
             {
               "speaker": "stoneface",
@@ -1807,7 +1847,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "You wind the crank. The music box plays \u2014 eight notes, soft and slightly broken. The same eight notes the jingle lock was built around.",
+              "text": "You wind the crank. The music box plays — eight notes, soft and slightly broken. The same eight notes the jingle lock was built around.",
               "sfx": "jingle"
             },
             {
@@ -1844,12 +1884,12 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Sirens, four blocks out and closing. The watchers' car is pulling around. We go up and over \u2014 rooftops, then the alley.",
+              "text": "Sirens, four blocks out and closing. The watchers' car is pulling around. We go up and over — rooftops, then the alley.",
               "sfx": "siren"
             },
             {
               "speaker": "glasses",
-              "text": "Clear. Your phone buzzes \u2014 unknown number, one ring, then silence. Someone inside the law just checked on you. Saving the number.",
+              "text": "Clear. Your phone buzzes — unknown number, one ring, then silence. Someone inside the law just checked on you. Saving the number.",
               "sfx": "phone"
             },
             {
@@ -1887,7 +1927,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "narrator",
-              "text": "Chapter One complete \u2014 The First Echo."
+              "text": "Chapter One complete — The First Echo."
             },
             {
               "speaker": "glasses",
@@ -1896,7 +1936,7 @@ window.__CCS_DATA__["chapters.json"]={
             },
             {
               "speaker": "glasses",
-              "text": "New asset unlocking: Bonnie \u2014 a bulletproof SUV the crew built for you, with a voice of her own. Tomorrow, the Southside Blocks. Tomorrow, we find the man called Harbor."
+              "text": "New asset unlocking: Bonnie — a bulletproof SUV the crew built for you, with a voice of her own. Tomorrow, the Southside Blocks. Tomorrow, we find the man called Harbor."
             }
           ],
           "choices": [
@@ -1935,7 +1975,7 @@ window.__CCS_DATA__["chapters.json"]={
     "ch2_drive": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Bonnie \u2014 en route",
+      "location": "Bonnie — en route",
       "art": "img/drive.jpg",
       "nodes": [
         {
@@ -1992,7 +2032,7 @@ window.__CCS_DATA__["chapters.json"]={
     "bonnie_chat": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Bonnie \u2014 en route",
+      "location": "Bonnie — en route",
       "art": "img/drive.jpg",
       "nodes": [
         {
@@ -2051,7 +2091,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "You are at Keystone Avenue and Ironrail Street \u2014 Southside Blocks. Bass from a club two blocks east. Dogs behind a fence. Basketball \u2014 a court just north, eight players, one of them moving like a soldier."
+              "text": "You are at Keystone Avenue and Ironrail Street — Southside Blocks. Bass from a club two blocks east. Dogs behind a fence. Basketball — a court just north, eight players, one of them moving like a soldier."
             },
             {
               "speaker": "glasses",
@@ -2108,7 +2148,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Ambush in the alley \u2014 a bottle across your shoulder. I shouted too late. Two runners gone over the fence with nothing taken. A warning, not a robbery.",
+              "text": "Ambush in the alley — a bottle across your shoulder. I shouted too late. Two runners gone over the fence with nothing taken. A warning, not a robbery.",
               "sfx": "hit"
             },
             {
@@ -2150,7 +2190,7 @@ window.__CCS_DATA__["chapters.json"]={
           ],
           "choices": [
             {
-              "label": "Buy the buffalo plate \u2014 50 CC, grants Grit",
+              "label": "Buy the buffalo plate — 50 CC, grants Grit",
               "goto": "corner_store",
               "condition": {
                 "ccMin": 50,
@@ -2198,7 +2238,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The owner talks to a kid at the counter: Big quiet man? Sits courtside at the run off Ironrail. Nobody guards him. He guards everybody. Two years he's been a fixture \u2014 never once seen him lose."
+              "text": "The owner talks to a kid at the counter: Big quiet man? Sits courtside at the run off Ironrail. Nobody guards him. He guards everybody. Two years he's been a fixture — never once seen him lose."
             },
             {
               "speaker": "stoneface",
@@ -2231,7 +2271,7 @@ window.__CCS_DATA__["chapters.json"]={
     "court_intro": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Southside \u2014 the court",
+      "location": "Southside — the court",
       "art": "img/harbor.jpg",
       "nodes": [
         {
@@ -2267,7 +2307,7 @@ window.__CCS_DATA__["chapters.json"]={
     "harbor_meet": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Southside \u2014 the court",
+      "location": "Southside — the court",
       "art": "img/harbor.jpg",
       "nodes": [
         {
@@ -2311,7 +2351,7 @@ window.__CCS_DATA__["chapters.json"]={
     "stickup_brief": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Southside \u2014 planning",
+      "location": "Southside — planning",
       "art": "img/stickup.svg",
       "nodes": [
         {
@@ -2344,7 +2384,7 @@ window.__CCS_DATA__["chapters.json"]={
               "sfx": "whoosh"
             },
             {
-              "label": "Rooftop drop \u2014 needs Grit",
+              "label": "Rooftop drop — needs Grit",
               "goto": "stickup_fight",
               "condition": {
                 "flag": "gritBuff"
@@ -2373,14 +2413,14 @@ window.__CCS_DATA__["chapters.json"]={
     "stickup_spotted": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Velvet Room \u2014 back alley",
+      "location": "Velvet Room — back alley",
       "art": "img/stickup.svg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "A door opens early \u2014 a lookout spots you. A bottle cracks the wall by your head. So much for quiet.",
+              "text": "A door opens early — a lookout spots you. A bottle cracks the wall by your head. So much for quiet.",
               "sfx": "alarm"
             },
             {
@@ -2411,14 +2451,14 @@ window.__CCS_DATA__["chapters.json"]={
     "stickup_fight": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Velvet Room \u2014 stickup",
+      "location": "Velvet Room — stickup",
       "art": "img/stickup.svg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Two bodies between you and the bag. First one swings a pool cue \u2014 high, fast, right side."
+              "text": "Two bodies between you and the bag. First one swings a pool cue — high, fast, right side."
             }
           ],
           "choices": [
@@ -2470,7 +2510,7 @@ window.__CCS_DATA__["chapters.json"]={
     "stickup_r2": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Velvet Room \u2014 stickup",
+      "location": "Velvet Room — stickup",
       "art": "img/stickup.svg",
       "nodes": [
         {
@@ -2517,19 +2557,19 @@ window.__CCS_DATA__["chapters.json"]={
     "stickup_loot": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Velvet Room \u2014 back office",
+      "location": "Velvet Room — back office",
       "art": "img/stickup.svg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Both down. The bag is yours \u2014 twelve hundred Capitol City Credits, still warm from the count.",
+              "text": "Both down. The bag is yours — twelve hundred Capitol City Credits, still warm from the count.",
               "sfx": "coin"
             },
             {
               "speaker": "thug",
-              "text": "Take it, take it\u2014 listen, that collection don't belong to the club. Voss's boys take a cut every Friday. We're just the wallet."
+              "text": "Take it, take it— listen, that collection don't belong to the club. Voss's boys take a cut every Friday. We're just the wallet."
             },
             {
               "speaker": "glasses",
@@ -2569,7 +2609,7 @@ window.__CCS_DATA__["chapters.json"]={
     "crew_meet": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Southside \u2014 under the overpass",
+      "location": "Southside — under the overpass",
       "art": "img/twins.jpg",
       "nodes": [
         {
@@ -2601,7 +2641,7 @@ window.__CCS_DATA__["chapters.json"]={
           ],
           "choices": [
             {
-              "label": "Answer the phone \u2014 it's Ledger",
+              "label": "Answer the phone — it's Ledger",
               "goto": "ledger_call",
               "effects": {
                 "setFlag": "harborJoined"
@@ -2624,14 +2664,14 @@ window.__CCS_DATA__["chapters.json"]={
     "ledger_call": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Southside \u2014 under the overpass",
+      "location": "Southside — under the overpass",
       "art": "img/twins.jpg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "ledger",
-              "text": "Ledger here. Word travels: you took the Velvet bag and the block's talking your name. Good for business. But \u2014 the Priest wants a word before you climb higher. Old Chapel Ward. Tonight. He says: every gate has a price, and his prices are honest ones.",
+              "text": "Ledger here. Word travels: you took the Velvet bag and the block's talking your name. Good for business. But — the Priest wants a word before you climb higher. Old Chapel Ward. Tonight. He says: every gate has a price, and his prices are honest ones.",
               "sfx": "phone"
             },
             {
@@ -2661,7 +2701,7 @@ window.__CCS_DATA__["chapters.json"]={
     "priest_gate": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Old Chapel Ward \u2014 the church",
+      "location": "Old Chapel Ward — the church",
       "art": "img/priest.svg",
       "nodes": [
         {
@@ -2676,12 +2716,12 @@ window.__CCS_DATA__["chapters.json"]={
             },
             {
               "speaker": "priest",
-              "text": "The Hurricane \u2014 a hand cannon from a Navy armory, eight hundred CC. And the Iron Chef \u2014 kitchen-plate armor that stops anything short of a grudge, seven hundred CC. Buy both, and the gate opens. Pray if you're hurt. I don't charge for that."
+              "text": "The Hurricane — a hand cannon from a Navy armory, eight hundred CC. And the Iron Chef — kitchen-plate armor that stops anything short of a grudge, seven hundred CC. Buy both, and the gate opens. Pray if you're hurt. I don't charge for that."
             }
           ],
           "choices": [
             {
-              "label": "Buy The Hurricane \u2014 800 CC",
+              "label": "Buy The Hurricane — 800 CC",
               "goto": "priest_gate",
               "condition": {
                 "ccMin": 800,
@@ -2695,7 +2735,7 @@ window.__CCS_DATA__["chapters.json"]={
               "sfx": "cash"
             },
             {
-              "label": "Buy the Iron Chef armor \u2014 700 CC",
+              "label": "Buy the Iron Chef armor — 700 CC",
               "goto": "priest_gate",
               "condition": {
                 "ccMin": 700,
@@ -2709,7 +2749,7 @@ window.__CCS_DATA__["chapters.json"]={
               "sfx": "cash"
             },
             {
-              "label": "Pray and rest \u2014 restores health",
+              "label": "Pray and rest — restores health",
               "goto": "priest_gate",
               "condition": {
                 "notFlag": "prayed"
@@ -2721,7 +2761,7 @@ window.__CCS_DATA__["chapters.json"]={
               "sfx": "chime"
             },
             {
-              "label": "Open the gate \u2014 you carry both",
+              "label": "Open the gate — you carry both",
               "goto": "ch2_end",
               "condition": {
                 "flag": [
@@ -2730,6 +2770,21 @@ window.__CCS_DATA__["chapters.json"]={
                 ]
               },
               "sfx": "chapter"
+            },
+            {
+              "label": "Step back outside to the overpass",
+              "goto": "ledger_call"
+            },
+            {
+              "label": "Ask the priest for a fighting loan — 1,500 CC",
+              "goto": "priest_gate",
+              "condition": {
+                "notFlag": "priestLoan"
+              },
+              "effects": {
+                "cc": 1500,
+                "setFlag": "priestLoan"
+              }
             }
           ]
         }
@@ -2749,40 +2804,39 @@ window.__CCS_DATA__["chapters.json"]={
     "ch2_end": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Old Chapel Ward \u2014 the gate",
+      "location": "Old Chapel Ward — the gate",
       "art": "img/chapter2_end.svg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "priest",
-              "text": "The Hurricane rides your hip and the Iron Chef rides your chest. Go on then, son. The road opens.",
-              "sfx": "success"
+              "text": "The Hurricane rides your hip and the Iron Chef rides your chest. Go on then, son. The road opens."
             },
             {
               "speaker": "narrator",
-              "text": "Chapter Two complete \u2014 The Block. Crew level three unlocked."
+              "text": "Chapter Two complete — The Block. Crew level three unlocked."
             },
             {
               "speaker": "glasses",
-              "text": "Next route on Salena's drive: the Waterfront. An ambush on the road, a damaged Bonnie, an island with a casino and a woman named Sera. That is tomorrow's echo."
-            },
-            {
-              "speaker": "glasses",
-              "text": "Beta build complete through Chapter Two. Chapters Three, Four, and Five \u2014 Waterfront, The Takedown, and The Grand Finale \u2014 are in development. Thank you for playing Capital City Streets."
+              "text": "Next route on Salena's drive: the Waterfront. An ambush on the road, a damaged Bonnie, an island with a casino and a woman in green. Say the word and we roll."
             }
           ],
           "choices": [
             {
-              "label": "Keep roaming the city a while",
+              "label": "Begin Chapter Three: Waterfront",
+              "goto": "c3_open",
+              "effects": {
+                "level": 3
+              }
+            },
+            {
+              "label": "Roam the city before Chapter Three",
               "goto": "@city"
             },
             {
               "label": "Return to title",
-              "goto": "@menu",
-              "effects": {
-                "level": 3
-              }
+              "goto": "@menu"
             }
           ]
         }
@@ -2851,7 +2905,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "narrator",
-              "text": "Chapter Three \u2014 Waterfront and Island."
+              "text": "Chapter Three — Waterfront and Island."
             },
             {
               "speaker": "tess",
@@ -2986,7 +3040,7 @@ window.__CCS_DATA__["chapters.json"]={
           ],
           "choices": [
             {
-              "label": "Authorize nuclear armor \u2014 1,500 CC",
+              "label": "Authorize nuclear armor — 1,500 CC",
               "goto": "police_chase",
               "condition": {
                 "ccMin": 1500
@@ -3020,7 +3074,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The ambush tripped a silent alarm. Five minutes of police chase. Speed tiers rising. Eleven total \u2014 we are on four.",
+              "text": "The ambush tripped a silent alarm. Five minutes of police chase. Speed tiers rising. Eleven total — we are on four.",
               "sfx": "siren"
             },
             {
@@ -3068,7 +3122,7 @@ window.__CCS_DATA__["chapters.json"]={
           ],
           "choices": [
             {
-              "label": "Thread the car wash \u2014 steam hides everything",
+              "label": "Thread the car wash — steam hides everything",
               "goto": "pier",
               "sfx": "glass"
             },
@@ -3165,7 +3219,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Open water. City lights shrink behind you. Ahead: the island \u2014 casino glow, hotel gold, and Salena's last red circle.",
+              "text": "Open water. City lights shrink behind you. Ahead: the island — casino glow, hotel gold, and Salena's last red circle.",
               "sfx": "boat"
             },
             {
@@ -3241,7 +3295,7 @@ window.__CCS_DATA__["chapters.json"]={
               }
             },
             {
-              "label": "Call LOW \u2014 he tapped twice",
+              "label": "Call LOW — he tapped twice",
               "goto": "dan_clue",
               "sfx": "cash"
             }
@@ -3289,7 +3343,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "dan",
-              "text": "Fine. Level four, like she promised. The Police Chief launders through the precinct evidence room. Three detectives sign. And the Mayor's gala? That's the wash cycle \u2014 every dirty dollar comes out smelling like charity."
+              "text": "Fine. Level four, like she promised. The Police Chief launders through the precinct evidence room. Three detectives sign. And the Mayor's gala? That's the wash cycle — every dirty dollar comes out smelling like charity."
             },
             {
               "speaker": "glasses",
@@ -3302,7 +3356,7 @@ window.__CCS_DATA__["chapters.json"]={
               "goto": "sera_meet"
             },
             {
-              "label": "Stay professional \u2014 head for the hotel",
+              "label": "Stay professional — head for the hotel",
               "goto": "c3_end"
             }
           ]
@@ -3342,7 +3396,7 @@ window.__CCS_DATA__["chapters.json"]={
               "sfx": "chime"
             },
             {
-              "label": "Keep it light \u2014 ask about the island",
+              "label": "Keep it light — ask about the island",
               "goto": "c3_end",
               "effects": {
                 "setFlag": "seraMet"
@@ -3365,7 +3419,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "narrator",
-              "text": "Chapter Three complete \u2014 Waterfront and Island."
+              "text": "Chapter Three complete — Waterfront and Island."
             },
             {
               "speaker": "glasses",
@@ -3405,7 +3459,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "narrator",
-              "text": "Chapter Four \u2014 The Takedown."
+              "text": "Chapter Four — The Takedown."
             },
             {
               "speaker": "sam",
@@ -3437,11 +3491,18 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "marrs",
-              "text": "Detective Marrs. She copies your last move \u2014 Salena's notes called her the mirror. So don't give her your last move. Give her a lie."
+              "text": "Detective Marrs. She copies your last move — Salena's notes called her the mirror. So don't give her your last move. Give her a lie."
             },
             {
               "speaker": "glasses",
               "text": "Threat call: Marrs, front. She will repeat whatever you just did."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Desk drawer: a sticky note in Marrs's hand — quote, she mirrors, first digit one. Evidence keypad clue one of three.",
+              "condition": {
+                "flag": "marrsClue"
+              }
             }
           ],
           "choices": [
@@ -3459,6 +3520,16 @@ window.__CCS_DATA__["chapters.json"]={
                   "health": -15
                 },
                 "failGoto": "precinct1"
+              }
+            },
+            {
+              "label": "Search Marrs's desk for keypad clues",
+              "goto": "precinct1",
+              "condition": {
+                "notFlag": "marrsClue"
+              },
+              "effects": {
+                "setFlag": "marrsClue"
               }
             }
           ]
@@ -3483,6 +3554,13 @@ window.__CCS_DATA__["chapters.json"]={
             {
               "speaker": "glasses",
               "text": "He will commit fully. Let the wall finish him."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Locker door: boot polish and a taped slip — quote, he charges, second digit two. Evidence keypad clue two of three.",
+              "condition": {
+                "flag": "coleClue"
+              }
             }
           ],
           "choices": [
@@ -3500,6 +3578,16 @@ window.__CCS_DATA__["chapters.json"]={
                   "health": -20
                 },
                 "failGoto": "precinct2"
+              }
+            },
+            {
+              "label": "Search Cole's locker for keypad clues",
+              "goto": "precinct2",
+              "condition": {
+                "notFlag": "coleClue"
+              },
+              "effects": {
+                "setFlag": "coleClue"
               }
             }
           ]
@@ -3525,6 +3613,13 @@ window.__CCS_DATA__["chapters.json"]={
             {
               "speaker": "glasses",
               "text": "She draws on the exhale. Act on the inhale."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Holster log, last page — quote, she waits for the exhale, third digit three. Evidence keypad clue three of three.",
+              "condition": {
+                "flag": "ruizClue"
+              }
             }
           ],
           "choices": [
@@ -3544,6 +3639,16 @@ window.__CCS_DATA__["chapters.json"]={
                 "failGoto": "precinct3"
               },
               "sfx": "dodge"
+            },
+            {
+              "label": "Check Ruiz's holster log for keypad clues",
+              "goto": "precinct3",
+              "condition": {
+                "notFlag": "ruizClue"
+              },
+              "effects": {
+                "setFlag": "ruizClue"
+              }
             }
           ]
         }
@@ -3567,17 +3672,48 @@ window.__CCS_DATA__["chapters.json"]={
             {
               "speaker": "stoneface",
               "text": "Good. Save me the commute."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Review, since you asked: Marrs mirrors — first digit one. Cole charges — second digit two. Ruiz waits for the exhale — third digit three. One, two, three.",
+              "condition": {
+                "flag": "evHint"
+              }
             }
           ],
           "choices": [
             {
-              "label": "Take the ledger and the list",
+              "label": "Ask Smart Glasses to review the three clues",
+              "goto": "evidence_room",
+              "hint": true,
+              "effects": {
+                "setFlag": "evHint"
+              }
+            },
+            {
+              "label": "Enter the code: 1-2-3 — mirror, charge, exhale",
               "goto": "hitmen_board",
+              "condition": {
+                "flag": [
+                  "marrsClue",
+                  "coleClue",
+                  "ruizClue"
+                ]
+              },
               "effects": {
                 "setFlag": "ledger",
                 "addItem": "precinct-ledger"
-              },
-              "sfx": "pickup"
+              }
+            },
+            {
+              "label": "Force the keypad and take the alarm",
+              "goto": "hitmen_board",
+              "effects": {
+                "setFlag": "ledger",
+                "addItem": "precinct-ledger",
+                "heat": 2,
+                "health": -15
+              }
             }
           ]
         }
@@ -3595,11 +3731,11 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Five names. The Dancer works Midtown's neon. The Welder, Industrial Row. The Choir hides in chapel silence. The Gardener, the parks. And The Suit \u2014 Upper Hills, where the money lives."
+              "text": "Five names. The Dancer works Midtown's neon. The Welder, Industrial Row. The Choir hides in chapel silence. The Gardener, the parks. And The Suit — Upper Hills, where the money lives."
             },
             {
               "speaker": "nyx",
-              "text": "Point us. We'll take two. You take your three \u2014 they're yours by rights."
+              "text": "Point us. We'll take two. You take your three — they're yours by rights."
             }
           ],
           "choices": [
@@ -3623,12 +3759,19 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The Dancer kills on rhythm \u2014 four counts, then a blade. Break his beat and he breaks.",
+              "text": "The Dancer kills on rhythm — four counts, then a blade. Break his beat and he breaks.",
               "sfx": "tick"
             },
             {
               "speaker": "narrator",
-              "text": "One. Two. Three\u2014"
+              "text": "One. Two. Three—"
+            },
+            {
+              "speaker": "glasses",
+              "text": "Analysis: four counts, then a blade. Move between three and one — strike on the missing fourth beat.",
+              "condition": {
+                "flag": "h1hint"
+              }
             }
           ],
           "choices": [
@@ -3646,6 +3789,14 @@ window.__CCS_DATA__["chapters.json"]={
                   "health": -15
                 },
                 "failGoto": "h1"
+              }
+            },
+            {
+              "label": "Ask Smart Glasses to analyze his rhythm",
+              "goto": "h1",
+              "hint": true,
+              "effects": {
+                "setFlag": "h1hint"
               }
             }
           ]
@@ -3666,11 +3817,18 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The Welder announces himself in sparks \u2014 grind, flash, then the torch swing. Listen for the grinder to stop."
+              "text": "The Welder announces himself in sparks — grind, flash, then the torch swing. Listen for the grinder to stop."
             },
             {
               "speaker": "narrator",
-              "text": "Grind. Flash. Silence\u2014"
+              "text": "Grind. Flash. Silence—"
+            },
+            {
+              "speaker": "glasses",
+              "text": "Timing: grind, flash, then the torch swing. The silence after the flash is your door — rush in the silence.",
+              "condition": {
+                "flag": "h2hint"
+              }
             }
           ],
           "choices": [
@@ -3688,6 +3846,14 @@ window.__CCS_DATA__["chapters.json"]={
                   "health": -15
                 },
                 "failGoto": "h2"
+              }
+            },
+            {
+              "label": "Ask Smart Glasses to time the grinder",
+              "goto": "h2",
+              "hint": true,
+              "effects": {
+                "setFlag": "h2hint"
               }
             }
           ]
@@ -3714,11 +3880,18 @@ window.__CCS_DATA__["chapters.json"]={
               "speaker": "stoneface",
               "text": "Then let the church sing.",
               "sfx": "chime"
+            },
+            {
+              "speaker": "glasses",
+              "text": "Echo map: clap once and his footstep answers from the dark. Take him exactly where his echo lands.",
+              "condition": {
+                "flag": "h3hint"
+              }
             }
           ],
           "choices": [
             {
-              "label": "Clap once \u2014 take him where his echo lands",
+              "label": "Clap once — take him where his echo lands",
               "goto": "h4",
               "sfx": "punch"
             },
@@ -3731,6 +3904,14 @@ window.__CCS_DATA__["chapters.json"]={
                   "health": -10
                 },
                 "failGoto": "h3"
+              }
+            },
+            {
+              "label": "Ask Smart Glasses to map the echo",
+              "goto": "h3",
+              "hint": true,
+              "effects": {
+                "setFlag": "h3hint"
               }
             }
           ]
@@ -3751,11 +3932,18 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The Gardener prunes from hedges \u2014 a rustle, a thrown blade. The rustle always comes from the dry leaves."
+              "text": "The Gardener prunes from hedges — a rustle, a thrown blade. The rustle always comes from the dry leaves."
             },
             {
               "speaker": "nia",
               "text": "Wet side's mine! Dry side's yours, king!"
+            },
+            {
+              "speaker": "glasses",
+              "text": "The rustle always comes from the dry leaves; the wet side is Nia's game. Take the dry-leaf rustle.",
+              "condition": {
+                "flag": "h4hint"
+              }
             }
           ],
           "choices": [
@@ -3773,6 +3961,14 @@ window.__CCS_DATA__["chapters.json"]={
                   "health": -10
                 },
                 "failGoto": "h4"
+              }
+            },
+            {
+              "label": "Ask Smart Glasses which leaves lie",
+              "goto": "h4",
+              "hint": true,
+              "effects": {
+                "setFlag": "h4hint"
               }
             }
           ]
@@ -3797,12 +3993,19 @@ window.__CCS_DATA__["chapters.json"]={
             },
             {
               "speaker": "wexler",
-              "text": "\u2026via a city phone, amused. Do enjoy the finale, Stoneface. The gala is Saturday."
+              "text": "…via a city phone, amused. Do enjoy the finale, Stoneface. The gala is Saturday."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Manners are the tells: the draw hides inside the handshake. Refuse the hand and take the wrist.",
+              "condition": {
+                "flag": "h5hint"
+              }
             }
           ],
           "choices": [
             {
-              "label": "Refuse the hand \u2014 take the wrist",
+              "label": "Refuse the hand — take the wrist",
               "goto": "court_ambush",
               "sfx": "whoosh"
             },
@@ -3815,6 +4018,14 @@ window.__CCS_DATA__["chapters.json"]={
                   "health": -25
                 },
                 "failGoto": "h5"
+              }
+            },
+            {
+              "label": "Ask Smart Glasses about the handshake",
+              "goto": "h5",
+              "hint": true,
+              "effects": {
+                "setFlag": "h5hint"
               }
             }
           ]
@@ -3840,12 +4051,19 @@ window.__CCS_DATA__["chapters.json"]={
               "speaker": "glasses",
               "text": "Three shooters in the bleachers. Harbor's whistle is your metronome.",
               "sfx": "punch"
+            },
+            {
+              "speaker": "glasses",
+              "text": "Three shooters in the bleachers, all watching Harbor. His whistle is your metronome — move on the whistle, never early.",
+              "condition": {
+                "flag": "courtHint"
+              }
             }
           ],
           "choices": [
             {
               "label": "Move on the whistle",
-              "goto": "hotel",
+              "goto": "c4_marina",
               "sfx": "whoosh"
             },
             {
@@ -3857,6 +4075,14 @@ window.__CCS_DATA__["chapters.json"]={
                   "health": -15
                 },
                 "failGoto": "court_ambush"
+              }
+            },
+            {
+              "label": "Ask Smart Glasses to count the shooters",
+              "goto": "court_ambush",
+              "hint": true,
+              "effects": {
+                "setFlag": "courtHint"
               }
             }
           ]
@@ -3876,7 +4102,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The Grand Hotel, suite 9. Inside: the final coordinates \u2014 Saturday, Upper Hills, the Mayor's gala, and the room where Wexler and Voss count what they stole."
+              "text": "The Grand Hotel, suite 9. Inside: the final coordinates — Saturday, Upper Hills, the Mayor's gala, and the room where Wexler and Voss count what they stole."
             },
             {
               "speaker": "stoneface",
@@ -3885,12 +4111,28 @@ window.__CCS_DATA__["chapters.json"]={
           ],
           "choices": [
             {
-              "label": "Take the coordinates",
+              "label": "Slide the lobby keycard and take the coordinates",
+              "goto": "c4_end",
+              "condition": {
+                "flag": "lobbyCard"
+              },
+              "effects": {
+                "setFlag": "coords"
+              }
+            },
+            {
+              "label": "Pick the suite lock by ear",
               "goto": "c4_end",
               "effects": {
                 "setFlag": "coords"
               },
-              "sfx": "pickup"
+              "chance": {
+                "fail": 0.5,
+                "failGoto": "hotel",
+                "failEffects": {
+                  "heat": 1
+                }
+              }
             }
           ]
         }
@@ -3908,7 +4150,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "narrator",
-              "text": "Chapter Four complete \u2014 The Takedown."
+              "text": "Chapter Four complete — The Takedown."
             },
             {
               "speaker": "glasses",
@@ -3947,7 +4189,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "narrator",
-              "text": "Chapter Five \u2014 The Grand Finale."
+              "text": "Chapter Five — The Grand Finale."
             },
             {
               "speaker": "nyx",
@@ -3969,7 +4211,7 @@ window.__CCS_DATA__["chapters.json"]={
               "goto": "gate_quiet"
             },
             {
-              "label": "Go loud \u2014 Bonnie takes the gate",
+              "label": "Go loud — Bonnie takes the gate",
               "goto": "gate_loud",
               "effects": {
                 "heat": 2
@@ -3996,7 +4238,7 @@ window.__CCS_DATA__["chapters.json"]={
             },
             {
               "speaker": "nia",
-              "text": "(whisper) I hate roses. They're so\u2026 confident."
+              "text": "(whisper) I hate roses. They're so… confident."
             }
           ],
           "choices": [
@@ -4057,7 +4299,7 @@ window.__CCS_DATA__["chapters.json"]={
     "gala1": {
       "chapter": 5,
       "chapterName": "The Grand Finale",
-      "location": "The Gala \u2014 Ballroom",
+      "location": "The Gala — Ballroom",
       "art": "img/gala.jpg",
       "music": "quartet",
       "nodes": [
@@ -4095,7 +4337,7 @@ window.__CCS_DATA__["chapters.json"]={
     "gala2": {
       "chapter": 5,
       "chapterName": "The Grand Finale",
-      "location": "The Gala \u2014 Service Halls",
+      "location": "The Gala — Service Halls",
       "art": "img/gala.jpg",
       "music": "quartet",
       "nodes": [
@@ -4103,7 +4345,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Service hall. Kitchen steam. Two more guards and a door marked PRIVATE \u2014 the Mayor's study."
+              "text": "Service hall. Kitchen steam. Two more guards and a door marked PRIVATE — the Mayor's study."
             },
             {
               "speaker": "tess",
@@ -4144,7 +4386,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The roof. And a police helicopter on station \u2014 Voss's last card, rotors screaming.",
+              "text": "The roof. And a police helicopter on station — Voss's last card, rotors screaming.",
               "sfx": "heli"
             },
             {
@@ -4190,12 +4432,12 @@ window.__CCS_DATA__["chapters.json"]={
             },
             {
               "speaker": "voss",
-              "text": "We don't steal \u2014 we redirect. Sign the confession we wrote, and the city keeps its fairy tale.",
+              "text": "We don't steal — we redirect. Sign the confession we wrote, and the city keeps its fairy tale.",
               "sfx": "draw"
             },
             {
               "speaker": "stoneface",
-              "text": "Salena kept receipts. I keep promises. Choose your ending \u2014 I'll narrate it true."
+              "text": "Salena kept receipts. I keep promises. Choose your ending — I'll narrate it true."
             },
             {
               "speaker": "glasses",
@@ -4204,15 +4446,15 @@ window.__CCS_DATA__["chapters.json"]={
           ],
           "choices": [
             {
-              "label": "EXECUTION \u2014 justice with your hands",
+              "label": "EXECUTION — justice with your hands",
               "goto": "end_execution"
             },
             {
-              "label": "FORCED SUICIDE \u2014 let them erase themselves",
+              "label": "FORCED SUICIDE — let them erase themselves",
               "goto": "end_suicide"
             },
             {
-              "label": "EXILE \u2014 strip them and banish them",
+              "label": "EXILE — strip them and banish them",
               "goto": "end_exile"
             }
           ]
@@ -4263,7 +4505,7 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "narrator",
-              "text": "You hand Wexler his own pen. The fairy tale writes its last line in his handwriting \u2014 a confession styled as a suicide note, Voss's signature beneath."
+              "text": "You hand Wexler his own pen. The fairy tale writes its last line in his handwriting — a confession styled as a suicide note, Voss's signature beneath."
             },
             {
               "speaker": "glasses",
@@ -4336,7 +4578,7 @@ window.__CCS_DATA__["chapters.json"]={
           ],
           "choices": [
             {
-              "label": "Return to the island \u2014 to Sera",
+              "label": "Return to the island — to Sera",
               "goto": "epilogue_sera",
               "condition": {
                 "flag": "seraBond"
@@ -4395,11 +4637,11 @@ window.__CCS_DATA__["chapters.json"]={
           "lines": [
             {
               "speaker": "narrator",
-              "text": "CAPITAL CITY STREETS \u2014 the full story, complete. Hunt the truth. Avenge the silence."
+              "text": "CAPITAL CITY STREETS — the full story, complete. Hunt the truth. Avenge the silence."
             },
             {
               "speaker": "glasses",
-              "text": "Thank you for playing. The city remains open \u2014 roam it whenever you like. Justice is coming, one block at a time."
+              "text": "Thank you for playing. The city remains open — roam it whenever you like. Justice is coming, one block at a time."
             },
             {
               "speaker": "stoneface",
@@ -4419,6 +4661,137 @@ window.__CCS_DATA__["chapters.json"]={
         }
       ],
       "amb": "night"
+    },
+    "c4_marina": {
+      "chapter": 4,
+      "chapterName": "The Takedown",
+      "location": "The Island — marina",
+      "music": "sea",
+      "amb": "boat",
+      "art": "img/harbor.jpg",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "The island marina. Hulls knocking, gulls crying, one dock guard who plays Salena's game — one question, one right answer, or you swim home."
+            },
+            {
+              "speaker": "stoneface",
+              "text": "Ask your question."
+            },
+            {
+              "speaker": "glasses",
+              "text": "He asks: where did the precinct wash its money? Answer wrong and the whole dock hears about it."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Think. The ledger in your pocket says it plain: Voss signed the laundry through the precinct evidence room.",
+              "condition": {
+                "flag": "marinaHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses for the answer",
+              "goto": "c4_marina",
+              "hint": true,
+              "effects": {
+                "setFlag": "marinaHint"
+              }
+            },
+            {
+              "label": "Answer: the precinct evidence room",
+              "goto": "c4_lobby",
+              "condition": {
+                "flag": "ledger"
+              },
+              "effects": {
+                "setFlag": "marinaPass"
+              }
+            },
+            {
+              "label": "Answer: the casino vault",
+              "goto": "c4_marina",
+              "effects": {
+                "heat": 1
+              }
+            },
+            {
+              "label": "Answer: the mayor's office",
+              "goto": "c4_marina",
+              "effects": {
+                "heat": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "c4_lobby": {
+      "chapter": 4,
+      "chapterName": "The Takedown",
+      "location": "The Island — hotel lobby",
+      "music": "mystery",
+      "amb": "mansion",
+      "art": "img/mansion.jpg",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "The Grand Hotel lobby. Marble, perfume, and a bellhop who sells suite numbers to anyone with confidence. Three suites matter. Only one holds the coordinates."
+            },
+            {
+              "speaker": "stoneface",
+              "text": "Salena counted everything in chimes. Nine of them."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Nine chimes on her jingle. Nine floors in this hotel. The bellhop is waiting — suite seven, eight, or nine?"
+            },
+            {
+              "speaker": "glasses",
+              "text": "Nine chimes. Nine floors. Suite nine. Trust her counting.",
+              "condition": {
+                "flag": "lobbyHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses which suite",
+              "goto": "c4_lobby",
+              "hint": true,
+              "effects": {
+                "setFlag": "lobbyHint"
+              }
+            },
+            {
+              "label": "Ask for suite 7",
+              "goto": "c4_lobby",
+              "effects": {
+                "heat": 1
+              }
+            },
+            {
+              "label": "Ask for suite 8",
+              "goto": "c4_lobby",
+              "effects": {
+                "heat": 1
+              }
+            },
+            {
+              "label": "Ask for suite 9 — nine chimes, nine floors",
+              "goto": "hotel",
+              "effects": {
+                "setFlag": "lobbyCard"
+              }
+            }
+          ]
+        }
+      ]
     }
   }
 };
@@ -4906,22 +5279,17 @@ window.__CCS_DATA__["city.json"]={
   ],
   "sonarRange": 7
 };
-console.log('[Standalone] Data inlined - no fetch needed, boss ready');
+console.log('[Standalone] Data inlined - no fetch needed');
 </script>
-
 <script>
-// Patch loadData to use inlined data for standalone - boss ready, no lag
 (function() {
-  const origFetch = window.fetch;
+  var origFetch = window.fetch;
   window.fetch = function(url, opts) {
-    if (typeof url === 'string' && url.includes('data/')) {
-      const key = url.split('/').pop();
+    if (typeof url === 'string' && url.indexOf('data/') !== -1) {
+      var key = url.split('/').pop();
       if (window.__CCS_DATA__ && window.__CCS_DATA__[key]) {
-        console.log('[Standalone] Using inlined data for', key);
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve(window.__CCS_DATA__[key])
-        });
+        var data = window.__CCS_DATA__[key];
+        return Promise.resolve({ ok: true, json: function() { return Promise.resolve(data); } });
       }
     }
     return origFetch.apply(this, arguments);
@@ -5317,8 +5685,9 @@ console.log('[Standalone] Data inlined - no fetch needed, boss ready');
       <div id="city-caption" aria-live="polite"></div>
     </main>
     <p class="city-keys">
-      ↑ ↓ ← → move · Enter interact · L look · P sonar ping · K district guide · G go-to landmark · U your trail<br/>
-      M set marker · N hear the way · X clear marker · B ride Bonnie · C 3D/map view · O 3D sound · I case file · Esc menu
+      ↑ ↓ ← → move · Enter interact · L look · P sonar ping · K district guide · G go-to (A/B/C letters, 0 back) · U your trail<br/>
+      M set marker · N hear the way · Y walking beacon · X clear marker · B ride Bonnie · J journal · R replay · T voice · H contrast<br/>
+      Backspace step back · C 3D/map view · O 3D sound · I case file · Esc menu
       · <span id="city-ver"></span>
     </p>
   </div>
@@ -5328,15 +5697,13 @@ console.log('[Standalone] Data inlined - no fetch needed, boss ready');
 /* === src/tts.js === */
 /* ============================================================
    CAPITAL CITY STREETS — src/tts.js
-   PREMIUM FIX: No double voice ever, single voice guarantee
-   Mobile + Desktop - Professional blind game standard
-   
-   FIXES double voice bug:
-   - Generation token: each new voice invalidates previous
-   - Chunk loop abort on cancel/error
-   - Hard stop before any new voice
-   - RealVoices + TTS mutually exclusive
-   - Chapter load hard stop
+   v4.0 NARRATOR FIX: every arrow press announces, never freezes.
+   - cancel→speak always separated by a delay (Chrome drops
+     utterances spoken immediately after cancel — that was the
+     "arrows move but don't announce" bug)
+   - watchdog timeout on every utterance (a stuck speech engine
+     can never freeze the game again — the ep3→ep4 shutdown)
+   - gender-aware voices (Bonnie finally sounds female)
    ============================================================ */
 
 const TTS = (() => {
@@ -5345,13 +5712,15 @@ const TTS = (() => {
   let lastSpoken = null;
   let interruptTimer = null;
   let chunkTimer = null;
+  let watchdogTimer = null;
   let rateMul = parseFloat(localStorage.getItem('ccs-rate') || '1') || 1;
   let isSpeakingReal = false;
   let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   let isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
   let voicesLoaded = false;
   let audioUnlocked = false;
-  let speakGen = 0; // PREMIUM FIX: generation token for single voice guarantee
+  let speakGen = 0; // generation token: each new request invalidates older ones
+  let assigned = {};
 
   function loadVoices() {
     if (!window.speechSynthesis) return;
@@ -5361,7 +5730,7 @@ const TTS = (() => {
       voicesLoaded = true;
     }
   }
-  
+
   if (window.speechSynthesis) {
     loadVoices();
     window.speechSynthesis.onvoiceschanged = () => {
@@ -5393,7 +5762,7 @@ const TTS = (() => {
       }
     } catch (e) {}
   }
-  
+
   if (isMobile) {
     const unlockEvents = ['touchstart', 'touchend', 'click', 'keydown'];
     const unlockOnce = () => {
@@ -5403,8 +5772,14 @@ const TTS = (() => {
     unlockEvents.forEach(ev => document.addEventListener(ev, unlockOnce, { once: true, passive: true }));
   }
 
-  let assigned = {};
-  
+  /* ---------- voice picking (gender-aware) ---------- */
+  const FEMALE_HINTS = ['female', 'woman', 'girl', 'aria', 'jenny', 'samantha', 'zira',
+    'susan', 'karen', 'moira', 'tessa', 'veena', 'fiona', 'kate', 'serena', 'kathy',
+    'shelley', 'zira', 'linda', 'heather', 'siri_female', 'female_'];
+  const MALE_HINTS = ['male_', '_male', 'david', 'guy', 'daniel', 'alex ', 'fred',
+    'oliver', 'matthew', 'george', 'aaron', 'davis', 'thomas', 'paul', 'mark',
+    'microsoft guy', 'microsoft davis', 'google uk english male'];
+
   function scoreNatural(voice) {
     const name = (voice.name || '').toLowerCase();
     const uri = (voice.voiceURI || '').toLowerCase();
@@ -5432,19 +5807,38 @@ const TTS = (() => {
     else if (voice.lang && voice.lang.toLowerCase().startsWith('en')) score += 5;
     return score;
   }
-  
+
+  function genderBonus(voice, gender) {
+    if (!gender) return 0;
+    const name = (voice.name || '').toLowerCase();
+    const isF = FEMALE_HINTS.some(h => name.includes(h));
+    const isM = MALE_HINTS.some(h => name.includes(h));
+    if (gender === 'female') return (isF ? 140 : 0) + (isM ? -120 : 0);
+    if (gender === 'male') return (isM ? 140 : 0) + (isF ? -120 : 0);
+    return 0;
+  }
+
   function pickVoice(profile) {
+    profile = profile || {};
     if (!voices.length) {
       if (isMobile && !voicesLoaded) loadVoices();
       return null;
     }
     const en = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith('en'));
     const pool = en.length ? en : voices;
-    const sortedPool = [...pool].sort((a,b) => scoreNatural(b) - scoreNatural(a));
-    const slot = (profile && typeof profile.slot === 'number') ? profile.slot : 0;
+    const gender = profile.gender || null;
+    const sortedPool = [...pool].sort((a, b) =>
+      (scoreNatural(b) + genderBonus(b, gender)) - (scoreNatural(a) + genderBonus(a, gender)));
+    const slot = (typeof profile.slot === 'number') ? profile.slot : 0;
     if (assigned[slot] && pool.includes(assigned[slot])) return assigned[slot];
-    const naturalCount = isMobile ? Math.min(3, sortedPool.length) : Math.max(3, Math.ceil(sortedPool.length * 0.6));
-    const naturalPool = sortedPool.slice(0, naturalCount);
+    // gendered slots prefer the top gender-matching third of the pool
+    let candidates = sortedPool;
+    if (gender) {
+      const matched = sortedPool.filter(v => genderBonus(v, gender) > 0);
+      if (matched.length) candidates = matched;
+    }
+    const naturalCount = isMobile ? Math.min(3, candidates.length) : Math.max(3, Math.ceil(candidates.length * 0.6));
+    const naturalPool = candidates.slice(0, Math.max(1, naturalCount));
     const stride = Math.max(1, Math.floor(naturalPool.length / 8) || 1);
     for (let i = 0; i < naturalPool.length; i++) {
       const cand = naturalPool[(slot * stride + i) % naturalPool.length];
@@ -5463,7 +5857,12 @@ const TTS = (() => {
     if (!text) return true;
     if (profile && profile._skipReal) return true;
     const lower = String(text).toLowerCase();
-    const uiKeywords = ['options available', 'option 1:', 'arrow keys', 'press enter', 'main menu', 'settings.', 'credits.', 'how to play', 'voice toggle', 'currently', 'percent', 'high contrast', 'real human voices', 'realistic sounds', 'blind friendly', 'real noir', 'real punch', 'starting new case', 'resuming your case', 'entering capitol', 'chapter select', 'use arrow keys to move', 'enhanced listening', 'sonar ping', 'rolling the opening'];
+    const uiKeywords = ['options available', 'option 1:', 'arrow keys', 'press enter', 'main menu',
+      'settings.', 'credits.', 'how to play', 'voice toggle', 'currently', 'percent',
+      'high contrast', 'real human voices', 'realistic sounds', 'blind friendly', 'real noir',
+      'real punch', 'starting new case', 'resuming your case', 'entering capitol',
+      'chapter select', 'use arrow keys to move', 'enhanced listening', 'sonar ping',
+      'rolling the opening', 'options again', 'case journal', 'clues found', 'beacon:'];
     for (const kw of uiKeywords) {
       if (lower.includes(kw)) return true;
     }
@@ -5492,255 +5891,62 @@ const TTS = (() => {
     return chunks.length ? chunks : [text];
   }
 
-  // BUG FIX v2.2: Ultra hard stop - single voice guarantee, prevents option click double voice
-  function hardStop() {
-    speakGen++; // invalidate all pending chunks - generation token
-    clearTimeout(interruptTimer);
-    clearTimeout(chunkTimer);
-    interruptTimer = null;
-    chunkTimer = null;
-    // Triple cancel for robustness - speechSynthesis cancel is async
+  function duckAll(on) {
     try {
-      if (window.speechSynthesis) {
-        window.speechSynthesis.cancel();
-        // Chrome sometimes needs pause + cancel + resume + cancel
-        try { window.speechSynthesis.pause(); } catch (e) {}
-        window.speechSynthesis.cancel();
-        try { window.speechSynthesis.resume(); } catch (e) {}
-        window.speechSynthesis.cancel();
-      }
+      if (typeof Music !== 'undefined') Music.duck(on);
+      if (typeof BlindMusic !== 'undefined') BlindMusic.duck(on);
+      if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(on);
+    } catch (e) {}
+  }
+
+  /* v4.0: single clean stop. No pause/resume dance — that dance left
+     Chrome's speech engine stuck and dropped the next utterance. */
+  function hardStop() {
+    speakGen++; // invalidate everything pending
+    clearTimeout(interruptTimer); interruptTimer = null;
+    clearTimeout(chunkTimer); chunkTimer = null;
+    clearTimeout(watchdogTimer); watchdogTimer = null;
+    try {
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
     } catch (e) {}
     try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (e) {}
     isSpeakingReal = false;
-    // Unduck immediately to prevent music staying ducked
-    try {
-      if (typeof Music !== 'undefined') Music.duck(false);
-      if (typeof BlindMusic !== 'undefined') BlindMusic.duck(false);
-      if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(false);
-    } catch (e) {}
+    duckAll(false);
   }
 
-  function speak(text, profile = {}) {
-    lastSpoken = { text, profile };
-    if (!enabled || !window.speechSynthesis || !('SpeechSynthesisUtterance' in window)) {
-      return Promise.resolve();
-    }
-    if (isMobile && !voicesLoaded) loadVoices();
-    
-    // PREMIUM: Hard stop previous before new
-    hardStop();
-    
-    if (shouldSkipReal(text, profile)) {
-      return speakTTS(text, profile);
-    }
-    
-    try {
-      if (typeof RealVoices !== 'undefined' && RealVoices.isEnabled() && !profile._skipReal) {
-        const charId = profile._charId || null;
-        const realResult = RealVoices.findRealFile(text, charId);
-        if (!realResult) {
-          return speakTTS(text, profile);
-        }
-        const realPromise = RealVoices.playReal(text, charId);
-        if (realPromise && typeof realPromise.then === 'function') {
-          isSpeakingReal = true;
-          return realPromise.then(played => {
-            isSpeakingReal = false;
-            if (played !== false) return;
-            return speakTTS(text, profile);
-          }).catch(() => {
-            isSpeakingReal = false;
-            return speakTTS(text, profile);
-          });
-        } else if (realPromise === false) {
-          return speakTTS(text, profile);
-        } else {
-          return realPromise;
-        }
-      }
-    } catch (e) {
-      console.warn('[TTS] RealVoices failed, fallback:', e);
-    }
-    
-    return speakTTS(text, profile);
-  }
-  
-  function speakTTS(text, profile = {}) {
-    return new Promise(resolve => {
-      const myGen = ++speakGen; // capture generation
-      hardStop(); // ensure clean
-      const currentGen = myGen;
-      // Re-increment after hardStop invalidated, so we need fresh
-      const finalGen = ++speakGen;
-      
-      const chunks = splitLongText(String(text).replace(/[*_#>]/g, ''));
-      let idx = 0;
-      
-      const unduckAll = () => {
-        setTimeout(() => {
-          if (typeof Music !== 'undefined') Music.duck(false);
-          if (typeof BlindMusic !== 'undefined') BlindMusic.duck(false);
-        }, isMobile ? 300 : 200);
-      };
-      
-      const speakChunk = () => {
-        // PREMIUM FIX: Check if invalidated by newer voice
-        if (finalGen !== speakGen) {
-          console.log('[TTS] Chunk aborted - newer voice started');
-          unduckAll();
-          resolve();
-          return;
-        }
-        if (idx >= chunks.length) {
-          unduckAll();
-          resolve();
-          return;
-        }
-        const clean = chunks[idx];
-        const u = new SpeechSynthesisUtterance(clean);
-        const v = pickVoice(profile);
-        if (v) u.voice = v;
-        
-        let pitch = typeof profile.pitch === 'number' ? profile.pitch : 1;
-        let rate = typeof profile.rate === 'number' ? profile.rate : 1.12;
-        if (isMobile) {
-          rate = Math.min(1.1, rate * 0.95);
-          pitch = Math.max(0.9, Math.min(1.1, pitch));
-        }
-        u.pitch = pitch;
-        u.rate = Math.min(2, Math.max(0.5, rate * rateMul));
-        u.volume = 1.0;
-        
-        if (typeof Music !== 'undefined') Music.duck(true);
-        if (typeof BlindMusic !== 'undefined') BlindMusic.duck(true);
-        if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(true);
-        if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(true);
-        
-        u.onend = () => {
-          if (finalGen !== speakGen) {
-            unduckAll();
-            resolve();
-            return;
-          }
-          idx++;
-          if (idx < chunks.length) {
-            chunkTimer = setTimeout(speakChunk, isMobile ? 80 : 20);
-          } else {
-            unduckAll();
-            resolve();
-          }
-        };
-        u.onerror = (e) => {
-          // PREMIUM FIX: Don't continue on cancel/interrupted
-          const err = e.error || '';
-          if (err === 'canceled' || err === 'interrupted' || finalGen !== speakGen) {
-            console.log('[TTS] onerror canceled/interrupted - aborting chunks', err);
-            unduckAll();
-            resolve();
-            return;
-          }
-          console.warn('[TTS] onerror:', e);
-          idx++;
-          if (finalGen !== speakGen) {
-            unduckAll();
-            resolve();
-            return;
-          }
-          if (idx < chunks.length) chunkTimer = setTimeout(speakChunk, 100);
-          else { unduckAll(); resolve(); }
-        };
-        
-        try {
-          window.speechSynthesis.speak(u);
-          if (isIOS) {
-            setTimeout(() => { try { window.speechSynthesis.resume(); } catch (e) {} }, 100);
-          }
-        } catch (e) {
-          unduckAll();
-          resolve();
-        }
-      };
-      
-      speakChunk();
-    });
-  }
-
-  function interrupt(text, profile = {}) {
-    lastSpoken = { text, profile };
-    if (!enabled || !window.speechSynthesis) return Promise.resolve();
-    
-    // PREMIUM: Hard stop immediately
-    hardStop();
-    
-    return new Promise(resolve => {
-      const delay = isMobile ? 50 : 35;
-      const myGen = speakGen;
-      interruptTimer = setTimeout(() => {
-        // Check if invalidated during delay
-        if (myGen !== speakGen && myGen !== speakGen - 1) {
-          resolve();
-          return;
-        }
-        try { window.speechSynthesis.resume(); } catch (e) {}
-        
-        if (shouldSkipReal(text, profile)) {
-          speakTTSInterrupt(text, profile, resolve);
-          return;
-        }
-        
-        try {
-          if (typeof RealVoices !== 'undefined' && RealVoices.isEnabled() && !profile._skipReal) {
-            const hasFile = RealVoices.findRealFile(text, profile._charId || null);
-            if (!hasFile) {
-              speakTTSInterrupt(text, profile, resolve);
-              return;
-            }
-            const charId = profile._charId || null;
-            RealVoices.playReal(text, charId).then(played => {
-              if (played !== false) { resolve(); return; }
-              speakTTSInterrupt(text, profile, resolve);
-            }).catch(() => speakTTSInterrupt(text, profile, resolve));
-            return;
-          }
-        } catch (e) {}
-        
-        speakTTSInterrupt(text, profile, resolve);
-      }, delay);
-    });
-  }
-  
-  function speakTTSInterrupt(text, profile, resolve) {
-    const finalGen = ++speakGen;
-    
-    const clean = String(text).replace(/[*_#>]/g, '');
-    const chunks = splitLongText(clean);
+  /* Speak pre-cleaned text via speechSynthesis. gen = our generation token.
+     ALWAYS resolves — watchdog guarantees the game can never hang. */
+  function speakUtterances(text, profile, gen, resolve) {
+    const chunks = splitLongText(String(text).replace(/[*_#>]/g, ''));
     let idx = 0;
-    
-    const unduckAll = () => {
-      setTimeout(() => {
-        try {
-          if (typeof Music !== 'undefined') Music.duck(false);
-          if (typeof BlindMusic !== 'undefined') BlindMusic.duck(false);
-          if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(false);
-        } catch (e) {}
-      }, isMobile ? 300 : 200);
+    let done = false;
+
+    const finish = () => {
+      if (done) return;
+      done = true;
+      clearTimeout(chunkTimer); chunkTimer = null;
+      clearTimeout(watchdogTimer); watchdogTimer = null;
+      setTimeout(() => duckAll(false), isMobile ? 300 : 200);
+      resolve();
     };
-    
+
+    // Watchdog: speech engines stall (tab switch, long sessions, mobile).
+    // Never leave the story awaiting forever — resolve and move on.
+    const watchMs = Math.max(6000, Math.min(40000, 4000 + String(text).length * 260));
+    clearTimeout(watchdogTimer);
+    watchdogTimer = setTimeout(() => {
+      console.warn('[TTS] Watchdog fired — speech engine stalled, releasing story');
+      try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
+      finish();
+    }, watchMs);
+
     const speakChunk = () => {
-      if (finalGen !== speakGen) {
-        unduckAll();
-        resolve();
-        return;
-      }
-      if (idx >= chunks.length) {
-        unduckAll();
-        resolve();
-        return;
-      }
+      if (done) return;
+      if (gen !== speakGen) { finish(); return; } // superseded by newer voice
+      if (idx >= chunks.length) { finish(); return; }
       const u = new SpeechSynthesisUtterance(chunks[idx]);
       const v = pickVoice(profile);
       if (v) u.voice = v;
-      
       let pitch = typeof profile.pitch === 'number' ? profile.pitch : 1;
       let rate = typeof profile.rate === 'number' ? profile.rate : 1.12;
       if (isMobile) {
@@ -5750,43 +5956,89 @@ const TTS = (() => {
       u.pitch = pitch;
       u.rate = Math.min(2, Math.max(0.5, rate * rateMul));
       u.volume = 1.0;
-      
-        if (typeof Music !== 'undefined') Music.duck(true);
-        if (typeof BlindMusic !== 'undefined') BlindMusic.duck(true);
-        if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(true);
-        if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(true);
-      
+      duckAll(true);
+
       u.onend = () => {
-        if (finalGen !== speakGen) { unduckAll(); resolve(); return; }
+        if (done) return;
+        if (gen !== speakGen) { finish(); return; }
         idx++;
         if (idx < chunks.length) chunkTimer = setTimeout(speakChunk, isMobile ? 80 : 20);
-        else { unduckAll(); resolve(); }
+        else finish();
       };
       u.onerror = (e) => {
-        const err = e.error || '';
-        if (err === 'canceled' || err === 'interrupted' || finalGen !== speakGen) {
-          unduckAll();
-          resolve();
-          return;
-        }
+        if (done) return;
+        const err = (e && e.error) || '';
+        if (err === 'canceled' || err === 'interrupted' || gen !== speakGen) { finish(); return; }
+        console.warn('[TTS] chunk error, continuing:', err);
         idx++;
-        if (finalGen !== speakGen) { unduckAll(); resolve(); return; }
+        if (gen !== speakGen) { finish(); return; }
         if (idx < chunks.length) chunkTimer = setTimeout(speakChunk, 100);
-        else { unduckAll(); resolve(); }
+        else finish();
       };
-      
       try {
         window.speechSynthesis.speak(u);
         if (isIOS) setTimeout(() => { try { window.speechSynthesis.resume(); } catch (e) {} }, 100);
-      } catch (e) { unduckAll(); resolve(); }
+      } catch (e) { finish(); }
     };
-    
+
     speakChunk();
   }
 
-  function stop() {
+  /* v4.0 core: stop everything, wait for the engine to settle, THEN speak.
+     That settle-delay is the whole narrator fix. */
+  function queueSpeak(text, profile, delayMs) {
+    profile = profile || {};
+    lastSpoken = { text, profile };
+    if (!enabled || !window.speechSynthesis || !('SpeechSynthesisUtterance' in window)) {
+      return Promise.resolve();
+    }
+    if (isMobile && !voicesLoaded) loadVoices();
     hardStop();
+    const gen = speakGen;
+    return new Promise(resolve => {
+      clearTimeout(interruptTimer);
+      interruptTimer = setTimeout(() => {
+        interruptTimer = null;
+        if (gen !== speakGen) { resolve(); return; } // a newer request won
+        try { window.speechSynthesis.resume(); } catch (e) {}
+        // Real human voice first (story lines), TTS fallback
+        if (!shouldSkipReal(text, profile)) {
+          try {
+            if (typeof RealVoices !== 'undefined' && RealVoices.isEnabled() && !profile._skipReal) {
+              const charId = profile._charId || null;
+              if (RealVoices.findRealFile(text, charId)) {
+                isSpeakingReal = true;
+                Promise.resolve(RealVoices.playReal(text, charId)).then(played => {
+                  isSpeakingReal = false;
+                  if (gen !== speakGen) { resolve(); return; }
+                  if (played !== false) { duckAll(false); resolve(); return; }
+                  speakUtterances(text, profile, gen, resolve);
+                }).catch(() => {
+                  isSpeakingReal = false;
+                  if (gen !== speakGen) { resolve(); return; }
+                  speakUtterances(text, profile, gen, resolve);
+                });
+                return;
+              }
+            }
+          } catch (e) { console.warn('[TTS] RealVoices failed, fallback:', e); }
+        }
+        speakUtterances(text, profile, gen, resolve);
+      }, delayMs);
+    });
   }
+
+  // Full line (waits for engine settle so long story lines never drop)
+  function speak(text, profile) {
+    return queueSpeak(text, profile || {}, isMobile ? 140 : 70);
+  }
+
+  // Instant UI speech (arrows, menus — short settle, still never dropped)
+  function interrupt(text, profile) {
+    return queueSpeak(text, profile || {}, isMobile ? 90 : 45);
+  }
+
+  function stop() { hardStop(); }
 
   function replay() {
     if (lastSpoken) speak(lastSpoken.text, lastSpoken.profile);
@@ -6048,7 +6300,18 @@ const RealVoices = (() => {
       
       return new Promise(resolve => {
         pendingResolve = resolve;
+        // v4.0 SAFETY: a stalled audio file must never freeze the story
+        const safety = setTimeout(() => {
+          console.warn('[RealVoices] Safety timeout — releasing story');
+          try { el.pause(); } catch (e) {}
+          currentPlaying = null;
+          pendingResolve = null;
+          if (typeof Music !== 'undefined') Music.duck(false);
+          if (typeof BlindMusic !== 'undefined') BlindMusic.duck(false);
+          resolve(false);
+        }, 25000);
         el.onended = () => {
+          clearTimeout(safety);
           if (myGen !== playGen) {
             resolve(false);
             return;
@@ -6060,6 +6323,7 @@ const RealVoices = (() => {
           resolve(true);
         };
         el.onerror = (e) => {
+          clearTimeout(safety);
           currentPlaying = null;
           pendingResolve = null;
           if (typeof Music !== 'undefined') Music.duck(false);
@@ -8293,6 +8557,8 @@ const Music = (() => {
                mel: [74,73,70,67], melP: .10, perc: 'brush', quiet: true, motif: [62,63,62,59] },
     sea:     { bpm: 60, pad: [[50,57,62,69],[48,55,60,67]], bass: [26,24],
                mel: [81,79,76,74], melP: .18, perc: 'none', shimmer: true, quiet: true },
+    island:  { bpm: 62, pad: [[50,57,62,69],[48,55,60,67]], bass: [26,26,24,26],
+               mel: [79,81,84,81,79,76], melP: .20, perc: 'brush', shimmer: true, quiet: true },
     casino:  { bpm: 78, pad: [[53,57,60,67],[48,52,55,62]], bass: [29,29,36,29,24,24,31,36],
                mel: [72,74,76,79,76,74], melP: .22, perc: 'brush', quiet: true },
     sera:    { bpm: 54, pad: [[57,64,69,76],[53,60,65,72]], bass: [33,29],
@@ -9167,20 +9433,47 @@ const PremiumAudio = (() => {
 /* === src/input.js === */
 /* ============================================================
    CAPITAL CITY STREETS — src/input.js
-   Keyboard-first input. Global keys:
-     ↑/↓ or W/S .. move between choices
-     Enter/Space . select focused choice
-     1-9 ......... jump-select a choice directly
-     R ........... replay last Smart Glasses line
-     F ........... Focus Mode (boosts narration, dims art)
-     H ........... high-contrast toggle
-     T ........... voice on/off
+   v4.0 HOTKEY FIX — every key works, no mode fights another mode.
+   Story keys:
+     Up/Down or W/S .. move between choices (each one is spoken)
+     Enter/Space .... select focused choice (or skip narration)
+     1-9 ............ jump-select a choice directly
+     A/B/C/D... ..... letter hotkey printed on each choice
+     R .............. replay last spoken line
+     J .............. case journal (chapter, clues, inventory)
+     E .............. sonar ping — enhanced listening
+     Backspace ...... repeat all options again
+     F .............. Focus Mode (boosts narration, dims art)
+     H .............. high-contrast toggle
+     T/V ............ voice on/off
+     Esc ............ back to menu (asks first)
+   City mode and the main menu handle their own keys — this file
+   stays out of their way (that cross-talk was auto-selecting
+   hidden story choices while roaming the city).
    ============================================================ */
 
 const Input = (() => {
   const handlers = { choose: null, global: null };
 
-  function focusedChoice() {
+  // Letters the story reserves — choice hotkeys never use these.
+  // (game.js uses the same list when printing A/B/C badges.)
+  const RESERVED = new Set(['e', 'f', 'h', 'j', 'r', 's', 't', 'v', 'w']);
+
+  function cityOpen() {
+    try {
+      if (typeof CityMode !== 'undefined' && CityMode.isActive) return CityMode.isActive();
+    } catch (e) {}
+    const c = document.getElementById('city');
+    return !!(c && !c.hidden);
+  }
+
+  function gameOpen() {
+    const g = document.getElementById('game');
+    return !!(g && !g.hidden);
+  }
+
+  function storyChoices() {
+    if (!gameOpen()) return { list: [], index: -1 };
     const list = [...document.querySelectorAll('#choices .choice:not(:disabled)')];
     const cur = document.activeElement;
     const i = list.indexOf(cur);
@@ -9188,16 +9481,20 @@ const Input = (() => {
   }
 
   function focusChoice(i) {
-    const { list } = focusedChoice();
+    const { list } = storyChoices();
     if (!list.length) return;
     const idx = Math.max(0, Math.min(i, list.length - 1));
     const el = list[idx];
     el.focus();
-    // Speak the option the player just landed on. interrupt() cancels any
-    // current speech and waits a beat so Chrome doesn't drop the utterance.
+    // Speak the option just landed on. interrupt() stops the old voice,
+    // waits for the engine to settle, then speaks — never dropped.
     if (el.dataset.label) {
-      TTS.interrupt(`Option ${idx + 1} of ${list.length}: ${el.dataset.label}`,
-        { pitch: 1.15, rate: 1.1, slot: 0 });
+      const letter = (el.dataset.hotkey || '').toUpperCase();
+      const prefix = letter ? `Option ${letter}, ${idx + 1} of ${list.length}` : `Option ${idx + 1} of ${list.length}`;
+      try {
+        TTS.interrupt(`${prefix}: ${el.dataset.label}`,
+          { pitch: 1.15, rate: 1.1, slot: 0, _skipReal: true });
+      } catch (e) {}
     }
   }
 
@@ -9206,26 +9503,40 @@ const Input = (() => {
                      document.activeElement?.id === 'editor-text';
     if (inEditor) return; // never hijack keys while editing content
 
-    const { list, index } = focusedChoice();
+    // City mode owns every key while it is open.
+    if (cityOpen()) return;
+
+    // Main menu owns arrows/enter/numbers — only global toggles here.
+    if (!gameOpen()) {
+      switch (e.key) {
+        case 'r': case 'R': try { TTS.replay(); } catch (err) {} break;
+        case 'h': case 'H': handlers.global?.('highContrast'); break;
+        case 't': case 'T': case 'v': case 'V': handlers.global?.('voiceToggle'); break;
+        default: break;
+      }
+      return;
+    }
+
+    // ---- story mode ----
+    const { list, index } = storyChoices();
 
     switch (e.key) {
       case 'ArrowDown': case 's': case 'S':
-        if (!list.length) return;  // let the main menu layer handle its own nav
+        if (!list.length) return;
         e.preventDefault(); focusChoice(index + 1 < list.length ? index + 1 : 0); break;
       case 'ArrowUp': case 'w': case 'W':
         if (!list.length) return;
         e.preventDefault(); focusChoice(index - 1 >= 0 ? index - 1 : list.length - 1); break;
       case 'Enter': case ' ': {
         // while the story is narrating, Enter/Space skips straight to choices
-        if (!document.getElementById('game')?.hidden && Game.isSpeaking()) {
+        if (Game.isSpeaking()) {
           e.preventDefault();
           Game.skip();
           return;
         }
         const el = document.activeElement;
-        // Never hijack Enter/Space on real interactive elements (main-menu
-        // buttons, settings controls...). Their native click must fire —
-        // calling preventDefault() here would cancel it.
+        // Never hijack Enter/Space on real interactive elements — their
+        // native click must fire; preventDefault() here would cancel it.
         if (el && (el.tagName === 'BUTTON' || el.tagName === 'INPUT' ||
                    el.tagName === 'A' || el.isContentEditable)) return;
         if (list.length) {
@@ -9234,7 +9545,13 @@ const Input = (() => {
         }
         break;
       }
-      case 'r': case 'R': TTS.replay(); break;
+      case 'Backspace':
+        e.preventDefault();
+        handlers.global?.('repeatOptions');
+        break;
+      case 'r': case 'R': try { TTS.replay(); } catch (err) {} break;
+      case 'e': case 'E': handlers.global?.('enhancedListening'); break;
+      case 'j': case 'J': handlers.global?.('journal'); break;
       case 'Escape': handlers.global?.('escape'); break;
       case 'f': case 'F': handlers.global?.('focusMode'); break;
       case 'h': case 'H': handlers.global?.('highContrast'); break;
@@ -9243,6 +9560,11 @@ const Input = (() => {
         if (/^[1-9]$/.test(e.key)) {
           const i = Number(e.key) - 1;
           if (list[i]) { e.preventDefault(); list[i].click(); }
+        } else if (/^[a-zA-Z]$/.test(e.key) && !RESERVED.has(e.key.toLowerCase())) {
+          // letter hotkey printed on the choice badge (A/B/C...)
+          const hot = e.key.toLowerCase();
+          const hit = list.find(el => (el.dataset.hotkey || '').toLowerCase() === hot);
+          if (hit) { e.preventDefault(); hit.click(); }
         }
     }
   });
@@ -9251,6 +9573,7 @@ const Input = (() => {
     onChoose(fn) { handlers.choose = fn; },
     onGlobal(fn) { handlers.global = fn; },
     fireChoose(c) { handlers.choose?.(c); },
+    reservedLetters: () => [...RESERVED],
   };
 })();
 
@@ -9310,6 +9633,7 @@ const Economy = (() => {
     }
     if (cond.item && !s.items.includes(cond.item)) return false;
     if (typeof cond.ccMin === 'number' && s.cc < cond.ccMin) return false;
+    if (typeof cond.ccMax === 'number' && s.cc > cond.ccMax) return false;
     if (typeof cond.levelMin === 'number' && s.level < cond.levelMin) return false;
     return true;
   }
@@ -9433,7 +9757,20 @@ const Game = (() => {
     'Mansion Roof': 'pulse',
     'Blue Note Diner': 'diner',
     'The Study': 'hero',
+    'Fire escape, 3rd floor': 'tense',
+    'The Island \u2014 marina': 'sea',
+    'The Island \u2014 hotel lobby': 'mystery',
   };
+  /* v4.0: fuzzy area match so every corner of the map gets its own sound */
+  function locationVibeFor(loc) {
+    if (!loc) return null;
+    if (LOCATION_MOOD[loc]) return LOCATION_MOOD[loc];
+    const low = String(loc).toLowerCase();
+    for (const [k, v] of Object.entries(LOCATION_MOOD)) {
+      if (low.includes(k.toLowerCase())) return v;
+    }
+    return null;
+  }
 
   const $ = sel => document.querySelector(sel);
 
@@ -9517,8 +9854,9 @@ const Game = (() => {
     paintHUD();
     $('#stage').dataset.fx = scene.fx || '';
 
-    // cinematic chapter title card + chapter-specific music vibe from OpenGameArt.org
-    if (scene.chapter && scene.chapter !== lastChapter) {
+    // cinematic chapter title card (music is decided below: every area keeps its own sound)
+    const chapterChanged = !!(scene.chapter && scene.chapter !== lastChapter);
+    if (chapterChanged) {
       lastChapter = scene.chapter;
       const names = { 1: 'ONE', 2: 'TWO', 3: 'THREE', 4: 'FOUR', 5: 'FIVE' };
       const card = $('#chapter-card');
@@ -9527,21 +9865,12 @@ const Game = (() => {
       clearTimeout(card._t);
       card._t = setTimeout(() => card.classList.remove('show'), 2600);
       
-      // HAR CHAPTER KI APNI MUSIC VIBE - OpenGameArt.org real tracks
-      try {
-        if (typeof OGAudio !== 'undefined' && OGAudio.isEnabled()) {
-          const played = OGAudio.playChapter(scene.chapter);
-          if (played) {
-            console.log(`[Story] Chapter ${scene.chapter} vibe: ${scene.chapterName} -> real track from OGA`);
-          }
-        }
-      } catch (e) {}
     }
 
     // generative score - LOCATION-SPECIFIC VIBE: each place gets its own music
     const chapterMood = { 0: 'menu', 1: 'noir', 2: 'drive' };
     // Determine music: priority = scene.music (if action) > location vibe > chapter fallback
-    const locationVibe = LOCATION_MOOD[scene.location] || null;
+    const locationVibe = locationVibeFor(scene.location);
     const actionMoods = ['combat', 'fight', 'brawl', 'tense', 'pulse', 'finale', 'hero', 'conspiracy'];
     let chosenMood;
     if (scene.music && actionMoods.includes(scene.music)) {
@@ -9563,17 +9892,26 @@ const Game = (() => {
       // Fallback to scene's music or chapter mood
       chosenMood = scene.music || chapterMood[scene.chapter] || 'noir';
     }
-    // Only switch if location actually changed or mood is different - avoids cutting music every node
-    // But if OGA already playing chapter vibe, don't override with generative unless it's fight
-    const isOGAChapterPlaying = typeof OGAudio !== 'undefined' && OGAudio.isEnabled() && scene.chapter && !['combat','fight','brawl'].includes(chosenMood);
-    if (!isOGAChapterPlaying) {
-      if (scene.location !== lastLocation || chosenMood !== Music._lastMood) {
+    // v4.0 EACH AREA'S OWN SOUND: the location vibe always wins (real
+    // mapped track or generative). The chapter theme only plays for scenes
+    // with no area of their own. Switches only when place/mood changes.
+    const locChanged = scene.location !== lastLocation;
+    const moodChanged = chosenMood !== Music._lastMood;
+    const hasOwnVibe = !!locationVibe || actionMoods.includes(scene.music);
+    if (hasOwnVibe) {
+      if (locChanged || moodChanged) {
         Music.play(chosenMood);
-        console.log(`[Story] Location vibe: ${scene.location} -> ${chosenMood} (was ${lastLocation})`);
+        console.log(`[Story] Area sound: ${scene.location} -> ${chosenMood} (was ${lastLocation})`);
         Music._lastMood = chosenMood;
       }
-    } else {
-      console.log(`[Story] Keeping OGA chapter ${scene.chapter} vibe for ${scene.location}, not overriding with ${chosenMood}`);
+    } else if (chapterChanged) {
+      try {
+        if (typeof OGAudio !== 'undefined' && OGAudio.isEnabled()) OGAudio.playChapter(scene.chapter);
+      } catch (e) {}
+      if (moodChanged) { Music.play(chosenMood); Music._lastMood = chosenMood; }
+    } else if (moodChanged) {
+      Music.play(chosenMood);
+      Music._lastMood = chosenMood;
     }
     lastLocation = scene.location;
     Music.setTranspose(scene.chapter || 0);
@@ -9753,41 +10091,71 @@ const Game = (() => {
     renderChoices(node);
   }
 
+  /* v4.0: letter badges (A/B/C...) — announced "A for ..." quiz style.
+     Same reserved letters as input.js, so badges never clash with hotkeys. */
+  const CHOICE_LETTERS = ['a', 'b', 'c', 'd', 'g', 'i', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'u', 'x', 'y', 'z'];
+  let picking = false;
+
+  function shuffledChoices(choices) {
+    const normal = [], hints = [];
+    (choices || []).forEach(ch => {
+      if (!Economy.test(ch.condition)) return;
+      (ch.hint ? hints : normal).push(ch);
+    });
+    // The right answer is no longer always first — shuffled every visit.
+    for (let i = normal.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [normal[i], normal[j]] = [normal[j], normal[i]];
+    }
+    return normal.concat(hints); // ask-the-glasses options always last
+  }
+
+  function announceChoices(list) {
+    if (!list.length) return 'No options right now.';
+    const parts = list.map(o => `${String(o.letter).toUpperCase()} for ${o.label}`);
+    return `${list.length} option${list.length > 1 ? 's' : ''}: ${parts.join('. ')}. Arrow keys to move, Enter to select.`;
+  }
+
   function renderChoices(node) {
+    picking = false;
     const box = $('#choices');
     box.innerHTML = '';
-    let visible = 0;
+    const shown = shuffledChoices(node.choices);
 
-    (node.choices || []).forEach(ch => {
-      if (!Economy.test(ch.condition)) return;
-      const btn = document.createElement('button');
-      btn.className = 'choice';
-      btn.dataset.label = ch.label;
-      btn.innerHTML = `<span class="key-hint">${visible + 1}</span><span>${ch.label}</span>`;
-      btn.addEventListener('click', () => pick(ch));
-      box.appendChild(btn);
-      visible++;
-    });
-
-    if (!visible && node.autoGoto) {
+    if (!shown.length && node.autoGoto) {
       go(node.autoGoto);
       return;
     }
+
+    // v4.0 SAFETY NET: a node can never strand the player on a dead
+    // screen again — if nothing is visible, offer a way back.
+    const effective = shown.length ? shown
+      : [{ label: 'Go back to safety — return to the city', goto: '@city' }];
+
+    const spoken = [];
+    effective.forEach((ch, i) => {
+      const btn = document.createElement('button');
+      const letter = CHOICE_LETTERS[i % CHOICE_LETTERS.length];
+      btn.className = 'choice';
+      btn.dataset.label = ch.label;
+      btn.dataset.hotkey = letter;
+      btn.innerHTML = `<span class="key-hint">${i + 1}</span><span class="key-letter">${letter.toUpperCase()}</span><span>${ch.label}</span>`;
+      btn.addEventListener('click', () => pick(ch));
+      box.appendChild(btn);
+      spoken.push({ letter, label: ch.label });
+    });
+
     const first = box.querySelector('.choice');
-    first?.focus();
-    // BUG FIX v2.2: Hard stop before options prompt - single voice guarantee, clear previous timer
-    const firstLabel = first ? first.dataset.label : '';
-    try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (e) {}
-    try { if (typeof TTS !== 'undefined' && TTS.hardStop) TTS.hardStop(); } catch (e) {}
-    try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
-    // BUG FIX: Clear any pending options TTS timer to prevent double voice
+    if (first && !document.getElementById('game').hidden) {
+      try { first.focus({ preventScroll: false }); } catch (e) { try { first.focus(); } catch (ee) {} }
+    }
     if (optionsTTSTimer) { clearTimeout(optionsTTSTimer); optionsTTSTimer = null; }
     optionsTTSTimer = setTimeout(() => {
       optionsTTSTimer = null;
-      TTS.speak(
-        `${visible} options available. Option 1: ${firstLabel}. Use arrow keys to hear all options.`,
-        { pitch: 1.15, rate: 1.1, slot: 0, _skipReal: true }
-      );
+      try {
+        TTS.speak(announceChoices(spoken),
+          { pitch: 1.15, rate: 1.1, slot: 0, _skipReal: true });
+      } catch (e) {}
     }, 80);
   }
 
@@ -9811,7 +10179,10 @@ const Game = (() => {
 
   function pick(choice) {
     if (speaking) return;
+    if (picking) return; // v4.0: one pick only — Enter+click can never double-fire
+    picking = true;
     armed = false;
+    try { document.querySelectorAll('#choices .choice').forEach(b => { b.disabled = true; }); } catch (e) {}
     // BUG FIX v2.2: Clear options TTS timer immediately when option clicked - prevents double voice
     if (optionsTTSTimer) { clearTimeout(optionsTTSTimer); optionsTTSTimer = null; }
     // BUG FIX v2.2: Hard stop ALL TTS before processing choice - ensures option TTS stops
@@ -10049,6 +10420,51 @@ const Game = (() => {
     go(story.knockoutGoto || 'hospital');
   }
 
+  /* v4.0: Case journal — quest/clue recap, Hero's Call style (J key) */
+  const CLUE_NAMES = {
+    hasDrive: 'the First Echo data drive', readNote: "Salena's note",
+    j1: 'jingle charm one', j2: 'jingle charm two', gotMusicbox: "Mama's music box",
+    harborJoined: 'Harbor as an ally', harborHint: "Harbor's court hint",
+    vossLead: "Voss's money lead", scouted: 'the scouted route',
+    prayed: "the priest's blessing", boughtGun: 'The Hurricane',
+    boughtArmor: 'the Iron Chef armor', ledger: 'the evidence ledger',
+    marrsClue: "Marrs's keypad digit", coleClue: "Cole's keypad digit",
+    ruizClue: "Ruiz's keypad digit", marinaPass: 'the marina pass',
+    lobbyCard: 'the suite keycard', coords: 'the gala coordinates',
+    seraBond: "Sera's trust", seraMet: 'meeting Sera',
+    patched: 'Bonnie patched up', salenaSong: "Salena's song",
+    stealthEdge: 'stealth edge', gritBuff: 'grit buff', ch2_started: 'the road to the Block',
+  };
+  function journal() {
+    const s = Economy.state;
+    const sc = current.scene ? story.scenes[current.scene] : null;
+    const found = Object.keys(CLUE_NAMES).filter(f => s.flags[f]);
+    const items = s.items.length ? s.items.join(', ') : 'nothing yet';
+    const line = `Case journal. ${sc && sc.chapterName ? 'Chapter ' + sc.chapterName + '.' : ''} ` +
+      `Standing in ${sc ? (sc.location || 'the city') : 'the city'}. ` +
+      `Clues found: ${found.length ? found.map(f => CLUE_NAMES[f]).join(', ') : 'none yet'}. ` +
+      `Carrying ${items}. ${s.cc.toLocaleString()} CC, health ${s.health} of ${s.maxHealth}, heat ${s.heat}.`;
+    try { showCaption('glasses', line); } catch (e) {}
+    try { TTS.interrupt(line, { _skipReal: true }); } catch (e) {}
+  }
+  function repeatOptions() {
+    if ($('#game').hidden) return;
+    if (speaking) {
+      try { TTS.interrupt('The story is still playing. Press Enter to jump to the choices.', { _skipReal: true }); } catch (e) {}
+      return;
+    }
+    const btns = [...document.querySelectorAll('#choices .choice')];
+    if (!btns.length) {
+      try { TTS.interrupt('No options right now.', { _skipReal: true }); } catch (e) {}
+      return;
+    }
+    const list = btns.map(b => ({ letter: (b.dataset.hotkey || '?'), label: b.dataset.label }));
+    try {
+      TTS.interrupt('Options again. ' + announceChoices(list),
+        { pitch: 1.15, rate: 1.05, slot: 0, _skipReal: true });
+    } catch (e) {}
+  }
+
   /* ---------- global toggles - PROFESSIONAL BLIND GAME ---------- */
   function globalKey(key) {
     if (key === 'escape') {
@@ -10073,9 +10489,17 @@ const Game = (() => {
       $('#hud-focus').hidden = !on;
       TTS.speak(on ? 'Focus mode on.' : 'Focus mode off.', { _skipReal: true });
     } else if (key === 'highContrast') {
-      document.body.classList.toggle('high-contrast');
+      const on = !document.body.classList.contains('high-contrast');
+      document.body.classList.toggle('high-contrast', on);
+      try { localStorage.setItem('ccs-hc', on ? '1' : '0'); } catch (e) {}
     } else if (key === 'voiceToggle') {
       TTS.setEnabled(!TTS.isEnabled());
+    } else if (key === 'journal') {
+      journal();
+      return;
+    } else if (key === 'repeatOptions') {
+      repeatOptions();
+      return;
     } else if (key === 'e' || key === 'E' || key === 'enhancedListening') {
       // PROFESSIONAL BLIND: Enhanced Listening Mode - sonar sweep like TLOU2
       try {
@@ -11287,6 +11711,26 @@ const CityMode = (() => {
     bonnie_garage: 'boat', marlow_pier: 'harbor', fish_market: 'night',
     mansion: 'mansion', tess_workshop: 'industrial', carwash: 'rain', greenhouse: 'garden'
   };
+  // v4.0 EACH AREA'S OWN SOUND: ambience bed per district + per landmark
+  const DIST_AMB = { old_chapel: 'church', midtown: 'club', southside: 'radio',
+                     harborfront: 'boat', garden: 'night', industrial: 'precinct', upperhills: 'mansion' };
+  const DIST_OGA = { old_chapel: 'rain', midtown: 'city', southside: 'city',
+                     harborfront: 'water', garden: 'night', industrial: 'construction', upperhills: 'night' };
+  const POI_AMB = {
+    safehouse: 'room', salena_apartment: 'radio', st_verity_church: 'church',
+    pawnshop_ledger: 'radio', velvet_room: 'club', diner_blue_note: 'radio',
+    movie_theater: 'radio', basketball_court: 'court', corner_store: 'radio',
+    bonnie_garage: 'boat', marlow_pier: 'boat', fish_market: 'boat',
+    mansion: 'mansion', tess_workshop: 'precinct', carwash: 'rain', greenhouse: 'night'
+  };
+  // Hero's Call style radar: signature sound description per landmark
+  const POI_SIG_DESC = {
+    safehouse: 'a floorboard creak', salena_apartment: 'a music-box chime', st_verity_church: 'a distant bell',
+    pawnshop_ledger: 'a cash drawer', velvet_room: 'bass through the walls', diner_blue_note: 'clinking plates',
+    movie_theater: 'an old projector', basketball_court: 'a bouncing ball', corner_store: 'a shop bell',
+    bonnie_garage: 'an idling engine', marlow_pier: 'a foghorn', fish_market: 'gulls and ropes',
+    mansion: 'patrol boots', tess_workshop: 'a grinder', carwash: 'spraying water', greenhouse: 'rustling leaves'
+  };
 
   function getDistrictMusic(d) {
     if (!d) return 'noir';
@@ -11434,7 +11878,18 @@ const CityMode = (() => {
 
   /* ---------- narration - location-specific music vibe ---------- */
   let lastPoiId = null;
-  function describeMove(dirWord, wrongWay) {
+  let lastSigPoi = null;
+  /* v4.0: every district and landmark gets its own ambience bed */
+  function applyAreaSound(d, poi) {
+    const amb = (poi && POI_AMB[poi.id]) || (d && DIST_AMB[d.id]) || 'night';
+    try { if (typeof Music !== 'undefined') Music.setAmb(amb); } catch (e) {}
+    try {
+      if (typeof OGAudio !== 'undefined' && OGAudio.isEnabled()) {
+        OGAudio.playAmbient((d && DIST_OGA[d.id]) || 'night');
+      }
+    } catch (e) {}
+  }
+  function describeMove(dirWord, wrongWay, edgeNote) {
     const d = districtAt(pos.x, pos.y);
     const poi = poiAt(pos.x, pos.y);
     let line = `${dirWord} — ${intersectionName(pos.x, pos.y)}.`;
@@ -11445,7 +11900,9 @@ const CityMode = (() => {
       SFX.play('chapter');
       const dm = getDistrictMusic(d);
       Music.play(dm);
+      try { Music._lastMood = dm; } catch (e) {}
       Music.arrive(DIST_ARRIVE[d.id] || 'night');
+      applyAreaSound(d, poi);
       console.log(`[City] District vibe: ${d.name} -> music ${dm}`);
     }
     lastDistrict = d;
@@ -11456,8 +11913,10 @@ const CityMode = (() => {
       if (poiMusic && lastPoiId !== poi.id) {
         // New POI - switch to its unique vibe
         Music.play(poiMusic);
+        try { Music._lastMood = poiMusic; } catch (e) {}
         const arriveSound = POI_ARRIVE[poi.id] || DIST_ARRIVE[d?.id] || 'room';
         Music.arrive(arriveSound);
+        applyAreaSound(d, poi);
         console.log(`[City] POI vibe: ${poi.name} -> music ${poiMusic} + arrive ${arriveSound}`);
       }
       lastPoiId = poi.id;
@@ -11468,12 +11927,29 @@ const CityMode = (() => {
       if (lastPoiId !== null) {
         const dm = getDistrictMusic(d);
         Music.play(dm);
+        try { Music._lastMood = dm; } catch (e) {}
+        applyAreaSound(d, null);
         console.log(`[City] Left POI, back to district: ${d?.name} -> ${dm}`);
       }
       lastPoiId = null;
     }
 
     if (wrongWay) line += ' Note: that step takes you farther from your marker.';
+    if (edgeNote) line += edgeNote;
+
+    // v4.0 Hero's Call radar: nearest landmark signature within 2 blocks
+    if (!poi) {
+      let best = null, bestD = 99;
+      for (const p of city.pois) {
+        const dd = distTo(p.x, p.y);
+        if (dd > 0 && dd <= 2 && dd < bestD) { best = p; bestD = dd; }
+      }
+      if (best && best.id !== lastSigPoi) {
+        lastSigPoi = best.id;
+        try { Music.arrive(POI_ARRIVE[best.id] || 'night'); } catch (e) {}
+        line += ` You hear ${POI_SIG_DESC[best.id] || 'something'} — ${best.name}, ${bestD} block${bestD > 1 ? 's' : ''} ${dirTo(best.x, best.y)}.`;
+      } else if (!best) lastSigPoi = null;
+    } else lastSigPoi = poi.id;
 
     // Occasional street flavor — the city talking to itself.
     moveCount++;
@@ -11484,7 +11960,7 @@ const CityMode = (() => {
     if (marker) line += ' ' + markerStatus();
     say(line);
     if (marker && marker.x === pos.x && marker.y === pos.y) {
-      marker = null; saveState();
+      marker = null; saveState(); stopBeacon();
       setTimeout(() => say('You have reached your marker. Marker cleared.'), 1600);
     }
   }
@@ -11550,8 +12026,9 @@ const CityMode = (() => {
     gotoOptions = city.pois.slice(0, 9);
     gotoActive = true;
     SFX.play('ping');
-    say('Go to. ' + gotoOptions.map((p, i) => `${i + 1}: ${p.name}`).join('. ') +
-      '. Press a number key to set a marker there. Press G to cancel.');
+    const letters = 'ABCDEFGHI';
+    say('Go to. ' + gotoOptions.map((p, i) => `${letters[i]} for ${p.name}`).join('. ') +
+      '. Press its letter or number to set a marker there. Press 0 or G to go back.');
   }
   function pickGoto(n) {
     const p = gotoOptions[n - 1];
@@ -11569,6 +12046,30 @@ const CityMode = (() => {
     const trail = history.slice(-6, -1).reverse()
       .map(h => intersectionName(h.x, h.y));
     say('Your trail, newest first: ' + trail.join('. ') + '.');
+  }
+
+  /* v4.0: living open world — small street encounters while roaming */
+  const ENCOUNTERS = [
+    { text: 'A dropped wallet by the curb. Finder\u2019s keepers: 45 CC.', fx: { cc: 45 }, sfx: 'coin' },
+    { text: 'A street kid bumps past you, laughing. Your pocket feels lighter. Minus 30 CC.', fx: { cc: -30 }, sfx: 'fail' },
+    { text: 'A stray dog walks one block with you, then stands guard over your shadow. You feel better.', fx: { health: 10 }, sfx: 'success' },
+    { text: 'Two old men argue about the Mayor on a stoop. You catch a rumor: the precinct washes money through its own evidence room.', fx: null, sfx: 'tick' },
+    { text: 'You find a quiet doorway, breathe, and roll your shoulders. Health up.', fx: { health: 15 }, sfx: 'success' },
+    { text: 'Rain starts tapping the awnings. The whole block smells like iron and rain.', fx: null, sfx: null },
+  ];
+  let lastEncMove = 0;
+  function maybeEncounter() {
+    if (moveCount - lastEncMove < 6) return;
+    if (Math.random() > 0.35) return;
+    lastEncMove = moveCount;
+    const enc = ENCOUNTERS[Math.floor(Math.random() * ENCOUNTERS.length)];
+    setTimeout(() => {
+      if (!active) return;
+      try { if (enc.fx) Economy.apply(enc.fx); } catch (e) {}
+      try { if (enc.sfx) SFX.play(enc.sfx); } catch (e) {}
+      try { paintHUD(); } catch (e) {}
+      say(enc.text);
+    }, 2200);
   }
 
   function move(dx, dy) {
@@ -11647,7 +12148,14 @@ const CityMode = (() => {
         else SFX.play('step', stepSide * 0.45);
       }
     }
-    describeMove(dirWord, wrongWay);
+    const edges = [];
+    if (pos.x === 0) edges.push('west');
+    if (pos.x === N() - 1) edges.push('east');
+    if (pos.y === 0) edges.push('north');
+    if (pos.y === N() - 1) edges.push('south');
+    const edgeNote = edges.length ? ` The edge of the mapped city is one block ${edges.join(' and ')}.` : '';
+    describeMove(dirWord, wrongWay, edgeNote);
+    maybeEncounter();
   }
 
   /* ---------- POI interaction - with wrong sound ---------- */
@@ -11704,7 +12212,7 @@ const CityMode = (() => {
   }
   function clearMarker() {
     if (!marker) { say('No marker to clear.'); return; }
-    marker = null; saveState(); paintHUD(); City3D.setMarker(null);
+    marker = null; saveState(); stopBeacon(); paintHUD(); City3D.setMarker(null);
     say('Marker cleared.');
   }
   function toggleBonnie() {
@@ -11732,6 +12240,48 @@ const CityMode = (() => {
     say(`Case file. ${s.cc.toLocaleString()} CC, level ${s.level}. Carrying: ${items.length ? items.join(', ') : 'nothing yet'}. Health ${s.health} of ${s.maxHealth}.`);
   }
 
+  /* v4.0: case journal for roamers (J key) */
+  function cityJournal() {
+    const s = Economy.state;
+    const d = districtAt(pos.x, pos.y);
+    const names = {
+      'data-drive': 'the FIRST ECHO data drive', 'case-files': "Salena's case files",
+      'music-box': "Mama's music box", 'the-hurricane': 'The Hurricane hand cannon',
+      'iron-chef': 'Iron Chef armor', 'precinct-ledger': 'the precinct ledger',
+    };
+    const items = s.items.map(i => names[i] || i);
+    const clueCount = Object.keys(s.flags || {}).length;
+    say(`Case journal. Roaming ${d ? d.name : 'Capitol City'}, at ${intersectionName(pos.x, pos.y)}. ` +
+      `Clues on file: ${clueCount}. Carrying: ${items.length ? items.join(', ') : 'nothing yet'}. ` +
+      `${s.cc.toLocaleString()} CC, health ${s.health} of ${s.maxHealth}. ` +
+      (marker ? markerStatus() + ' Press Y for a walking beacon.' : 'No marker. Press G for go-to.'));
+  }
+
+  /* v4.0: Hero's Call style walking beacon (Y key) */
+  let beaconTimer = null;
+  function toggleBeacon() {
+    if (beaconTimer) { clearInterval(beaconTimer); beaconTimer = null; say('Beacon off.'); return; }
+    if (!marker) { say('No marker set. Press G for go-to, then pick a landmark, then Y for the beacon.'); return; }
+    say(`Beacon on. I will call the way every few steps. Target ${dirTo(marker.x, marker.y)}, ${distTo(marker.x, marker.y)} blocks.`);
+    beaconTimer = setInterval(() => {
+      if (!active || !marker) { clearInterval(beaconTimer); beaconTimer = null; return; }
+      say(`Beacon: target ${dirTo(marker.x, marker.y)}, ${distTo(marker.x, marker.y)} blocks.`);
+    }, 7000);
+  }
+  function stopBeacon() { if (beaconTimer) { clearInterval(beaconTimer); beaconTimer = null; } }
+
+  /* v4.0: go back along your own trail (Backspace) */
+  function stepBack() {
+    if (history.length < 2) { say('No trail to step back to yet. Move first.'); return; }
+    history.pop();
+    const prev = history[history.length - 1];
+    pos = { x: prev.x, y: prev.y };
+    paintWorld(); paintHUD(); saveState();
+    try { City3D.setPlayer(pos.x, pos.y, facing.x, facing.y); } catch (e) {}
+    try { if (!view3d) Audio3D.updateListener(pos.x, pos.y, facing.x, facing.y); } catch (e) {}
+    describeMove('Stepping back', false, '');
+  }
+
   /* ---------- persistence ---------- */
   function saveState() {
     localStorage.setItem('ccs-city', JSON.stringify({ x: pos.x, y: pos.y, riding, marker }));
@@ -11752,6 +12302,8 @@ const CityMode = (() => {
   async function enter() {
     if (!city) city = await loadCity();
     loadState();
+    // v4.0: clear stale story choices — their keys must never leak into the city
+    try { document.getElementById('choices').innerHTML = ''; } catch (e) {}
 
     // FIX: Stop lobby loud music when entering city free roam
     try { if (typeof Music !== 'undefined') Music.stop(); if (typeof OGAudio !== 'undefined') OGAudio.stopMusic(true); } catch (e) {}
@@ -11775,6 +12327,8 @@ const CityMode = (() => {
     Music.play(startMusic);
     const startArrive = startPoi ? (POI_ARRIVE[startPoi.id] || DIST_ARRIVE[lastDistrict ? lastDistrict.id : 'midtown']) : (DIST_ARRIVE[lastDistrict ? lastDistrict.id : 'midtown'] || 'night');
     Music.arrive(startArrive);
+    try { Music._lastMood = startMusic; } catch (e) {}
+    applyAreaSound(lastDistrict, startPoi);
     console.log(`[City] Enter - District: ${lastDistrict?.name} (${startDistrictMusic}) POI: ${startPoi?.name} (${startMusic})`);
     if (!history.length) history.push({ x: pos.x, y: pos.y });
 
@@ -11825,7 +12379,8 @@ const CityMode = (() => {
     say(`Free roam. You are at ${intersectionName(pos.x, pos.y)}, ${lastDistrict ? lastDistrict.name : 'Capitol City'}. ` +
       (view3d ? 'You are in the 3D street view — press C for the overhead map. ' : '') +
       'Listen: every landmark makes its own sound around you — church bells, club bass, a bouncing ball. Wear headphones for true direction. ' +
-      'Arrow keys move. P is sonar, G is go-to, K district guide, L look around, B Bonnie, Escape for the menu.');
+      'Arrow keys move. P is sonar, G is go-to with letters, K district guide, L look around, B Bonnie. ' +
+      'J is your case journal, Y a walking beacon to your marker, Backspace steps back along your trail, Escape for the menu.');
   }
 
   /* Switch between 3D street view and 2D overhead map. */
@@ -11876,6 +12431,7 @@ const CityMode = (() => {
   function exit() {
     if (!active) return;
     active = false;
+    stopBeacon();
     saveState();
     TTS.stop();
     SFX.stopEngine();
@@ -11890,12 +12446,16 @@ const CityMode = (() => {
     if (!active) return;
     const K = e.key;
 
-    // Go-to menu listens for a landmark number
-    if (gotoActive && /^[1-9]$/.test(K)) { e.preventDefault(); pickGoto(Number(K)); return; }
+    // Go-to menu listens for a landmark letter or number, 0 goes back
+    if (gotoActive) {
+      if (/^[1-9]$/.test(K)) { e.preventDefault(); pickGoto(Number(K)); return; }
+      if (/^[a-iA-I]$/.test(K)) { e.preventDefault(); pickGoto(K.toUpperCase().charCodeAt(0) - 64); return; }
+      if (K === '0') { e.preventDefault(); gotoActive = false; say('Go-to cancelled. Back to the streets.'); return; }
+    }
 
     const handled = ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','W','A','S','D',
                      'Enter',' ','l','L','m','M','n','N','x','X','b','B','p','P','g','G','k','K','u','U',
-                     'c','C','o','O','i','I','Escape'];
+                     'c','C','o','O','i','I','r','R','t','T','h','H','j','J','y','Y','Backspace','Escape'];
     if (!handled.includes(K)) return;
     e.preventDefault();
 
@@ -11917,11 +12477,17 @@ const CityMode = (() => {
       case 'c': case 'C': toggleView(); break;
       case 'o': case 'O': toggleSpatial(); break;
       case 'i': case 'I': sayInventory(); break;
+      case 'r': case 'R': try { TTS.replay(); } catch (e) {} break;
+      case 't': case 'T': try { TTS.setEnabled(!TTS.isEnabled()); say(TTS.isEnabled() ? 'Narration on.' : 'Narration off.'); } catch (e) {} break;
+      case 'h': case 'H': { const on = !document.body.classList.contains('high-contrast'); document.body.classList.toggle('high-contrast', on); try { localStorage.setItem('ccs-hc', on ? '1' : '0'); } catch (e) {} say(`High contrast ${on ? 'on' : 'off'}.`); break; }
+      case 'j': case 'J': cityJournal(); break;
+      case 'y': case 'Y': toggleBeacon(); break;
+      case 'Backspace': stepBack(); break;
       case 'Escape': gotoActive ? (gotoActive = false, say('Go-to cancelled.')) : exit(); break;
     }
   });
 
-  return { enter, exit };
+  return { enter, exit, isActive: () => active };
 })();
 
 </script>
@@ -12459,9 +13025,9 @@ const Menu = (() => {
 const CHAPTERS = {
     1: { entry: 'intro',     cc: 0,    level: 1, flags: [] },
     2: { entry: 'ch2_drive', cc: 3500, level: 2, flags: ['hasDrive'] },
-    3: { entry: 'c3_open',   cc: 5000, level: 3, flags: ['hasDrive', 'harborJoined'] },
-    4: { entry: 'c4_open',   cc: 7000, level: 4, flags: ['hasDrive', 'harborJoined', 'lv4clue'] },
-    5: { entry: 'c5_open',   cc: 9000, level: 5, flags: ['hasDrive', 'harborJoined', 'lv4clue', 'coords', 'seraBond'] },
+    3: { entry: 'c3_open',   cc: 5000, level: 3, flags: ['hasDrive', 'harborJoined', 'ch2_started', 'boughtGun', 'boughtArmor', 'prayed'] },
+    4: { entry: 'c4_open',   cc: 7000, level: 4, flags: ['hasDrive', 'harborJoined', 'lv4clue', 'ch2_started', 'boughtGun', 'boughtArmor', 'prayed', 'marrsClue', 'coleClue', 'ruizClue'] },
+    5: { entry: 'c5_open',   cc: 9000, level: 5, flags: ['hasDrive', 'harborJoined', 'lv4clue', 'coords', 'seraBond', 'ch2_started', 'boughtGun', 'boughtArmor', 'ledger', 'marinaPass', 'lobbyCard'] },
   };
   function startChapter(n) {
     const c = CHAPTERS[n];

@@ -14,15 +14,23 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Controls. Up and down arrows move between choices. Enter or Space selects. Number keys jump straight to an option. Press Enter again while I'm talking to skip to the choices."
+              "text": "Controls. Up and down arrows move between choices and I speak every option — A for this, B for that. Enter or Space selects. Number keys and letter keys jump straight to an option."
             },
             {
               "speaker": "glasses",
-              "text": "R replays the last line I spoke. F toggles Focus Mode. H toggles high contrast. T turns my voice on or off."
+              "text": "R replays the last line I spoke. Backspace repeats all options again. J opens your case journal — chapter, clues, and inventory. E is a sonar ping that names nearby voices. F toggles Focus Mode. H toggles high contrast. T turns my voice on or off."
             },
             {
               "speaker": "glasses",
-              "text": "Free roam mode, Explore the city, has its own keys. Arrow keys move block by block and I announce every street. Enter interacts with landmarks. L looks around. P fires echo-ping sonar toward nearby landmarks. K lists every landmark in your district. G reads a numbered go-to list \u2014 press a landmark's number to mark it. U repeats your trail. M sets a marker, N hears the way, X clears it. B calls Bonnie to ride three blocks a step. Escape returns to the menu. The city is rendered in 3D around you with true spatial sound \u2014 press C to switch between the 3D street view and the overhead map, and O to toggle the 3D city sound. Headphones recommended. In the city, I reads your case file aloud."
+              "text": "Nothing is always first — options shuffle, so listen. Stuck on a puzzle? Look for an option that asks me for a hint. Clues hide in desks, lockers, and holster logs — search everything."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Free roam mode, Explore the city, has its own keys. Arrow keys move block by block and I announce every street. Every district and landmark has its own music and ambience — churches ring, clubs thump, the court bounces."
+            },
+            {
+              "speaker": "glasses",
+              "text": "In the city: L looks around, P is sonar, G is go-to with letters — A for the safehouse, B for the apartment — 0 goes back. M sets a marker, N hears the way, Y turns on a walking beacon, U repeats your trail, B rides Bonnie, J is your journal, C switches 3D and map, I is your case file."
             },
             {
               "speaker": "glasses",
@@ -30,7 +38,7 @@
             },
             {
               "speaker": "glasses",
-              "text": "During the story, press Escape to return to the main menu. I will ask you to confirm \u2014 press Enter to leave, or Escape again to keep playing. Your progress is saved at every scene."
+              "text": "During the story, press Escape to return to the main menu. I will ask you to confirm — press Enter to leave, or Escape again to keep playing."
             }
           ],
           "choices": [
@@ -54,7 +62,7 @@
           "lines": [
             {
               "speaker": "narrator",
-              "text": "They call you Stoneface. Blind since birth. Leader of a crew that never needed you to see \u2014 only to decide."
+              "text": "They call you Stoneface. Blind since birth. Leader of a crew that never needed you to see — only to decide."
             },
             {
               "speaker": "narrator",
@@ -98,7 +106,7 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Smart Glasses online. Tactical narration active. I will describe every street, every threat, every clue. Say the word and I repeat myself \u2014 key R, anytime."
+              "text": "Smart Glasses online. Tactical narration active. I will describe every street, every threat, every clue. Say the word and I repeat myself — key R, anytime."
             },
             {
               "speaker": "glasses",
@@ -138,7 +146,7 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "You are on Chapel Row, outside Salena's building. Police tape across the entrance. The ward is quiet \u2014 church bells, wet pavement, one idling car down the block."
+              "text": "You are on Chapel Row, outside Salena's building. Police tape across the entrance. The ward is quiet — church bells, wet pavement, one idling car down the block."
             },
             {
               "speaker": "glasses",
@@ -194,7 +202,7 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Scanning. The idling car: unmarked, engine warm, two heartbeats inside. Watchers. They are not watching the front door \u2014 they are watching the street. Sloppy."
+              "text": "Scanning. The idling car: unmarked, engine warm, two heartbeats inside. Watchers. They are not watching the front door — they are watching the street. Sloppy."
             },
             {
               "speaker": "glasses",
@@ -238,7 +246,7 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The lock resisted. A tumbler clicked loud enough to carry. Heat rising \u2014 I heard a car door open down the block.",
+              "text": "The lock resisted. A tumbler clicked loud enough to carry. Heat rising — I heard a car door open down the block.",
               "sfx": "alarm"
             },
             {
@@ -287,7 +295,7 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Fire escape. Twelve steps up, then a landing. Rusted rungs, solid enough. Third floor \u2014 her window. The latch is painted shut, not locked."
+              "text": "Fire escape. Twelve steps up, then a landing. Rusted rungs, solid enough. Third floor — her window. The latch is painted shut, not locked."
             },
             {
               "speaker": "glasses",
@@ -324,7 +332,7 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Living room. Dust on everything. Cardboard boxes, half-packed \u2014 the city seized this place fast. Too fast.",
+              "text": "Living room. Dust on everything. Cardboard boxes, half-packed — the city seized this place fast. Too fast.",
               "sfx": "door"
             },
             {
@@ -333,7 +341,7 @@
             },
             {
               "speaker": "glasses",
-              "text": "Three points of interest. A writing desk, left. A bookshelf, right. And a bedroom door, dead ahead \u2014 sealed with something unusual."
+              "text": "Three points of interest. A writing desk, left. A bookshelf, right. And a bedroom door, dead ahead — sealed with something unusual."
             }
           ],
           "choices": [
@@ -365,18 +373,18 @@
     "desk": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Salena's apartment \u2014 desk",
+      "location": "Salena's apartment — desk",
       "art": "img/desk.jpg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Desk. Subpoena drafts. Budget ledgers with circles in red ink \u2014 payments routed through something called the Harbor Fund. And a handwritten note, pinned under a stone paperweight."
+              "text": "Desk. Subpoena drafts. Budget ledgers with circles in red ink — payments routed through something called the Harbor Fund. And a handwritten note, pinned under a stone paperweight."
             },
             {
               "speaker": "salena",
-              "text": "If you're reading this, big brother, then they got louder than me. The door remembers Mama. Faith before the stars I earned \u2014 and her song goes last."
+              "text": "If you're reading this, big brother, then they got louder than me. The door remembers Mama. Faith before the stars I earned — and her song goes last."
             },
             {
               "speaker": "stoneface",
@@ -402,7 +410,7 @@
     "bookshelf": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Salena's apartment \u2014 bookshelf",
+      "location": "Salena's apartment — bookshelf",
       "art": "img/musicbox.jpg",
       "nodes": [
         {
@@ -435,14 +443,14 @@
     "jingle_door": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Salena's apartment \u2014 bedroom door",
+      "location": "Salena's apartment — bedroom door",
       "art": "img/jingle_safe.jpg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The bedroom door has no keyhole. Instead: a jingle lock \u2014 three brass charms on a rod. A rosary. A detective's badge. A music box crank. Touch them in the right order and the rod slides free."
+              "text": "The bedroom door has no keyhole. Instead: a jingle lock — three brass charms on a rod. A rosary. A detective's badge. A music box crank. Touch them in the right order and the rod slides free."
             },
             {
               "speaker": "glasses",
@@ -475,7 +483,7 @@
             },
             {
               "speaker": "glasses",
-              "text": "Reminder from Salena's note, if you found it: faith before the stars she earned \u2014 and Mama's song goes last.",
+              "text": "Reminder from Salena's note, if you found it: faith before the stars she earned — and Mama's song goes last.",
               "condition": {
                 "flag": "readNote"
               }
@@ -515,7 +523,7 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Wrong order. The charms hiss \u2014 a silent alarm pulse. Somewhere in this city, a phone just lit up. Heat rising.",
+              "text": "Wrong order. The charms hiss — a silent alarm pulse. Somewhere in this city, a phone just lit up. Heat rising.",
               "sfx": "alarm"
             },
             {
@@ -549,7 +557,7 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The rosary chimes \u2014 soft, like a church across water. Two charms remain: the badge, and the crank."
+              "text": "The rosary chimes — soft, like a church across water. Two charms remain: the badge, and the crank."
             }
           ],
           "choices": [
@@ -585,7 +593,7 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The badge rings \u2014 bright, like a promise kept. One charm left."
+              "text": "The badge rings — bright, like a promise kept. One charm left."
             },
             {
               "speaker": "glasses",
@@ -609,14 +617,14 @@
     "defenders_in": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Salena's apartment \u2014 bedroom",
+      "location": "Salena's apartment — bedroom",
       "art": "img/defenders.jpg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The rod slides free. The door opens onto a wall safe \u2014 and movement. Two armed defenders step out of the hallway closet. The silent alarm was answered faster than it should have been.",
+              "text": "The rod slides free. The door opens onto a wall safe — and movement. Two armed defenders step out of the hallway closet. The silent alarm was answered faster than it should have been.",
               "sfx": "alarm"
             },
             {
@@ -646,14 +654,14 @@
     "defenders_listen": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Salena's apartment \u2014 bedroom",
+      "location": "Salena's apartment — bedroom",
       "art": "img/defenders.jpg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Listening. The right one favors his left leg \u2014 old injury, he'll pivot slow. The left one keeps tapping a barrel against his thigh. Cheap pistol, nervous hands."
+              "text": "Listening. The right one favors his left leg — old injury, he'll pivot slow. The left one keeps tapping a barrel against his thigh. Cheap pistol, nervous hands."
             },
             {
               "speaker": "stoneface",
@@ -674,14 +682,14 @@
     "fight_r1": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Fight \u2014 round 1",
+      "location": "Fight — round 1",
       "art": "img/fight.jpg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "He swings high from the right \u2014 heavy hook, slow pivot, just like I said."
+              "text": "He swings high from the right — heavy hook, slow pivot, just like I said."
             }
           ],
           "choices": [
@@ -724,14 +732,14 @@
     "fight_r2": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Fight \u2014 round 2",
+      "location": "Fight — round 2",
       "art": "img/fight.jpg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The right one drops, wheezing. Footsteps \u2014 the left one rushes in low, trying to tackle.",
+              "text": "The right one drops, wheezing. Footsteps — the left one rushes in low, trying to tackle.",
               "sfx": "hit"
             }
           ],
@@ -775,14 +783,14 @@
     "fight_r3": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Fight \u2014 round 3",
+      "location": "Fight — round 3",
       "art": "img/fight.jpg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "He stumbles up \u2014 and his hand goes to his waistband. Metal clearing fabric. Gun.",
+              "text": "He stumbles up — and his hand goes to his waistband. Metal clearing fabric. Gun.",
               "sfx": "alarm"
             }
           ],
@@ -814,7 +822,7 @@
     "fight_win": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Salena's apartment \u2014 bedroom",
+      "location": "Salena's apartment — bedroom",
       "art": "img/fight.jpg",
       "nodes": [
         {
@@ -830,7 +838,7 @@
             },
             {
               "speaker": "glasses",
-              "text": "The safe is unguarded. Dial is warm \u2014 recently opened by one of them."
+              "text": "The safe is unguarded. Dial is warm — recently opened by one of them."
             }
           ],
           "choices": [
@@ -847,18 +855,18 @@
     "datadrive": {
       "chapter": 1,
       "chapterName": "The First Echo",
-      "location": "Salena's apartment \u2014 the safe",
+      "location": "Salena's apartment — the safe",
       "art": "img/datadrive.jpg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Inside the safe: a single data drive, matte black, labeled in Salena's handwriting \u2014 FIRST ECHO."
+              "text": "Inside the safe: a single data drive, matte black, labeled in Salena's handwriting — FIRST ECHO."
             },
             {
               "speaker": "glasses",
-              "text": "I can feel encrypted partitions on it. Budget routes. Shell accounts. Names. Whatever she died for \u2014 it starts on this drive."
+              "text": "I can feel encrypted partitions on it. Budget routes. Shell accounts. Names. Whatever she died for — it starts on this drive."
             },
             {
               "speaker": "stoneface",
@@ -899,7 +907,7 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "You wind the crank. The music box plays \u2014 eight notes, soft and slightly broken. The same eight notes the jingle lock was built around.",
+              "text": "You wind the crank. The music box plays — eight notes, soft and slightly broken. The same eight notes the jingle lock was built around.",
               "sfx": "jingle"
             },
             {
@@ -936,12 +944,12 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Sirens, four blocks out and closing. The watchers' car is pulling around. We go up and over \u2014 rooftops, then the alley.",
+              "text": "Sirens, four blocks out and closing. The watchers' car is pulling around. We go up and over — rooftops, then the alley.",
               "sfx": "siren"
             },
             {
               "speaker": "glasses",
-              "text": "Clear. Your phone buzzes \u2014 unknown number, one ring, then silence. Someone inside the law just checked on you. Saving the number.",
+              "text": "Clear. Your phone buzzes — unknown number, one ring, then silence. Someone inside the law just checked on you. Saving the number.",
               "sfx": "phone"
             },
             {
@@ -979,7 +987,7 @@
           "lines": [
             {
               "speaker": "narrator",
-              "text": "Chapter One complete \u2014 The First Echo."
+              "text": "Chapter One complete — The First Echo."
             },
             {
               "speaker": "glasses",
@@ -988,7 +996,7 @@
             },
             {
               "speaker": "glasses",
-              "text": "New asset unlocking: Bonnie \u2014 a bulletproof SUV the crew built for you, with a voice of her own. Tomorrow, the Southside Blocks. Tomorrow, we find the man called Harbor."
+              "text": "New asset unlocking: Bonnie — a bulletproof SUV the crew built for you, with a voice of her own. Tomorrow, the Southside Blocks. Tomorrow, we find the man called Harbor."
             }
           ],
           "choices": [
@@ -1027,7 +1035,7 @@
     "ch2_drive": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Bonnie \u2014 en route",
+      "location": "Bonnie — en route",
       "art": "img/drive.jpg",
       "nodes": [
         {
@@ -1084,7 +1092,7 @@
     "bonnie_chat": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Bonnie \u2014 en route",
+      "location": "Bonnie — en route",
       "art": "img/drive.jpg",
       "nodes": [
         {
@@ -1143,7 +1151,7 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "You are at Keystone Avenue and Ironrail Street \u2014 Southside Blocks. Bass from a club two blocks east. Dogs behind a fence. Basketball \u2014 a court just north, eight players, one of them moving like a soldier."
+              "text": "You are at Keystone Avenue and Ironrail Street — Southside Blocks. Bass from a club two blocks east. Dogs behind a fence. Basketball — a court just north, eight players, one of them moving like a soldier."
             },
             {
               "speaker": "glasses",
@@ -1200,7 +1208,7 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Ambush in the alley \u2014 a bottle across your shoulder. I shouted too late. Two runners gone over the fence with nothing taken. A warning, not a robbery.",
+              "text": "Ambush in the alley — a bottle across your shoulder. I shouted too late. Two runners gone over the fence with nothing taken. A warning, not a robbery.",
               "sfx": "hit"
             },
             {
@@ -1242,7 +1250,7 @@
           ],
           "choices": [
             {
-              "label": "Buy the buffalo plate \u2014 50 CC, grants Grit",
+              "label": "Buy the buffalo plate — 50 CC, grants Grit",
               "goto": "corner_store",
               "condition": {
                 "ccMin": 50,
@@ -1290,7 +1298,7 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The owner talks to a kid at the counter: Big quiet man? Sits courtside at the run off Ironrail. Nobody guards him. He guards everybody. Two years he's been a fixture \u2014 never once seen him lose."
+              "text": "The owner talks to a kid at the counter: Big quiet man? Sits courtside at the run off Ironrail. Nobody guards him. He guards everybody. Two years he's been a fixture — never once seen him lose."
             },
             {
               "speaker": "stoneface",
@@ -1323,7 +1331,7 @@
     "court_intro": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Southside \u2014 the court",
+      "location": "Southside — the court",
       "art": "img/harbor.jpg",
       "nodes": [
         {
@@ -1359,7 +1367,7 @@
     "harbor_meet": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Southside \u2014 the court",
+      "location": "Southside — the court",
       "art": "img/harbor.jpg",
       "nodes": [
         {
@@ -1403,7 +1411,7 @@
     "stickup_brief": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Southside \u2014 planning",
+      "location": "Southside — planning",
       "art": "img/stickup.svg",
       "nodes": [
         {
@@ -1436,7 +1444,7 @@
               "sfx": "whoosh"
             },
             {
-              "label": "Rooftop drop \u2014 needs Grit",
+              "label": "Rooftop drop — needs Grit",
               "goto": "stickup_fight",
               "condition": {
                 "flag": "gritBuff"
@@ -1465,14 +1473,14 @@
     "stickup_spotted": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Velvet Room \u2014 back alley",
+      "location": "Velvet Room — back alley",
       "art": "img/stickup.svg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "A door opens early \u2014 a lookout spots you. A bottle cracks the wall by your head. So much for quiet.",
+              "text": "A door opens early — a lookout spots you. A bottle cracks the wall by your head. So much for quiet.",
               "sfx": "alarm"
             },
             {
@@ -1503,14 +1511,14 @@
     "stickup_fight": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Velvet Room \u2014 stickup",
+      "location": "Velvet Room — stickup",
       "art": "img/stickup.svg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Two bodies between you and the bag. First one swings a pool cue \u2014 high, fast, right side."
+              "text": "Two bodies between you and the bag. First one swings a pool cue — high, fast, right side."
             }
           ],
           "choices": [
@@ -1562,7 +1570,7 @@
     "stickup_r2": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Velvet Room \u2014 stickup",
+      "location": "Velvet Room — stickup",
       "art": "img/stickup.svg",
       "nodes": [
         {
@@ -1609,19 +1617,19 @@
     "stickup_loot": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Velvet Room \u2014 back office",
+      "location": "Velvet Room — back office",
       "art": "img/stickup.svg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Both down. The bag is yours \u2014 twelve hundred Capitol City Credits, still warm from the count.",
+              "text": "Both down. The bag is yours — twelve hundred Capitol City Credits, still warm from the count.",
               "sfx": "coin"
             },
             {
               "speaker": "thug",
-              "text": "Take it, take it\u2014 listen, that collection don't belong to the club. Voss's boys take a cut every Friday. We're just the wallet."
+              "text": "Take it, take it— listen, that collection don't belong to the club. Voss's boys take a cut every Friday. We're just the wallet."
             },
             {
               "speaker": "glasses",
@@ -1661,7 +1669,7 @@
     "crew_meet": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Southside \u2014 under the overpass",
+      "location": "Southside — under the overpass",
       "art": "img/twins.jpg",
       "nodes": [
         {
@@ -1693,7 +1701,7 @@
           ],
           "choices": [
             {
-              "label": "Answer the phone \u2014 it's Ledger",
+              "label": "Answer the phone — it's Ledger",
               "goto": "ledger_call",
               "effects": {
                 "setFlag": "harborJoined"
@@ -1716,14 +1724,14 @@
     "ledger_call": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Southside \u2014 under the overpass",
+      "location": "Southside — under the overpass",
       "art": "img/twins.jpg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "ledger",
-              "text": "Ledger here. Word travels: you took the Velvet bag and the block's talking your name. Good for business. But \u2014 the Priest wants a word before you climb higher. Old Chapel Ward. Tonight. He says: every gate has a price, and his prices are honest ones.",
+              "text": "Ledger here. Word travels: you took the Velvet bag and the block's talking your name. Good for business. But — the Priest wants a word before you climb higher. Old Chapel Ward. Tonight. He says: every gate has a price, and his prices are honest ones.",
               "sfx": "phone"
             },
             {
@@ -1753,7 +1761,7 @@
     "priest_gate": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Old Chapel Ward \u2014 the church",
+      "location": "Old Chapel Ward — the church",
       "art": "img/priest.svg",
       "nodes": [
         {
@@ -1768,12 +1776,12 @@
             },
             {
               "speaker": "priest",
-              "text": "The Hurricane \u2014 a hand cannon from a Navy armory, eight hundred CC. And the Iron Chef \u2014 kitchen-plate armor that stops anything short of a grudge, seven hundred CC. Buy both, and the gate opens. Pray if you're hurt. I don't charge for that."
+              "text": "The Hurricane — a hand cannon from a Navy armory, eight hundred CC. And the Iron Chef — kitchen-plate armor that stops anything short of a grudge, seven hundred CC. Buy both, and the gate opens. Pray if you're hurt. I don't charge for that."
             }
           ],
           "choices": [
             {
-              "label": "Buy The Hurricane \u2014 800 CC",
+              "label": "Buy The Hurricane — 800 CC",
               "goto": "priest_gate",
               "condition": {
                 "ccMin": 800,
@@ -1787,7 +1795,7 @@
               "sfx": "cash"
             },
             {
-              "label": "Buy the Iron Chef armor \u2014 700 CC",
+              "label": "Buy the Iron Chef armor — 700 CC",
               "goto": "priest_gate",
               "condition": {
                 "ccMin": 700,
@@ -1801,7 +1809,7 @@
               "sfx": "cash"
             },
             {
-              "label": "Pray and rest \u2014 restores health",
+              "label": "Pray and rest — restores health",
               "goto": "priest_gate",
               "condition": {
                 "notFlag": "prayed"
@@ -1813,7 +1821,7 @@
               "sfx": "chime"
             },
             {
-              "label": "Open the gate \u2014 you carry both",
+              "label": "Open the gate — you carry both",
               "goto": "ch2_end",
               "condition": {
                 "flag": [
@@ -1822,6 +1830,21 @@
                 ]
               },
               "sfx": "chapter"
+            },
+            {
+              "label": "Step back outside to the overpass",
+              "goto": "ledger_call"
+            },
+            {
+              "label": "Ask the priest for a fighting loan — 1,500 CC",
+              "goto": "priest_gate",
+              "condition": {
+                "notFlag": "priestLoan"
+              },
+              "effects": {
+                "cc": 1500,
+                "setFlag": "priestLoan"
+              }
             }
           ]
         }
@@ -1841,40 +1864,39 @@
     "ch2_end": {
       "chapter": 2,
       "chapterName": "The Block",
-      "location": "Old Chapel Ward \u2014 the gate",
+      "location": "Old Chapel Ward — the gate",
       "art": "img/chapter2_end.svg",
       "nodes": [
         {
           "lines": [
             {
               "speaker": "priest",
-              "text": "The Hurricane rides your hip and the Iron Chef rides your chest. Go on then, son. The road opens.",
-              "sfx": "success"
+              "text": "The Hurricane rides your hip and the Iron Chef rides your chest. Go on then, son. The road opens."
             },
             {
               "speaker": "narrator",
-              "text": "Chapter Two complete \u2014 The Block. Crew level three unlocked."
+              "text": "Chapter Two complete — The Block. Crew level three unlocked."
             },
             {
               "speaker": "glasses",
-              "text": "Next route on Salena's drive: the Waterfront. An ambush on the road, a damaged Bonnie, an island with a casino and a woman named Sera. That is tomorrow's echo."
-            },
-            {
-              "speaker": "glasses",
-              "text": "Beta build complete through Chapter Two. Chapters Three, Four, and Five \u2014 Waterfront, The Takedown, and The Grand Finale \u2014 are in development. Thank you for playing Capital City Streets."
+              "text": "Next route on Salena's drive: the Waterfront. An ambush on the road, a damaged Bonnie, an island with a casino and a woman in green. Say the word and we roll."
             }
           ],
           "choices": [
             {
-              "label": "Keep roaming the city a while",
+              "label": "Begin Chapter Three: Waterfront",
+              "goto": "c3_open",
+              "effects": {
+                "level": 3
+              }
+            },
+            {
+              "label": "Roam the city before Chapter Three",
               "goto": "@city"
             },
             {
               "label": "Return to title",
-              "goto": "@menu",
-              "effects": {
-                "level": 3
-              }
+              "goto": "@menu"
             }
           ]
         }
@@ -1943,7 +1965,7 @@
           "lines": [
             {
               "speaker": "narrator",
-              "text": "Chapter Three \u2014 Waterfront and Island."
+              "text": "Chapter Three — Waterfront and Island."
             },
             {
               "speaker": "tess",
@@ -2078,7 +2100,7 @@
           ],
           "choices": [
             {
-              "label": "Authorize nuclear armor \u2014 1,500 CC",
+              "label": "Authorize nuclear armor — 1,500 CC",
               "goto": "police_chase",
               "condition": {
                 "ccMin": 1500
@@ -2112,7 +2134,7 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The ambush tripped a silent alarm. Five minutes of police chase. Speed tiers rising. Eleven total \u2014 we are on four.",
+              "text": "The ambush tripped a silent alarm. Five minutes of police chase. Speed tiers rising. Eleven total — we are on four.",
               "sfx": "siren"
             },
             {
@@ -2160,7 +2182,7 @@
           ],
           "choices": [
             {
-              "label": "Thread the car wash \u2014 steam hides everything",
+              "label": "Thread the car wash — steam hides everything",
               "goto": "pier",
               "sfx": "glass"
             },
@@ -2257,7 +2279,7 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Open water. City lights shrink behind you. Ahead: the island \u2014 casino glow, hotel gold, and Salena's last red circle.",
+              "text": "Open water. City lights shrink behind you. Ahead: the island — casino glow, hotel gold, and Salena's last red circle.",
               "sfx": "boat"
             },
             {
@@ -2333,7 +2355,7 @@
               }
             },
             {
-              "label": "Call LOW \u2014 he tapped twice",
+              "label": "Call LOW — he tapped twice",
               "goto": "dan_clue",
               "sfx": "cash"
             }
@@ -2381,7 +2403,7 @@
           "lines": [
             {
               "speaker": "dan",
-              "text": "Fine. Level four, like she promised. The Police Chief launders through the precinct evidence room. Three detectives sign. And the Mayor's gala? That's the wash cycle \u2014 every dirty dollar comes out smelling like charity."
+              "text": "Fine. Level four, like she promised. The Police Chief launders through the precinct evidence room. Three detectives sign. And the Mayor's gala? That's the wash cycle — every dirty dollar comes out smelling like charity."
             },
             {
               "speaker": "glasses",
@@ -2394,7 +2416,7 @@
               "goto": "sera_meet"
             },
             {
-              "label": "Stay professional \u2014 head for the hotel",
+              "label": "Stay professional — head for the hotel",
               "goto": "c3_end"
             }
           ]
@@ -2434,7 +2456,7 @@
               "sfx": "chime"
             },
             {
-              "label": "Keep it light \u2014 ask about the island",
+              "label": "Keep it light — ask about the island",
               "goto": "c3_end",
               "effects": {
                 "setFlag": "seraMet"
@@ -2457,7 +2479,7 @@
           "lines": [
             {
               "speaker": "narrator",
-              "text": "Chapter Three complete \u2014 Waterfront and Island."
+              "text": "Chapter Three complete — Waterfront and Island."
             },
             {
               "speaker": "glasses",
@@ -2497,7 +2519,7 @@
           "lines": [
             {
               "speaker": "narrator",
-              "text": "Chapter Four \u2014 The Takedown."
+              "text": "Chapter Four — The Takedown."
             },
             {
               "speaker": "sam",
@@ -2529,11 +2551,18 @@
           "lines": [
             {
               "speaker": "marrs",
-              "text": "Detective Marrs. She copies your last move \u2014 Salena's notes called her the mirror. So don't give her your last move. Give her a lie."
+              "text": "Detective Marrs. She copies your last move — Salena's notes called her the mirror. So don't give her your last move. Give her a lie."
             },
             {
               "speaker": "glasses",
               "text": "Threat call: Marrs, front. She will repeat whatever you just did."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Desk drawer: a sticky note in Marrs's hand — quote, she mirrors, first digit one. Evidence keypad clue one of three.",
+              "condition": {
+                "flag": "marrsClue"
+              }
             }
           ],
           "choices": [
@@ -2551,6 +2580,16 @@
                   "health": -15
                 },
                 "failGoto": "precinct1"
+              }
+            },
+            {
+              "label": "Search Marrs's desk for keypad clues",
+              "goto": "precinct1",
+              "condition": {
+                "notFlag": "marrsClue"
+              },
+              "effects": {
+                "setFlag": "marrsClue"
               }
             }
           ]
@@ -2575,6 +2614,13 @@
             {
               "speaker": "glasses",
               "text": "He will commit fully. Let the wall finish him."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Locker door: boot polish and a taped slip — quote, he charges, second digit two. Evidence keypad clue two of three.",
+              "condition": {
+                "flag": "coleClue"
+              }
             }
           ],
           "choices": [
@@ -2592,6 +2638,16 @@
                   "health": -20
                 },
                 "failGoto": "precinct2"
+              }
+            },
+            {
+              "label": "Search Cole's locker for keypad clues",
+              "goto": "precinct2",
+              "condition": {
+                "notFlag": "coleClue"
+              },
+              "effects": {
+                "setFlag": "coleClue"
               }
             }
           ]
@@ -2617,6 +2673,13 @@
             {
               "speaker": "glasses",
               "text": "She draws on the exhale. Act on the inhale."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Holster log, last page — quote, she waits for the exhale, third digit three. Evidence keypad clue three of three.",
+              "condition": {
+                "flag": "ruizClue"
+              }
             }
           ],
           "choices": [
@@ -2636,6 +2699,16 @@
                 "failGoto": "precinct3"
               },
               "sfx": "dodge"
+            },
+            {
+              "label": "Check Ruiz's holster log for keypad clues",
+              "goto": "precinct3",
+              "condition": {
+                "notFlag": "ruizClue"
+              },
+              "effects": {
+                "setFlag": "ruizClue"
+              }
             }
           ]
         }
@@ -2659,17 +2732,48 @@
             {
               "speaker": "stoneface",
               "text": "Good. Save me the commute."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Review, since you asked: Marrs mirrors — first digit one. Cole charges — second digit two. Ruiz waits for the exhale — third digit three. One, two, three.",
+              "condition": {
+                "flag": "evHint"
+              }
             }
           ],
           "choices": [
             {
-              "label": "Take the ledger and the list",
+              "label": "Ask Smart Glasses to review the three clues",
+              "goto": "evidence_room",
+              "hint": true,
+              "effects": {
+                "setFlag": "evHint"
+              }
+            },
+            {
+              "label": "Enter the code: 1-2-3 — mirror, charge, exhale",
               "goto": "hitmen_board",
+              "condition": {
+                "flag": [
+                  "marrsClue",
+                  "coleClue",
+                  "ruizClue"
+                ]
+              },
               "effects": {
                 "setFlag": "ledger",
                 "addItem": "precinct-ledger"
-              },
-              "sfx": "pickup"
+              }
+            },
+            {
+              "label": "Force the keypad and take the alarm",
+              "goto": "hitmen_board",
+              "effects": {
+                "setFlag": "ledger",
+                "addItem": "precinct-ledger",
+                "heat": 2,
+                "health": -15
+              }
             }
           ]
         }
@@ -2687,11 +2791,11 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Five names. The Dancer works Midtown's neon. The Welder, Industrial Row. The Choir hides in chapel silence. The Gardener, the parks. And The Suit \u2014 Upper Hills, where the money lives."
+              "text": "Five names. The Dancer works Midtown's neon. The Welder, Industrial Row. The Choir hides in chapel silence. The Gardener, the parks. And The Suit — Upper Hills, where the money lives."
             },
             {
               "speaker": "nyx",
-              "text": "Point us. We'll take two. You take your three \u2014 they're yours by rights."
+              "text": "Point us. We'll take two. You take your three — they're yours by rights."
             }
           ],
           "choices": [
@@ -2715,12 +2819,19 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The Dancer kills on rhythm \u2014 four counts, then a blade. Break his beat and he breaks.",
+              "text": "The Dancer kills on rhythm — four counts, then a blade. Break his beat and he breaks.",
               "sfx": "tick"
             },
             {
               "speaker": "narrator",
-              "text": "One. Two. Three\u2014"
+              "text": "One. Two. Three—"
+            },
+            {
+              "speaker": "glasses",
+              "text": "Analysis: four counts, then a blade. Move between three and one — strike on the missing fourth beat.",
+              "condition": {
+                "flag": "h1hint"
+              }
             }
           ],
           "choices": [
@@ -2738,6 +2849,14 @@
                   "health": -15
                 },
                 "failGoto": "h1"
+              }
+            },
+            {
+              "label": "Ask Smart Glasses to analyze his rhythm",
+              "goto": "h1",
+              "hint": true,
+              "effects": {
+                "setFlag": "h1hint"
               }
             }
           ]
@@ -2758,11 +2877,18 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The Welder announces himself in sparks \u2014 grind, flash, then the torch swing. Listen for the grinder to stop."
+              "text": "The Welder announces himself in sparks — grind, flash, then the torch swing. Listen for the grinder to stop."
             },
             {
               "speaker": "narrator",
-              "text": "Grind. Flash. Silence\u2014"
+              "text": "Grind. Flash. Silence—"
+            },
+            {
+              "speaker": "glasses",
+              "text": "Timing: grind, flash, then the torch swing. The silence after the flash is your door — rush in the silence.",
+              "condition": {
+                "flag": "h2hint"
+              }
             }
           ],
           "choices": [
@@ -2780,6 +2906,14 @@
                   "health": -15
                 },
                 "failGoto": "h2"
+              }
+            },
+            {
+              "label": "Ask Smart Glasses to time the grinder",
+              "goto": "h2",
+              "hint": true,
+              "effects": {
+                "setFlag": "h2hint"
               }
             }
           ]
@@ -2806,11 +2940,18 @@
               "speaker": "stoneface",
               "text": "Then let the church sing.",
               "sfx": "chime"
+            },
+            {
+              "speaker": "glasses",
+              "text": "Echo map: clap once and his footstep answers from the dark. Take him exactly where his echo lands.",
+              "condition": {
+                "flag": "h3hint"
+              }
             }
           ],
           "choices": [
             {
-              "label": "Clap once \u2014 take him where his echo lands",
+              "label": "Clap once — take him where his echo lands",
               "goto": "h4",
               "sfx": "punch"
             },
@@ -2823,6 +2964,14 @@
                   "health": -10
                 },
                 "failGoto": "h3"
+              }
+            },
+            {
+              "label": "Ask Smart Glasses to map the echo",
+              "goto": "h3",
+              "hint": true,
+              "effects": {
+                "setFlag": "h3hint"
               }
             }
           ]
@@ -2843,11 +2992,18 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The Gardener prunes from hedges \u2014 a rustle, a thrown blade. The rustle always comes from the dry leaves."
+              "text": "The Gardener prunes from hedges — a rustle, a thrown blade. The rustle always comes from the dry leaves."
             },
             {
               "speaker": "nia",
               "text": "Wet side's mine! Dry side's yours, king!"
+            },
+            {
+              "speaker": "glasses",
+              "text": "The rustle always comes from the dry leaves; the wet side is Nia's game. Take the dry-leaf rustle.",
+              "condition": {
+                "flag": "h4hint"
+              }
             }
           ],
           "choices": [
@@ -2865,6 +3021,14 @@
                   "health": -10
                 },
                 "failGoto": "h4"
+              }
+            },
+            {
+              "label": "Ask Smart Glasses which leaves lie",
+              "goto": "h4",
+              "hint": true,
+              "effects": {
+                "setFlag": "h4hint"
               }
             }
           ]
@@ -2889,12 +3053,19 @@
             },
             {
               "speaker": "wexler",
-              "text": "\u2026via a city phone, amused. Do enjoy the finale, Stoneface. The gala is Saturday."
+              "text": "…via a city phone, amused. Do enjoy the finale, Stoneface. The gala is Saturday."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Manners are the tells: the draw hides inside the handshake. Refuse the hand and take the wrist.",
+              "condition": {
+                "flag": "h5hint"
+              }
             }
           ],
           "choices": [
             {
-              "label": "Refuse the hand \u2014 take the wrist",
+              "label": "Refuse the hand — take the wrist",
               "goto": "court_ambush",
               "sfx": "whoosh"
             },
@@ -2907,6 +3078,14 @@
                   "health": -25
                 },
                 "failGoto": "h5"
+              }
+            },
+            {
+              "label": "Ask Smart Glasses about the handshake",
+              "goto": "h5",
+              "hint": true,
+              "effects": {
+                "setFlag": "h5hint"
               }
             }
           ]
@@ -2932,12 +3111,19 @@
               "speaker": "glasses",
               "text": "Three shooters in the bleachers. Harbor's whistle is your metronome.",
               "sfx": "punch"
+            },
+            {
+              "speaker": "glasses",
+              "text": "Three shooters in the bleachers, all watching Harbor. His whistle is your metronome — move on the whistle, never early.",
+              "condition": {
+                "flag": "courtHint"
+              }
             }
           ],
           "choices": [
             {
               "label": "Move on the whistle",
-              "goto": "hotel",
+              "goto": "c4_marina",
               "sfx": "whoosh"
             },
             {
@@ -2949,6 +3135,14 @@
                   "health": -15
                 },
                 "failGoto": "court_ambush"
+              }
+            },
+            {
+              "label": "Ask Smart Glasses to count the shooters",
+              "goto": "court_ambush",
+              "hint": true,
+              "effects": {
+                "setFlag": "courtHint"
               }
             }
           ]
@@ -2968,7 +3162,7 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The Grand Hotel, suite 9. Inside: the final coordinates \u2014 Saturday, Upper Hills, the Mayor's gala, and the room where Wexler and Voss count what they stole."
+              "text": "The Grand Hotel, suite 9. Inside: the final coordinates — Saturday, Upper Hills, the Mayor's gala, and the room where Wexler and Voss count what they stole."
             },
             {
               "speaker": "stoneface",
@@ -2977,12 +3171,28 @@
           ],
           "choices": [
             {
-              "label": "Take the coordinates",
+              "label": "Slide the lobby keycard and take the coordinates",
+              "goto": "c4_end",
+              "condition": {
+                "flag": "lobbyCard"
+              },
+              "effects": {
+                "setFlag": "coords"
+              }
+            },
+            {
+              "label": "Pick the suite lock by ear",
               "goto": "c4_end",
               "effects": {
                 "setFlag": "coords"
               },
-              "sfx": "pickup"
+              "chance": {
+                "fail": 0.5,
+                "failGoto": "hotel",
+                "failEffects": {
+                  "heat": 1
+                }
+              }
             }
           ]
         }
@@ -3000,7 +3210,7 @@
           "lines": [
             {
               "speaker": "narrator",
-              "text": "Chapter Four complete \u2014 The Takedown."
+              "text": "Chapter Four complete — The Takedown."
             },
             {
               "speaker": "glasses",
@@ -3039,7 +3249,7 @@
           "lines": [
             {
               "speaker": "narrator",
-              "text": "Chapter Five \u2014 The Grand Finale."
+              "text": "Chapter Five — The Grand Finale."
             },
             {
               "speaker": "nyx",
@@ -3061,7 +3271,7 @@
               "goto": "gate_quiet"
             },
             {
-              "label": "Go loud \u2014 Bonnie takes the gate",
+              "label": "Go loud — Bonnie takes the gate",
               "goto": "gate_loud",
               "effects": {
                 "heat": 2
@@ -3088,7 +3298,7 @@
             },
             {
               "speaker": "nia",
-              "text": "(whisper) I hate roses. They're so\u2026 confident."
+              "text": "(whisper) I hate roses. They're so… confident."
             }
           ],
           "choices": [
@@ -3149,7 +3359,7 @@
     "gala1": {
       "chapter": 5,
       "chapterName": "The Grand Finale",
-      "location": "The Gala \u2014 Ballroom",
+      "location": "The Gala — Ballroom",
       "art": "img/gala.jpg",
       "music": "quartet",
       "nodes": [
@@ -3187,7 +3397,7 @@
     "gala2": {
       "chapter": 5,
       "chapterName": "The Grand Finale",
-      "location": "The Gala \u2014 Service Halls",
+      "location": "The Gala — Service Halls",
       "art": "img/gala.jpg",
       "music": "quartet",
       "nodes": [
@@ -3195,7 +3405,7 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "Service hall. Kitchen steam. Two more guards and a door marked PRIVATE \u2014 the Mayor's study."
+              "text": "Service hall. Kitchen steam. Two more guards and a door marked PRIVATE — the Mayor's study."
             },
             {
               "speaker": "tess",
@@ -3236,7 +3446,7 @@
           "lines": [
             {
               "speaker": "glasses",
-              "text": "The roof. And a police helicopter on station \u2014 Voss's last card, rotors screaming.",
+              "text": "The roof. And a police helicopter on station — Voss's last card, rotors screaming.",
               "sfx": "heli"
             },
             {
@@ -3282,12 +3492,12 @@
             },
             {
               "speaker": "voss",
-              "text": "We don't steal \u2014 we redirect. Sign the confession we wrote, and the city keeps its fairy tale.",
+              "text": "We don't steal — we redirect. Sign the confession we wrote, and the city keeps its fairy tale.",
               "sfx": "draw"
             },
             {
               "speaker": "stoneface",
-              "text": "Salena kept receipts. I keep promises. Choose your ending \u2014 I'll narrate it true."
+              "text": "Salena kept receipts. I keep promises. Choose your ending — I'll narrate it true."
             },
             {
               "speaker": "glasses",
@@ -3296,15 +3506,15 @@
           ],
           "choices": [
             {
-              "label": "EXECUTION \u2014 justice with your hands",
+              "label": "EXECUTION — justice with your hands",
               "goto": "end_execution"
             },
             {
-              "label": "FORCED SUICIDE \u2014 let them erase themselves",
+              "label": "FORCED SUICIDE — let them erase themselves",
               "goto": "end_suicide"
             },
             {
-              "label": "EXILE \u2014 strip them and banish them",
+              "label": "EXILE — strip them and banish them",
               "goto": "end_exile"
             }
           ]
@@ -3355,7 +3565,7 @@
           "lines": [
             {
               "speaker": "narrator",
-              "text": "You hand Wexler his own pen. The fairy tale writes its last line in his handwriting \u2014 a confession styled as a suicide note, Voss's signature beneath."
+              "text": "You hand Wexler his own pen. The fairy tale writes its last line in his handwriting — a confession styled as a suicide note, Voss's signature beneath."
             },
             {
               "speaker": "glasses",
@@ -3428,7 +3638,7 @@
           ],
           "choices": [
             {
-              "label": "Return to the island \u2014 to Sera",
+              "label": "Return to the island — to Sera",
               "goto": "epilogue_sera",
               "condition": {
                 "flag": "seraBond"
@@ -3487,11 +3697,11 @@
           "lines": [
             {
               "speaker": "narrator",
-              "text": "CAPITAL CITY STREETS \u2014 the full story, complete. Hunt the truth. Avenge the silence."
+              "text": "CAPITAL CITY STREETS — the full story, complete. Hunt the truth. Avenge the silence."
             },
             {
               "speaker": "glasses",
-              "text": "Thank you for playing. The city remains open \u2014 roam it whenever you like. Justice is coming, one block at a time."
+              "text": "Thank you for playing. The city remains open — roam it whenever you like. Justice is coming, one block at a time."
             },
             {
               "speaker": "stoneface",
@@ -3511,6 +3721,137 @@
         }
       ],
       "amb": "night"
+    },
+    "c4_marina": {
+      "chapter": 4,
+      "chapterName": "The Takedown",
+      "location": "The Island — marina",
+      "music": "sea",
+      "amb": "boat",
+      "art": "img/harbor.jpg",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "The island marina. Hulls knocking, gulls crying, one dock guard who plays Salena's game — one question, one right answer, or you swim home."
+            },
+            {
+              "speaker": "stoneface",
+              "text": "Ask your question."
+            },
+            {
+              "speaker": "glasses",
+              "text": "He asks: where did the precinct wash its money? Answer wrong and the whole dock hears about it."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Think. The ledger in your pocket says it plain: Voss signed the laundry through the precinct evidence room.",
+              "condition": {
+                "flag": "marinaHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses for the answer",
+              "goto": "c4_marina",
+              "hint": true,
+              "effects": {
+                "setFlag": "marinaHint"
+              }
+            },
+            {
+              "label": "Answer: the precinct evidence room",
+              "goto": "c4_lobby",
+              "condition": {
+                "flag": "ledger"
+              },
+              "effects": {
+                "setFlag": "marinaPass"
+              }
+            },
+            {
+              "label": "Answer: the casino vault",
+              "goto": "c4_marina",
+              "effects": {
+                "heat": 1
+              }
+            },
+            {
+              "label": "Answer: the mayor's office",
+              "goto": "c4_marina",
+              "effects": {
+                "heat": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "c4_lobby": {
+      "chapter": 4,
+      "chapterName": "The Takedown",
+      "location": "The Island — hotel lobby",
+      "music": "mystery",
+      "amb": "mansion",
+      "art": "img/mansion.jpg",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "The Grand Hotel lobby. Marble, perfume, and a bellhop who sells suite numbers to anyone with confidence. Three suites matter. Only one holds the coordinates."
+            },
+            {
+              "speaker": "stoneface",
+              "text": "Salena counted everything in chimes. Nine of them."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Nine chimes on her jingle. Nine floors in this hotel. The bellhop is waiting — suite seven, eight, or nine?"
+            },
+            {
+              "speaker": "glasses",
+              "text": "Nine chimes. Nine floors. Suite nine. Trust her counting.",
+              "condition": {
+                "flag": "lobbyHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses which suite",
+              "goto": "c4_lobby",
+              "hint": true,
+              "effects": {
+                "setFlag": "lobbyHint"
+              }
+            },
+            {
+              "label": "Ask for suite 7",
+              "goto": "c4_lobby",
+              "effects": {
+                "heat": 1
+              }
+            },
+            {
+              "label": "Ask for suite 8",
+              "goto": "c4_lobby",
+              "effects": {
+                "heat": 1
+              }
+            },
+            {
+              "label": "Ask for suite 9 — nine chimes, nine floors",
+              "goto": "hotel",
+              "effects": {
+                "setFlag": "lobbyCard"
+              }
+            }
+          ]
+        }
+      ]
     }
   }
 }

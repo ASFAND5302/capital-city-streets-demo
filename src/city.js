@@ -33,6 +33,26 @@ const CityMode = (() => {
     bonnie_garage: 'boat', marlow_pier: 'harbor', fish_market: 'night',
     mansion: 'mansion', tess_workshop: 'industrial', carwash: 'rain', greenhouse: 'garden'
   };
+  // v4.0 EACH AREA'S OWN SOUND: ambience bed per district + per landmark
+  const DIST_AMB = { old_chapel: 'church', midtown: 'club', southside: 'radio',
+                     harborfront: 'boat', garden: 'night', industrial: 'precinct', upperhills: 'mansion' };
+  const DIST_OGA = { old_chapel: 'rain', midtown: 'city', southside: 'city',
+                     harborfront: 'water', garden: 'night', industrial: 'construction', upperhills: 'night' };
+  const POI_AMB = {
+    safehouse: 'room', salena_apartment: 'radio', st_verity_church: 'church',
+    pawnshop_ledger: 'radio', velvet_room: 'club', diner_blue_note: 'radio',
+    movie_theater: 'radio', basketball_court: 'court', corner_store: 'radio',
+    bonnie_garage: 'boat', marlow_pier: 'boat', fish_market: 'boat',
+    mansion: 'mansion', tess_workshop: 'precinct', carwash: 'rain', greenhouse: 'night'
+  };
+  // Hero's Call style radar: signature sound description per landmark
+  const POI_SIG_DESC = {
+    safehouse: 'a floorboard creak', salena_apartment: 'a music-box chime', st_verity_church: 'a distant bell',
+    pawnshop_ledger: 'a cash drawer', velvet_room: 'bass through the walls', diner_blue_note: 'clinking plates',
+    movie_theater: 'an old projector', basketball_court: 'a bouncing ball', corner_store: 'a shop bell',
+    bonnie_garage: 'an idling engine', marlow_pier: 'a foghorn', fish_market: 'gulls and ropes',
+    mansion: 'patrol boots', tess_workshop: 'a grinder', carwash: 'spraying water', greenhouse: 'rustling leaves'
+  };
 
   function getDistrictMusic(d) {
     if (!d) return 'noir';
@@ -180,7 +200,18 @@ const CityMode = (() => {
 
   /* ---------- narration - location-specific music vibe ---------- */
   let lastPoiId = null;
-  function describeMove(dirWord, wrongWay) {
+  let lastSigPoi = null;
+  /* v4.0: every district and landmark gets its own ambience bed */
+  function applyAreaSound(d, poi) {
+    const amb = (poi && POI_AMB[poi.id]) || (d && DIST_AMB[d.id]) || 'night';
+    try { if (typeof Music !== 'undefined') Music.setAmb(amb); } catch (e) {}
+    try {
+      if (typeof OGAudio !== 'undefined' && OGAudio.isEnabled()) {
+        OGAudio.playAmbient((d && DIST_OGA[d.id]) || 'night');
+      }
+    } catch (e) {}
+  }
+  function describeMove(dirWord, wrongWay, edgeNote) {
     const d = districtAt(pos.x, pos.y);
     const poi = poiAt(pos.x, pos.y);
     let line = `${dirWord} — ${intersectionName(pos.x, pos.y)}.`;
@@ -191,7 +222,9 @@ const CityMode = (() => {
       SFX.play('chapter');
       const dm = getDistrictMusic(d);
       Music.play(dm);
+      try { Music._lastMood = dm; } catch (e) {}
       Music.arrive(DIST_ARRIVE[d.id] || 'night');
+      applyAreaSound(d, poi);
       console.log(`[City] District vibe: ${d.name} -> music ${dm}`);
     }
     lastDistrict = d;
@@ -202,8 +235,10 @@ const CityMode = (() => {
       if (poiMusic && lastPoiId !== poi.id) {
         // New POI - switch to its unique vibe
         Music.play(poiMusic);
+        try { Music._lastMood = poiMusic; } catch (e) {}
         const arriveSound = POI_ARRIVE[poi.id] || DIST_ARRIVE[d?.id] || 'room';
         Music.arrive(arriveSound);
+        applyAreaSound(d, poi);
         console.log(`[City] POI vibe: ${poi.name} -> music ${poiMusic} + arrive ${arriveSound}`);
       }
       lastPoiId = poi.id;
@@ -214,12 +249,29 @@ const CityMode = (() => {
       if (lastPoiId !== null) {
         const dm = getDistrictMusic(d);
         Music.play(dm);
+        try { Music._lastMood = dm; } catch (e) {}
+        applyAreaSound(d, null);
         console.log(`[City] Left POI, back to district: ${d?.name} -> ${dm}`);
       }
       lastPoiId = null;
     }
 
     if (wrongWay) line += ' Note: that step takes you farther from your marker.';
+    if (edgeNote) line += edgeNote;
+
+    // v4.0 Hero's Call radar: nearest landmark signature within 2 blocks
+    if (!poi) {
+      let best = null, bestD = 99;
+      for (const p of city.pois) {
+        const dd = distTo(p.x, p.y);
+        if (dd > 0 && dd <= 2 && dd < bestD) { best = p; bestD = dd; }
+      }
+      if (best && best.id !== lastSigPoi) {
+        lastSigPoi = best.id;
+        try { Music.arrive(POI_ARRIVE[best.id] || 'night'); } catch (e) {}
+        line += ` You hear ${POI_SIG_DESC[best.id] || 'something'} — ${best.name}, ${bestD} block${bestD > 1 ? 's' : ''} ${dirTo(best.x, best.y)}.`;
+      } else if (!best) lastSigPoi = null;
+    } else lastSigPoi = poi.id;
 
     // Occasional street flavor — the city talking to itself.
     moveCount++;
@@ -230,7 +282,7 @@ const CityMode = (() => {
     if (marker) line += ' ' + markerStatus();
     say(line);
     if (marker && marker.x === pos.x && marker.y === pos.y) {
-      marker = null; saveState();
+      marker = null; saveState(); stopBeacon();
       setTimeout(() => say('You have reached your marker. Marker cleared.'), 1600);
     }
   }
@@ -296,8 +348,9 @@ const CityMode = (() => {
     gotoOptions = city.pois.slice(0, 9);
     gotoActive = true;
     SFX.play('ping');
-    say('Go to. ' + gotoOptions.map((p, i) => `${i + 1}: ${p.name}`).join('. ') +
-      '. Press a number key to set a marker there. Press G to cancel.');
+    const letters = 'ABCDEFGHI';
+    say('Go to. ' + gotoOptions.map((p, i) => `${letters[i]} for ${p.name}`).join('. ') +
+      '. Press its letter or number to set a marker there. Press 0 or G to go back.');
   }
   function pickGoto(n) {
     const p = gotoOptions[n - 1];
@@ -315,6 +368,30 @@ const CityMode = (() => {
     const trail = history.slice(-6, -1).reverse()
       .map(h => intersectionName(h.x, h.y));
     say('Your trail, newest first: ' + trail.join('. ') + '.');
+  }
+
+  /* v4.0: living open world — small street encounters while roaming */
+  const ENCOUNTERS = [
+    { text: 'A dropped wallet by the curb. Finder\u2019s keepers: 45 CC.', fx: { cc: 45 }, sfx: 'coin' },
+    { text: 'A street kid bumps past you, laughing. Your pocket feels lighter. Minus 30 CC.', fx: { cc: -30 }, sfx: 'fail' },
+    { text: 'A stray dog walks one block with you, then stands guard over your shadow. You feel better.', fx: { health: 10 }, sfx: 'success' },
+    { text: 'Two old men argue about the Mayor on a stoop. You catch a rumor: the precinct washes money through its own evidence room.', fx: null, sfx: 'tick' },
+    { text: 'You find a quiet doorway, breathe, and roll your shoulders. Health up.', fx: { health: 15 }, sfx: 'success' },
+    { text: 'Rain starts tapping the awnings. The whole block smells like iron and rain.', fx: null, sfx: null },
+  ];
+  let lastEncMove = 0;
+  function maybeEncounter() {
+    if (moveCount - lastEncMove < 6) return;
+    if (Math.random() > 0.35) return;
+    lastEncMove = moveCount;
+    const enc = ENCOUNTERS[Math.floor(Math.random() * ENCOUNTERS.length)];
+    setTimeout(() => {
+      if (!active) return;
+      try { if (enc.fx) Economy.apply(enc.fx); } catch (e) {}
+      try { if (enc.sfx) SFX.play(enc.sfx); } catch (e) {}
+      try { paintHUD(); } catch (e) {}
+      say(enc.text);
+    }, 2200);
   }
 
   function move(dx, dy) {
@@ -393,7 +470,14 @@ const CityMode = (() => {
         else SFX.play('step', stepSide * 0.45);
       }
     }
-    describeMove(dirWord, wrongWay);
+    const edges = [];
+    if (pos.x === 0) edges.push('west');
+    if (pos.x === N() - 1) edges.push('east');
+    if (pos.y === 0) edges.push('north');
+    if (pos.y === N() - 1) edges.push('south');
+    const edgeNote = edges.length ? ` The edge of the mapped city is one block ${edges.join(' and ')}.` : '';
+    describeMove(dirWord, wrongWay, edgeNote);
+    maybeEncounter();
   }
 
   /* ---------- POI interaction - with wrong sound ---------- */
@@ -450,7 +534,7 @@ const CityMode = (() => {
   }
   function clearMarker() {
     if (!marker) { say('No marker to clear.'); return; }
-    marker = null; saveState(); paintHUD(); City3D.setMarker(null);
+    marker = null; saveState(); stopBeacon(); paintHUD(); City3D.setMarker(null);
     say('Marker cleared.');
   }
   function toggleBonnie() {
@@ -478,6 +562,48 @@ const CityMode = (() => {
     say(`Case file. ${s.cc.toLocaleString()} CC, level ${s.level}. Carrying: ${items.length ? items.join(', ') : 'nothing yet'}. Health ${s.health} of ${s.maxHealth}.`);
   }
 
+  /* v4.0: case journal for roamers (J key) */
+  function cityJournal() {
+    const s = Economy.state;
+    const d = districtAt(pos.x, pos.y);
+    const names = {
+      'data-drive': 'the FIRST ECHO data drive', 'case-files': "Salena's case files",
+      'music-box': "Mama's music box", 'the-hurricane': 'The Hurricane hand cannon',
+      'iron-chef': 'Iron Chef armor', 'precinct-ledger': 'the precinct ledger',
+    };
+    const items = s.items.map(i => names[i] || i);
+    const clueCount = Object.keys(s.flags || {}).length;
+    say(`Case journal. Roaming ${d ? d.name : 'Capitol City'}, at ${intersectionName(pos.x, pos.y)}. ` +
+      `Clues on file: ${clueCount}. Carrying: ${items.length ? items.join(', ') : 'nothing yet'}. ` +
+      `${s.cc.toLocaleString()} CC, health ${s.health} of ${s.maxHealth}. ` +
+      (marker ? markerStatus() + ' Press Y for a walking beacon.' : 'No marker. Press G for go-to.'));
+  }
+
+  /* v4.0: Hero's Call style walking beacon (Y key) */
+  let beaconTimer = null;
+  function toggleBeacon() {
+    if (beaconTimer) { clearInterval(beaconTimer); beaconTimer = null; say('Beacon off.'); return; }
+    if (!marker) { say('No marker set. Press G for go-to, then pick a landmark, then Y for the beacon.'); return; }
+    say(`Beacon on. I will call the way every few steps. Target ${dirTo(marker.x, marker.y)}, ${distTo(marker.x, marker.y)} blocks.`);
+    beaconTimer = setInterval(() => {
+      if (!active || !marker) { clearInterval(beaconTimer); beaconTimer = null; return; }
+      say(`Beacon: target ${dirTo(marker.x, marker.y)}, ${distTo(marker.x, marker.y)} blocks.`);
+    }, 7000);
+  }
+  function stopBeacon() { if (beaconTimer) { clearInterval(beaconTimer); beaconTimer = null; } }
+
+  /* v4.0: go back along your own trail (Backspace) */
+  function stepBack() {
+    if (history.length < 2) { say('No trail to step back to yet. Move first.'); return; }
+    history.pop();
+    const prev = history[history.length - 1];
+    pos = { x: prev.x, y: prev.y };
+    paintWorld(); paintHUD(); saveState();
+    try { City3D.setPlayer(pos.x, pos.y, facing.x, facing.y); } catch (e) {}
+    try { if (!view3d) Audio3D.updateListener(pos.x, pos.y, facing.x, facing.y); } catch (e) {}
+    describeMove('Stepping back', false, '');
+  }
+
   /* ---------- persistence ---------- */
   function saveState() {
     localStorage.setItem('ccs-city', JSON.stringify({ x: pos.x, y: pos.y, riding, marker }));
@@ -498,6 +624,8 @@ const CityMode = (() => {
   async function enter() {
     if (!city) city = await loadCity();
     loadState();
+    // v4.0: clear stale story choices — their keys must never leak into the city
+    try { document.getElementById('choices').innerHTML = ''; } catch (e) {}
 
     // FIX: Stop lobby loud music when entering city free roam
     try { if (typeof Music !== 'undefined') Music.stop(); if (typeof OGAudio !== 'undefined') OGAudio.stopMusic(true); } catch (e) {}
@@ -521,6 +649,8 @@ const CityMode = (() => {
     Music.play(startMusic);
     const startArrive = startPoi ? (POI_ARRIVE[startPoi.id] || DIST_ARRIVE[lastDistrict ? lastDistrict.id : 'midtown']) : (DIST_ARRIVE[lastDistrict ? lastDistrict.id : 'midtown'] || 'night');
     Music.arrive(startArrive);
+    try { Music._lastMood = startMusic; } catch (e) {}
+    applyAreaSound(lastDistrict, startPoi);
     console.log(`[City] Enter - District: ${lastDistrict?.name} (${startDistrictMusic}) POI: ${startPoi?.name} (${startMusic})`);
     if (!history.length) history.push({ x: pos.x, y: pos.y });
 
@@ -571,7 +701,8 @@ const CityMode = (() => {
     say(`Free roam. You are at ${intersectionName(pos.x, pos.y)}, ${lastDistrict ? lastDistrict.name : 'Capitol City'}. ` +
       (view3d ? 'You are in the 3D street view — press C for the overhead map. ' : '') +
       'Listen: every landmark makes its own sound around you — church bells, club bass, a bouncing ball. Wear headphones for true direction. ' +
-      'Arrow keys move. P is sonar, G is go-to, K district guide, L look around, B Bonnie, Escape for the menu.');
+      'Arrow keys move. P is sonar, G is go-to with letters, K district guide, L look around, B Bonnie. ' +
+      'J is your case journal, Y a walking beacon to your marker, Backspace steps back along your trail, Escape for the menu.');
   }
 
   /* Switch between 3D street view and 2D overhead map. */
@@ -622,6 +753,7 @@ const CityMode = (() => {
   function exit() {
     if (!active) return;
     active = false;
+    stopBeacon();
     saveState();
     TTS.stop();
     SFX.stopEngine();
@@ -636,12 +768,16 @@ const CityMode = (() => {
     if (!active) return;
     const K = e.key;
 
-    // Go-to menu listens for a landmark number
-    if (gotoActive && /^[1-9]$/.test(K)) { e.preventDefault(); pickGoto(Number(K)); return; }
+    // Go-to menu listens for a landmark letter or number, 0 goes back
+    if (gotoActive) {
+      if (/^[1-9]$/.test(K)) { e.preventDefault(); pickGoto(Number(K)); return; }
+      if (/^[a-iA-I]$/.test(K)) { e.preventDefault(); pickGoto(K.toUpperCase().charCodeAt(0) - 64); return; }
+      if (K === '0') { e.preventDefault(); gotoActive = false; say('Go-to cancelled. Back to the streets.'); return; }
+    }
 
     const handled = ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','W','A','S','D',
                      'Enter',' ','l','L','m','M','n','N','x','X','b','B','p','P','g','G','k','K','u','U',
-                     'c','C','o','O','i','I','Escape'];
+                     'c','C','o','O','i','I','r','R','t','T','h','H','j','J','y','Y','Backspace','Escape'];
     if (!handled.includes(K)) return;
     e.preventDefault();
 
@@ -663,9 +799,15 @@ const CityMode = (() => {
       case 'c': case 'C': toggleView(); break;
       case 'o': case 'O': toggleSpatial(); break;
       case 'i': case 'I': sayInventory(); break;
+      case 'r': case 'R': try { TTS.replay(); } catch (e) {} break;
+      case 't': case 'T': try { TTS.setEnabled(!TTS.isEnabled()); say(TTS.isEnabled() ? 'Narration on.' : 'Narration off.'); } catch (e) {} break;
+      case 'h': case 'H': { const on = !document.body.classList.contains('high-contrast'); document.body.classList.toggle('high-contrast', on); try { localStorage.setItem('ccs-hc', on ? '1' : '0'); } catch (e) {} say(`High contrast ${on ? 'on' : 'off'}.`); break; }
+      case 'j': case 'J': cityJournal(); break;
+      case 'y': case 'Y': toggleBeacon(); break;
+      case 'Backspace': stepBack(); break;
       case 'Escape': gotoActive ? (gotoActive = false, say('Go-to cancelled.')) : exit(); break;
     }
   });
 
-  return { enter, exit };
+  return { enter, exit, isActive: () => active };
 })();

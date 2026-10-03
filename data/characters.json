@@ -6,7 +6,8 @@
       "voice": {
         "pitch": 0.9,
         "rate": 1.02,
-        "slot": 0
+        "slot": 0,
+        "gender": "female"
       },
       "color": "#c9c2b0"
     },
@@ -15,7 +16,8 @@
       "voice": {
         "pitch": 1.1,
         "rate": 1.16,
-        "slot": 1
+        "slot": 1,
+        "gender": "female"
       },
       "stinger": "v-glasses",
       "color": "#7fd4ff"
@@ -25,7 +27,8 @@
       "voice": {
         "pitch": 0.62,
         "rate": 0.95,
-        "slot": 2
+        "slot": 2,
+        "gender": "male"
       },
       "stinger": "v-stoneface",
       "color": "#f5b942"
@@ -35,7 +38,8 @@
       "voice": {
         "pitch": 1.35,
         "rate": 1.0,
-        "slot": 3
+        "slot": 3,
+        "gender": "female"
       },
       "stinger": "v-salena",
       "color": "#ff9ecf"
@@ -45,7 +49,8 @@
       "voice": {
         "pitch": 0.95,
         "rate": 1.04,
-        "slot": 4
+        "slot": 4,
+        "gender": "male"
       },
       "stinger": "v-sam",
       "color": "#8fd48f"
@@ -55,7 +60,8 @@
       "voice": {
         "pitch": 0.7,
         "rate": 0.9,
-        "slot": 5
+        "slot": 5,
+        "gender": "male"
       },
       "stinger": "v-priest",
       "color": "#d8b06a"
@@ -65,7 +71,8 @@
       "voice": {
         "pitch": 0.75,
         "rate": 0.92,
-        "slot": 6
+        "slot": 6,
+        "gender": "male"
       },
       "stinger": "v-harbor",
       "color": "#7fa8d4"
@@ -75,7 +82,8 @@
       "voice": {
         "pitch": 1.05,
         "rate": 0.98,
-        "slot": 7
+        "slot": 7,
+        "gender": "female"
       },
       "stinger": "v-nyx",
       "color": "#b09aff"
@@ -85,7 +93,8 @@
       "voice": {
         "pitch": 1.45,
         "rate": 1.18,
-        "slot": 8
+        "slot": 8,
+        "gender": "female"
       },
       "stinger": "v-nia",
       "color": "#ff8fa8"
@@ -95,7 +104,8 @@
       "voice": {
         "pitch": 1.0,
         "rate": 1.06,
-        "slot": 9
+        "slot": 9,
+        "gender": "male"
       },
       "stinger": "v-ledger",
       "color": "#ffd166"
@@ -103,9 +113,10 @@
     "bonnie": {
       "name": "Bonnie",
       "voice": {
-        "pitch": 1.2,
-        "rate": 1.05,
-        "slot": 10
+        "pitch": 1.45,
+        "rate": 1.08,
+        "slot": 10,
+        "gender": "female"
       },
       "stinger": "v-bonnie",
       "color": "#9fd4ff"
@@ -115,7 +126,8 @@
       "voice": {
         "pitch": 0.95,
         "rate": 1.0,
-        "slot": 11
+        "slot": 11,
+        "gender": "male"
       },
       "stinger": "v-wexler",
       "color": "#e0c9a0"
@@ -125,7 +137,8 @@
       "voice": {
         "pitch": 1.0,
         "rate": 1.1,
-        "slot": 12
+        "slot": 12,
+        "gender": "male"
       },
       "stinger": "v-defender",
       "color": "#ff7a5c"
@@ -135,7 +148,8 @@
       "voice": {
         "pitch": 0.85,
         "rate": 1.05,
-        "slot": 13
+        "slot": 13,
+        "gender": "male"
       },
       "stinger": "v-thug",
       "color": "#ff9a7a"
@@ -155,7 +169,8 @@
       "voice": {
         "pitch": 0.8,
         "rate": 0.95,
-        "slot": 15
+        "slot": 15,
+        "gender": "male"
       },
       "stinger": "v-voss",
       "color": "#9ab0c9"
@@ -165,7 +180,8 @@
       "voice": {
         "pitch": 1.15,
         "rate": 1.12,
-        "slot": 16
+        "slot": 16,
+        "gender": "female"
       },
       "stinger": "v-tess",
       "color": "#8fe3c0"
@@ -175,7 +191,8 @@
       "voice": {
         "pitch": 1.05,
         "rate": 1.15,
-        "slot": 17
+        "slot": 17,
+        "gender": "male"
       },
       "stinger": "v-dan",
       "color": "#a8e08f"
@@ -185,7 +202,8 @@
       "voice": {
         "pitch": 0.72,
         "rate": 0.86,
-        "slot": 18
+        "slot": 18,
+        "gender": "male"
       },
       "stinger": "v-marlow",
       "color": "#c9a88f"
@@ -195,7 +213,8 @@
       "voice": {
         "pitch": 1.25,
         "rate": 0.96,
-        "slot": 19
+        "slot": 19,
+        "gender": "female"
       },
       "stinger": "v-sera",
       "color": "#7fe3b0"
@@ -205,7 +224,8 @@
       "voice": {
         "pitch": 0.95,
         "rate": 1.0,
-        "slot": 20
+        "slot": 20,
+        "gender": "female"
       },
       "stinger": "v-defender",
       "color": "#d4a0c9"
@@ -215,7 +235,8 @@
       "voice": {
         "pitch": 0.88,
         "rate": 1.08,
-        "slot": 21
+        "slot": 21,
+        "gender": "male"
       },
       "stinger": "v-thug",
       "color": "#e0a08f"
@@ -225,7 +246,8 @@
       "voice": {
         "pitch": 1.0,
         "rate": 1.05,
-        "slot": 22
+        "slot": 22,
+        "gender": "female"
       },
       "stinger": "v-defender",
       "color": "#a0c9d4"

@@ -239,7 +239,18 @@ const RealVoices = (() => {
       
       return new Promise(resolve => {
         pendingResolve = resolve;
+        // v4.0 SAFETY: a stalled audio file must never freeze the story
+        const safety = setTimeout(() => {
+          console.warn('[RealVoices] Safety timeout — releasing story');
+          try { el.pause(); } catch (e) {}
+          currentPlaying = null;
+          pendingResolve = null;
+          if (typeof Music !== 'undefined') Music.duck(false);
+          if (typeof BlindMusic !== 'undefined') BlindMusic.duck(false);
+          resolve(false);
+        }, 25000);
         el.onended = () => {
+          clearTimeout(safety);
           if (myGen !== playGen) {
             resolve(false);
             return;
@@ -251,6 +262,7 @@ const RealVoices = (() => {
           resolve(true);
         };
         el.onerror = (e) => {
+          clearTimeout(safety);
           currentPlaying = null;
           pendingResolve = null;
           if (typeof Music !== 'undefined') Music.duck(false);

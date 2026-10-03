@@ -155,6 +155,16 @@ body {
   font-weight: 700;
   font-size: .9rem;
 }
+.choice .key-letter {
+  flex: none;
+  width: 28px; height: 28px;
+  display: grid; place-items: center;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: .9rem;
+}
 .choice[aria-selected="true"], .choice:focus-visible {
   border-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 14%, var(--panel));

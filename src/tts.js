@@ -1,14 +1,12 @@
 /* ============================================================
    CAPITAL CITY STREETS — src/tts.js
-   PREMIUM FIX: No double voice ever, single voice guarantee
-   Mobile + Desktop - Professional blind game standard
-   
-   FIXES double voice bug:
-   - Generation token: each new voice invalidates previous
-   - Chunk loop abort on cancel/error
-   - Hard stop before any new voice
-   - RealVoices + TTS mutually exclusive
-   - Chapter load hard stop
+   v4.0 NARRATOR FIX: every arrow press announces, never freezes.
+   - cancel→speak always separated by a delay (Chrome drops
+     utterances spoken immediately after cancel — that was the
+     "arrows move but don't announce" bug)
+   - watchdog timeout on every utterance (a stuck speech engine
+     can never freeze the game again — the ep3→ep4 shutdown)
+   - gender-aware voices (Bonnie finally sounds female)
    ============================================================ */
 
 const TTS = (() => {
@@ -17,13 +15,15 @@ const TTS = (() => {
   let lastSpoken = null;
   let interruptTimer = null;
   let chunkTimer = null;
+  let watchdogTimer = null;
   let rateMul = parseFloat(localStorage.getItem('ccs-rate') || '1') || 1;
   let isSpeakingReal = false;
   let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   let isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
   let voicesLoaded = false;
   let audioUnlocked = false;
-  let speakGen = 0; // PREMIUM FIX: generation token for single voice guarantee
+  let speakGen = 0; // generation token: each new request invalidates older ones
+  let assigned = {};
 
   function loadVoices() {
     if (!window.speechSynthesis) return;
@@ -33,7 +33,7 @@ const TTS = (() => {
       voicesLoaded = true;
     }
   }
-  
+
   if (window.speechSynthesis) {
     loadVoices();
     window.speechSynthesis.onvoiceschanged = () => {
@@ -65,7 +65,7 @@ const TTS = (() => {
       }
     } catch (e) {}
   }
-  
+
   if (isMobile) {
     const unlockEvents = ['touchstart', 'touchend', 'click', 'keydown'];
     const unlockOnce = () => {
@@ -75,8 +75,14 @@ const TTS = (() => {
     unlockEvents.forEach(ev => document.addEventListener(ev, unlockOnce, { once: true, passive: true }));
   }
 
-  let assigned = {};
-  
+  /* ---------- voice picking (gender-aware) ---------- */
+  const FEMALE_HINTS = ['female', 'woman', 'girl', 'aria', 'jenny', 'samantha', 'zira',
+    'susan', 'karen', 'moira', 'tessa', 'veena', 'fiona', 'kate', 'serena', 'kathy',
+    'shelley', 'zira', 'linda', 'heather', 'siri_female', 'female_'];
+  const MALE_HINTS = ['male_', '_male', 'david', 'guy', 'daniel', 'alex ', 'fred',
+    'oliver', 'matthew', 'george', 'aaron', 'davis', 'thomas', 'paul', 'mark',
+    'microsoft guy', 'microsoft davis', 'google uk english male'];
+
   function scoreNatural(voice) {
     const name = (voice.name || '').toLowerCase();
     const uri = (voice.voiceURI || '').toLowerCase();
@@ -104,19 +110,38 @@ const TTS = (() => {
     else if (voice.lang && voice.lang.toLowerCase().startsWith('en')) score += 5;
     return score;
   }
-  
+
+  function genderBonus(voice, gender) {
+    if (!gender) return 0;
+    const name = (voice.name || '').toLowerCase();
+    const isF = FEMALE_HINTS.some(h => name.includes(h));
+    const isM = MALE_HINTS.some(h => name.includes(h));
+    if (gender === 'female') return (isF ? 140 : 0) + (isM ? -120 : 0);
+    if (gender === 'male') return (isM ? 140 : 0) + (isF ? -120 : 0);
+    return 0;
+  }
+
   function pickVoice(profile) {
+    profile = profile || {};
     if (!voices.length) {
       if (isMobile && !voicesLoaded) loadVoices();
       return null;
     }
     const en = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith('en'));
     const pool = en.length ? en : voices;
-    const sortedPool = [...pool].sort((a,b) => scoreNatural(b) - scoreNatural(a));
-    const slot = (profile && typeof profile.slot === 'number') ? profile.slot : 0;
+    const gender = profile.gender || null;
+    const sortedPool = [...pool].sort((a, b) =>
+      (scoreNatural(b) + genderBonus(b, gender)) - (scoreNatural(a) + genderBonus(a, gender)));
+    const slot = (typeof profile.slot === 'number') ? profile.slot : 0;
     if (assigned[slot] && pool.includes(assigned[slot])) return assigned[slot];
-    const naturalCount = isMobile ? Math.min(3, sortedPool.length) : Math.max(3, Math.ceil(sortedPool.length * 0.6));
-    const naturalPool = sortedPool.slice(0, naturalCount);
+    // gendered slots prefer the top gender-matching third of the pool
+    let candidates = sortedPool;
+    if (gender) {
+      const matched = sortedPool.filter(v => genderBonus(v, gender) > 0);
+      if (matched.length) candidates = matched;
+    }
+    const naturalCount = isMobile ? Math.min(3, candidates.length) : Math.max(3, Math.ceil(candidates.length * 0.6));
+    const naturalPool = candidates.slice(0, Math.max(1, naturalCount));
     const stride = Math.max(1, Math.floor(naturalPool.length / 8) || 1);
     for (let i = 0; i < naturalPool.length; i++) {
       const cand = naturalPool[(slot * stride + i) % naturalPool.length];
@@ -135,7 +160,12 @@ const TTS = (() => {
     if (!text) return true;
     if (profile && profile._skipReal) return true;
     const lower = String(text).toLowerCase();
-    const uiKeywords = ['options available', 'option 1:', 'arrow keys', 'press enter', 'main menu', 'settings.', 'credits.', 'how to play', 'voice toggle', 'currently', 'percent', 'high contrast', 'real human voices', 'realistic sounds', 'blind friendly', 'real noir', 'real punch', 'starting new case', 'resuming your case', 'entering capitol', 'chapter select', 'use arrow keys to move', 'enhanced listening', 'sonar ping', 'rolling the opening'];
+    const uiKeywords = ['options available', 'option 1:', 'arrow keys', 'press enter', 'main menu',
+      'settings.', 'credits.', 'how to play', 'voice toggle', 'currently', 'percent',
+      'high contrast', 'real human voices', 'realistic sounds', 'blind friendly', 'real noir',
+      'real punch', 'starting new case', 'resuming your case', 'entering capitol',
+      'chapter select', 'use arrow keys to move', 'enhanced listening', 'sonar ping',
+      'rolling the opening', 'options again', 'case journal', 'clues found', 'beacon:'];
     for (const kw of uiKeywords) {
       if (lower.includes(kw)) return true;
     }
@@ -164,255 +194,62 @@ const TTS = (() => {
     return chunks.length ? chunks : [text];
   }
 
-  // BUG FIX v2.2: Ultra hard stop - single voice guarantee, prevents option click double voice
-  function hardStop() {
-    speakGen++; // invalidate all pending chunks - generation token
-    clearTimeout(interruptTimer);
-    clearTimeout(chunkTimer);
-    interruptTimer = null;
-    chunkTimer = null;
-    // Triple cancel for robustness - speechSynthesis cancel is async
+  function duckAll(on) {
     try {
-      if (window.speechSynthesis) {
-        window.speechSynthesis.cancel();
-        // Chrome sometimes needs pause + cancel + resume + cancel
-        try { window.speechSynthesis.pause(); } catch (e) {}
-        window.speechSynthesis.cancel();
-        try { window.speechSynthesis.resume(); } catch (e) {}
-        window.speechSynthesis.cancel();
-      }
+      if (typeof Music !== 'undefined') Music.duck(on);
+      if (typeof BlindMusic !== 'undefined') BlindMusic.duck(on);
+      if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(on);
+    } catch (e) {}
+  }
+
+  /* v4.0: single clean stop. No pause/resume dance — that dance left
+     Chrome's speech engine stuck and dropped the next utterance. */
+  function hardStop() {
+    speakGen++; // invalidate everything pending
+    clearTimeout(interruptTimer); interruptTimer = null;
+    clearTimeout(chunkTimer); chunkTimer = null;
+    clearTimeout(watchdogTimer); watchdogTimer = null;
+    try {
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
     } catch (e) {}
     try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (e) {}
     isSpeakingReal = false;
-    // Unduck immediately to prevent music staying ducked
-    try {
-      if (typeof Music !== 'undefined') Music.duck(false);
-      if (typeof BlindMusic !== 'undefined') BlindMusic.duck(false);
-      if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(false);
-    } catch (e) {}
+    duckAll(false);
   }
 
-  function speak(text, profile = {}) {
-    lastSpoken = { text, profile };
-    if (!enabled || !window.speechSynthesis || !('SpeechSynthesisUtterance' in window)) {
-      return Promise.resolve();
-    }
-    if (isMobile && !voicesLoaded) loadVoices();
-    
-    // PREMIUM: Hard stop previous before new
-    hardStop();
-    
-    if (shouldSkipReal(text, profile)) {
-      return speakTTS(text, profile);
-    }
-    
-    try {
-      if (typeof RealVoices !== 'undefined' && RealVoices.isEnabled() && !profile._skipReal) {
-        const charId = profile._charId || null;
-        const realResult = RealVoices.findRealFile(text, charId);
-        if (!realResult) {
-          return speakTTS(text, profile);
-        }
-        const realPromise = RealVoices.playReal(text, charId);
-        if (realPromise && typeof realPromise.then === 'function') {
-          isSpeakingReal = true;
-          return realPromise.then(played => {
-            isSpeakingReal = false;
-            if (played !== false) return;
-            return speakTTS(text, profile);
-          }).catch(() => {
-            isSpeakingReal = false;
-            return speakTTS(text, profile);
-          });
-        } else if (realPromise === false) {
-          return speakTTS(text, profile);
-        } else {
-          return realPromise;
-        }
-      }
-    } catch (e) {
-      console.warn('[TTS] RealVoices failed, fallback:', e);
-    }
-    
-    return speakTTS(text, profile);
-  }
-  
-  function speakTTS(text, profile = {}) {
-    return new Promise(resolve => {
-      const myGen = ++speakGen; // capture generation
-      hardStop(); // ensure clean
-      const currentGen = myGen;
-      // Re-increment after hardStop invalidated, so we need fresh
-      const finalGen = ++speakGen;
-      
-      const chunks = splitLongText(String(text).replace(/[*_#>]/g, ''));
-      let idx = 0;
-      
-      const unduckAll = () => {
-        setTimeout(() => {
-          if (typeof Music !== 'undefined') Music.duck(false);
-          if (typeof BlindMusic !== 'undefined') BlindMusic.duck(false);
-        }, isMobile ? 300 : 200);
-      };
-      
-      const speakChunk = () => {
-        // PREMIUM FIX: Check if invalidated by newer voice
-        if (finalGen !== speakGen) {
-          console.log('[TTS] Chunk aborted - newer voice started');
-          unduckAll();
-          resolve();
-          return;
-        }
-        if (idx >= chunks.length) {
-          unduckAll();
-          resolve();
-          return;
-        }
-        const clean = chunks[idx];
-        const u = new SpeechSynthesisUtterance(clean);
-        const v = pickVoice(profile);
-        if (v) u.voice = v;
-        
-        let pitch = typeof profile.pitch === 'number' ? profile.pitch : 1;
-        let rate = typeof profile.rate === 'number' ? profile.rate : 1.12;
-        if (isMobile) {
-          rate = Math.min(1.1, rate * 0.95);
-          pitch = Math.max(0.9, Math.min(1.1, pitch));
-        }
-        u.pitch = pitch;
-        u.rate = Math.min(2, Math.max(0.5, rate * rateMul));
-        u.volume = 1.0;
-        
-        if (typeof Music !== 'undefined') Music.duck(true);
-        if (typeof BlindMusic !== 'undefined') BlindMusic.duck(true);
-        if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(true);
-        if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(true);
-        
-        u.onend = () => {
-          if (finalGen !== speakGen) {
-            unduckAll();
-            resolve();
-            return;
-          }
-          idx++;
-          if (idx < chunks.length) {
-            chunkTimer = setTimeout(speakChunk, isMobile ? 80 : 20);
-          } else {
-            unduckAll();
-            resolve();
-          }
-        };
-        u.onerror = (e) => {
-          // PREMIUM FIX: Don't continue on cancel/interrupted
-          const err = e.error || '';
-          if (err === 'canceled' || err === 'interrupted' || finalGen !== speakGen) {
-            console.log('[TTS] onerror canceled/interrupted - aborting chunks', err);
-            unduckAll();
-            resolve();
-            return;
-          }
-          console.warn('[TTS] onerror:', e);
-          idx++;
-          if (finalGen !== speakGen) {
-            unduckAll();
-            resolve();
-            return;
-          }
-          if (idx < chunks.length) chunkTimer = setTimeout(speakChunk, 100);
-          else { unduckAll(); resolve(); }
-        };
-        
-        try {
-          window.speechSynthesis.speak(u);
-          if (isIOS) {
-            setTimeout(() => { try { window.speechSynthesis.resume(); } catch (e) {} }, 100);
-          }
-        } catch (e) {
-          unduckAll();
-          resolve();
-        }
-      };
-      
-      speakChunk();
-    });
-  }
-
-  function interrupt(text, profile = {}) {
-    lastSpoken = { text, profile };
-    if (!enabled || !window.speechSynthesis) return Promise.resolve();
-    
-    // PREMIUM: Hard stop immediately
-    hardStop();
-    
-    return new Promise(resolve => {
-      const delay = isMobile ? 50 : 35;
-      const myGen = speakGen;
-      interruptTimer = setTimeout(() => {
-        // Check if invalidated during delay
-        if (myGen !== speakGen && myGen !== speakGen - 1) {
-          resolve();
-          return;
-        }
-        try { window.speechSynthesis.resume(); } catch (e) {}
-        
-        if (shouldSkipReal(text, profile)) {
-          speakTTSInterrupt(text, profile, resolve);
-          return;
-        }
-        
-        try {
-          if (typeof RealVoices !== 'undefined' && RealVoices.isEnabled() && !profile._skipReal) {
-            const hasFile = RealVoices.findRealFile(text, profile._charId || null);
-            if (!hasFile) {
-              speakTTSInterrupt(text, profile, resolve);
-              return;
-            }
-            const charId = profile._charId || null;
-            RealVoices.playReal(text, charId).then(played => {
-              if (played !== false) { resolve(); return; }
-              speakTTSInterrupt(text, profile, resolve);
-            }).catch(() => speakTTSInterrupt(text, profile, resolve));
-            return;
-          }
-        } catch (e) {}
-        
-        speakTTSInterrupt(text, profile, resolve);
-      }, delay);
-    });
-  }
-  
-  function speakTTSInterrupt(text, profile, resolve) {
-    const finalGen = ++speakGen;
-    
-    const clean = String(text).replace(/[*_#>]/g, '');
-    const chunks = splitLongText(clean);
+  /* Speak pre-cleaned text via speechSynthesis. gen = our generation token.
+     ALWAYS resolves — watchdog guarantees the game can never hang. */
+  function speakUtterances(text, profile, gen, resolve) {
+    const chunks = splitLongText(String(text).replace(/[*_#>]/g, ''));
     let idx = 0;
-    
-    const unduckAll = () => {
-      setTimeout(() => {
-        try {
-          if (typeof Music !== 'undefined') Music.duck(false);
-          if (typeof BlindMusic !== 'undefined') BlindMusic.duck(false);
-          if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(false);
-        } catch (e) {}
-      }, isMobile ? 300 : 200);
+    let done = false;
+
+    const finish = () => {
+      if (done) return;
+      done = true;
+      clearTimeout(chunkTimer); chunkTimer = null;
+      clearTimeout(watchdogTimer); watchdogTimer = null;
+      setTimeout(() => duckAll(false), isMobile ? 300 : 200);
+      resolve();
     };
-    
+
+    // Watchdog: speech engines stall (tab switch, long sessions, mobile).
+    // Never leave the story awaiting forever — resolve and move on.
+    const watchMs = Math.max(6000, Math.min(40000, 4000 + String(text).length * 260));
+    clearTimeout(watchdogTimer);
+    watchdogTimer = setTimeout(() => {
+      console.warn('[TTS] Watchdog fired — speech engine stalled, releasing story');
+      try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
+      finish();
+    }, watchMs);
+
     const speakChunk = () => {
-      if (finalGen !== speakGen) {
-        unduckAll();
-        resolve();
-        return;
-      }
-      if (idx >= chunks.length) {
-        unduckAll();
-        resolve();
-        return;
-      }
+      if (done) return;
+      if (gen !== speakGen) { finish(); return; } // superseded by newer voice
+      if (idx >= chunks.length) { finish(); return; }
       const u = new SpeechSynthesisUtterance(chunks[idx]);
       const v = pickVoice(profile);
       if (v) u.voice = v;
-      
       let pitch = typeof profile.pitch === 'number' ? profile.pitch : 1;
       let rate = typeof profile.rate === 'number' ? profile.rate : 1.12;
       if (isMobile) {
@@ -422,43 +259,89 @@ const TTS = (() => {
       u.pitch = pitch;
       u.rate = Math.min(2, Math.max(0.5, rate * rateMul));
       u.volume = 1.0;
-      
-        if (typeof Music !== 'undefined') Music.duck(true);
-        if (typeof BlindMusic !== 'undefined') BlindMusic.duck(true);
-        if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(true);
-        if (typeof OGAudio !== 'undefined' && OGAudio.duck) OGAudio.duck(true);
-      
+      duckAll(true);
+
       u.onend = () => {
-        if (finalGen !== speakGen) { unduckAll(); resolve(); return; }
+        if (done) return;
+        if (gen !== speakGen) { finish(); return; }
         idx++;
         if (idx < chunks.length) chunkTimer = setTimeout(speakChunk, isMobile ? 80 : 20);
-        else { unduckAll(); resolve(); }
+        else finish();
       };
       u.onerror = (e) => {
-        const err = e.error || '';
-        if (err === 'canceled' || err === 'interrupted' || finalGen !== speakGen) {
-          unduckAll();
-          resolve();
-          return;
-        }
+        if (done) return;
+        const err = (e && e.error) || '';
+        if (err === 'canceled' || err === 'interrupted' || gen !== speakGen) { finish(); return; }
+        console.warn('[TTS] chunk error, continuing:', err);
         idx++;
-        if (finalGen !== speakGen) { unduckAll(); resolve(); return; }
+        if (gen !== speakGen) { finish(); return; }
         if (idx < chunks.length) chunkTimer = setTimeout(speakChunk, 100);
-        else { unduckAll(); resolve(); }
+        else finish();
       };
-      
       try {
         window.speechSynthesis.speak(u);
         if (isIOS) setTimeout(() => { try { window.speechSynthesis.resume(); } catch (e) {} }, 100);
-      } catch (e) { unduckAll(); resolve(); }
+      } catch (e) { finish(); }
     };
-    
+
     speakChunk();
   }
 
-  function stop() {
+  /* v4.0 core: stop everything, wait for the engine to settle, THEN speak.
+     That settle-delay is the whole narrator fix. */
+  function queueSpeak(text, profile, delayMs) {
+    profile = profile || {};
+    lastSpoken = { text, profile };
+    if (!enabled || !window.speechSynthesis || !('SpeechSynthesisUtterance' in window)) {
+      return Promise.resolve();
+    }
+    if (isMobile && !voicesLoaded) loadVoices();
     hardStop();
+    const gen = speakGen;
+    return new Promise(resolve => {
+      clearTimeout(interruptTimer);
+      interruptTimer = setTimeout(() => {
+        interruptTimer = null;
+        if (gen !== speakGen) { resolve(); return; } // a newer request won
+        try { window.speechSynthesis.resume(); } catch (e) {}
+        // Real human voice first (story lines), TTS fallback
+        if (!shouldSkipReal(text, profile)) {
+          try {
+            if (typeof RealVoices !== 'undefined' && RealVoices.isEnabled() && !profile._skipReal) {
+              const charId = profile._charId || null;
+              if (RealVoices.findRealFile(text, charId)) {
+                isSpeakingReal = true;
+                Promise.resolve(RealVoices.playReal(text, charId)).then(played => {
+                  isSpeakingReal = false;
+                  if (gen !== speakGen) { resolve(); return; }
+                  if (played !== false) { duckAll(false); resolve(); return; }
+                  speakUtterances(text, profile, gen, resolve);
+                }).catch(() => {
+                  isSpeakingReal = false;
+                  if (gen !== speakGen) { resolve(); return; }
+                  speakUtterances(text, profile, gen, resolve);
+                });
+                return;
+              }
+            }
+          } catch (e) { console.warn('[TTS] RealVoices failed, fallback:', e); }
+        }
+        speakUtterances(text, profile, gen, resolve);
+      }, delayMs);
+    });
   }
+
+  // Full line (waits for engine settle so long story lines never drop)
+  function speak(text, profile) {
+    return queueSpeak(text, profile || {}, isMobile ? 140 : 70);
+  }
+
+  // Instant UI speech (arrows, menus — short settle, still never dropped)
+  function interrupt(text, profile) {
+    return queueSpeak(text, profile || {}, isMobile ? 90 : 45);
+  }
+
+  function stop() { hardStop(); }
 
   function replay() {
     if (lastSpoken) speak(lastSpoken.text, lastSpoken.profile);

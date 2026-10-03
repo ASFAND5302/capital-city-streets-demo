@@ -530,9 +530,9 @@ const Menu = (() => {
 const CHAPTERS = {
     1: { entry: 'intro',     cc: 0,    level: 1, flags: [] },
     2: { entry: 'ch2_drive', cc: 3500, level: 2, flags: ['hasDrive'] },
-    3: { entry: 'c3_open',   cc: 5000, level: 3, flags: ['hasDrive', 'harborJoined'] },
-    4: { entry: 'c4_open',   cc: 7000, level: 4, flags: ['hasDrive', 'harborJoined', 'lv4clue'] },
-    5: { entry: 'c5_open',   cc: 9000, level: 5, flags: ['hasDrive', 'harborJoined', 'lv4clue', 'coords', 'seraBond'] },
+    3: { entry: 'c3_open',   cc: 5000, level: 3, flags: ['hasDrive', 'harborJoined', 'ch2_started', 'boughtGun', 'boughtArmor', 'prayed'] },
+    4: { entry: 'c4_open',   cc: 7000, level: 4, flags: ['hasDrive', 'harborJoined', 'lv4clue', 'ch2_started', 'boughtGun', 'boughtArmor', 'prayed', 'marrsClue', 'coleClue', 'ruizClue'] },
+    5: { entry: 'c5_open',   cc: 9000, level: 5, flags: ['hasDrive', 'harborJoined', 'lv4clue', 'coords', 'seraBond', 'ch2_started', 'boughtGun', 'boughtArmor', 'ledger', 'marinaPass', 'lobbyCard'] },
   };
   function startChapter(n) {
     const c = CHAPTERS[n];

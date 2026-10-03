@@ -54,6 +54,8 @@ const Music = (() => {
                mel: [74,73,70,67], melP: .10, perc: 'brush', quiet: true, motif: [62,63,62,59] },
     sea:     { bpm: 60, pad: [[50,57,62,69],[48,55,60,67]], bass: [26,24],
                mel: [81,79,76,74], melP: .18, perc: 'none', shimmer: true, quiet: true },
+    island:  { bpm: 62, pad: [[50,57,62,69],[48,55,60,67]], bass: [26,26,24,26],
+               mel: [79,81,84,81,79,76], melP: .20, perc: 'brush', shimmer: true, quiet: true },
     casino:  { bpm: 78, pad: [[53,57,60,67],[48,52,55,62]], bass: [29,29,36,29,24,24,31,36],
                mel: [72,74,76,79,76,74], melP: .22, perc: 'brush', quiet: true },
     sera:    { bpm: 54, pad: [[57,64,69,76],[53,60,65,72]], bass: [33,29],

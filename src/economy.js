@@ -51,6 +51,7 @@ const Economy = (() => {
     }
     if (cond.item && !s.items.includes(cond.item)) return false;
     if (typeof cond.ccMin === 'number' && s.cc < cond.ccMin) return false;
+    if (typeof cond.ccMax === 'number' && s.cc > cond.ccMax) return false;
     if (typeof cond.levelMin === 'number' && s.level < cond.levelMin) return false;
     return true;
   }

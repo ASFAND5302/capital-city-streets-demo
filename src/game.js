@@ -97,7 +97,20 @@ const Game = (() => {
     'Mansion Roof': 'pulse',
     'Blue Note Diner': 'diner',
     'The Study': 'hero',
+    'Fire escape, 3rd floor': 'tense',
+    'The Island \u2014 marina': 'sea',
+    'The Island \u2014 hotel lobby': 'mystery',
   };
+  /* v4.0: fuzzy area match so every corner of the map gets its own sound */
+  function locationVibeFor(loc) {
+    if (!loc) return null;
+    if (LOCATION_MOOD[loc]) return LOCATION_MOOD[loc];
+    const low = String(loc).toLowerCase();
+    for (const [k, v] of Object.entries(LOCATION_MOOD)) {
+      if (low.includes(k.toLowerCase())) return v;
+    }
+    return null;
+  }
 
   const $ = sel => document.querySelector(sel);
 
@@ -181,8 +194,9 @@ const Game = (() => {
     paintHUD();
     $('#stage').dataset.fx = scene.fx || '';
 
-    // cinematic chapter title card + chapter-specific music vibe from OpenGameArt.org
-    if (scene.chapter && scene.chapter !== lastChapter) {
+    // cinematic chapter title card (music is decided below: every area keeps its own sound)
+    const chapterChanged = !!(scene.chapter && scene.chapter !== lastChapter);
+    if (chapterChanged) {
       lastChapter = scene.chapter;
       const names = { 1: 'ONE', 2: 'TWO', 3: 'THREE', 4: 'FOUR', 5: 'FIVE' };
       const card = $('#chapter-card');
@@ -191,21 +205,12 @@ const Game = (() => {
       clearTimeout(card._t);
       card._t = setTimeout(() => card.classList.remove('show'), 2600);
       
-      // HAR CHAPTER KI APNI MUSIC VIBE - OpenGameArt.org real tracks
-      try {
-        if (typeof OGAudio !== 'undefined' && OGAudio.isEnabled()) {
-          const played = OGAudio.playChapter(scene.chapter);
-          if (played) {
-            console.log(`[Story] Chapter ${scene.chapter} vibe: ${scene.chapterName} -> real track from OGA`);
-          }
-        }
-      } catch (e) {}
     }
 
     // generative score - LOCATION-SPECIFIC VIBE: each place gets its own music
     const chapterMood = { 0: 'menu', 1: 'noir', 2: 'drive' };
     // Determine music: priority = scene.music (if action) > location vibe > chapter fallback
-    const locationVibe = LOCATION_MOOD[scene.location] || null;
+    const locationVibe = locationVibeFor(scene.location);
     const actionMoods = ['combat', 'fight', 'brawl', 'tense', 'pulse', 'finale', 'hero', 'conspiracy'];
     let chosenMood;
     if (scene.music && actionMoods.includes(scene.music)) {
@@ -227,17 +232,26 @@ const Game = (() => {
       // Fallback to scene's music or chapter mood
       chosenMood = scene.music || chapterMood[scene.chapter] || 'noir';
     }
-    // Only switch if location actually changed or mood is different - avoids cutting music every node
-    // But if OGA already playing chapter vibe, don't override with generative unless it's fight
-    const isOGAChapterPlaying = typeof OGAudio !== 'undefined' && OGAudio.isEnabled() && scene.chapter && !['combat','fight','brawl'].includes(chosenMood);
-    if (!isOGAChapterPlaying) {
-      if (scene.location !== lastLocation || chosenMood !== Music._lastMood) {
+    // v4.0 EACH AREA'S OWN SOUND: the location vibe always wins (real
+    // mapped track or generative). The chapter theme only plays for scenes
+    // with no area of their own. Switches only when place/mood changes.
+    const locChanged = scene.location !== lastLocation;
+    const moodChanged = chosenMood !== Music._lastMood;
+    const hasOwnVibe = !!locationVibe || actionMoods.includes(scene.music);
+    if (hasOwnVibe) {
+      if (locChanged || moodChanged) {
         Music.play(chosenMood);
-        console.log(`[Story] Location vibe: ${scene.location} -> ${chosenMood} (was ${lastLocation})`);
+        console.log(`[Story] Area sound: ${scene.location} -> ${chosenMood} (was ${lastLocation})`);
         Music._lastMood = chosenMood;
       }
-    } else {
-      console.log(`[Story] Keeping OGA chapter ${scene.chapter} vibe for ${scene.location}, not overriding with ${chosenMood}`);
+    } else if (chapterChanged) {
+      try {
+        if (typeof OGAudio !== 'undefined' && OGAudio.isEnabled()) OGAudio.playChapter(scene.chapter);
+      } catch (e) {}
+      if (moodChanged) { Music.play(chosenMood); Music._lastMood = chosenMood; }
+    } else if (moodChanged) {
+      Music.play(chosenMood);
+      Music._lastMood = chosenMood;
     }
     lastLocation = scene.location;
     Music.setTranspose(scene.chapter || 0);
@@ -417,41 +431,71 @@ const Game = (() => {
     renderChoices(node);
   }
 
+  /* v4.0: letter badges (A/B/C...) — announced "A for ..." quiz style.
+     Same reserved letters as input.js, so badges never clash with hotkeys. */
+  const CHOICE_LETTERS = ['a', 'b', 'c', 'd', 'g', 'i', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'u', 'x', 'y', 'z'];
+  let picking = false;
+
+  function shuffledChoices(choices) {
+    const normal = [], hints = [];
+    (choices || []).forEach(ch => {
+      if (!Economy.test(ch.condition)) return;
+      (ch.hint ? hints : normal).push(ch);
+    });
+    // The right answer is no longer always first — shuffled every visit.
+    for (let i = normal.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [normal[i], normal[j]] = [normal[j], normal[i]];
+    }
+    return normal.concat(hints); // ask-the-glasses options always last
+  }
+
+  function announceChoices(list) {
+    if (!list.length) return 'No options right now.';
+    const parts = list.map(o => `${String(o.letter).toUpperCase()} for ${o.label}`);
+    return `${list.length} option${list.length > 1 ? 's' : ''}: ${parts.join('. ')}. Arrow keys to move, Enter to select.`;
+  }
+
   function renderChoices(node) {
+    picking = false;
     const box = $('#choices');
     box.innerHTML = '';
-    let visible = 0;
+    const shown = shuffledChoices(node.choices);
 
-    (node.choices || []).forEach(ch => {
-      if (!Economy.test(ch.condition)) return;
-      const btn = document.createElement('button');
-      btn.className = 'choice';
-      btn.dataset.label = ch.label;
-      btn.innerHTML = `<span class="key-hint">${visible + 1}</span><span>${ch.label}</span>`;
-      btn.addEventListener('click', () => pick(ch));
-      box.appendChild(btn);
-      visible++;
-    });
-
-    if (!visible && node.autoGoto) {
+    if (!shown.length && node.autoGoto) {
       go(node.autoGoto);
       return;
     }
+
+    // v4.0 SAFETY NET: a node can never strand the player on a dead
+    // screen again — if nothing is visible, offer a way back.
+    const effective = shown.length ? shown
+      : [{ label: 'Go back to safety — return to the city', goto: '@city' }];
+
+    const spoken = [];
+    effective.forEach((ch, i) => {
+      const btn = document.createElement('button');
+      const letter = CHOICE_LETTERS[i % CHOICE_LETTERS.length];
+      btn.className = 'choice';
+      btn.dataset.label = ch.label;
+      btn.dataset.hotkey = letter;
+      btn.innerHTML = `<span class="key-hint">${i + 1}</span><span class="key-letter">${letter.toUpperCase()}</span><span>${ch.label}</span>`;
+      btn.addEventListener('click', () => pick(ch));
+      box.appendChild(btn);
+      spoken.push({ letter, label: ch.label });
+    });
+
     const first = box.querySelector('.choice');
-    first?.focus();
-    // BUG FIX v2.2: Hard stop before options prompt - single voice guarantee, clear previous timer
-    const firstLabel = first ? first.dataset.label : '';
-    try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (e) {}
-    try { if (typeof TTS !== 'undefined' && TTS.hardStop) TTS.hardStop(); } catch (e) {}
-    try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
-    // BUG FIX: Clear any pending options TTS timer to prevent double voice
+    if (first && !document.getElementById('game').hidden) {
+      try { first.focus({ preventScroll: false }); } catch (e) { try { first.focus(); } catch (ee) {} }
+    }
     if (optionsTTSTimer) { clearTimeout(optionsTTSTimer); optionsTTSTimer = null; }
     optionsTTSTimer = setTimeout(() => {
       optionsTTSTimer = null;
-      TTS.speak(
-        `${visible} options available. Option 1: ${firstLabel}. Use arrow keys to hear all options.`,
-        { pitch: 1.15, rate: 1.1, slot: 0, _skipReal: true }
-      );
+      try {
+        TTS.speak(announceChoices(spoken),
+          { pitch: 1.15, rate: 1.1, slot: 0, _skipReal: true });
+      } catch (e) {}
     }, 80);
   }
 
@@ -475,7 +519,10 @@ const Game = (() => {
 
   function pick(choice) {
     if (speaking) return;
+    if (picking) return; // v4.0: one pick only — Enter+click can never double-fire
+    picking = true;
     armed = false;
+    try { document.querySelectorAll('#choices .choice').forEach(b => { b.disabled = true; }); } catch (e) {}
     // BUG FIX v2.2: Clear options TTS timer immediately when option clicked - prevents double voice
     if (optionsTTSTimer) { clearTimeout(optionsTTSTimer); optionsTTSTimer = null; }
     // BUG FIX v2.2: Hard stop ALL TTS before processing choice - ensures option TTS stops
@@ -713,6 +760,51 @@ const Game = (() => {
     go(story.knockoutGoto || 'hospital');
   }
 
+  /* v4.0: Case journal — quest/clue recap, Hero's Call style (J key) */
+  const CLUE_NAMES = {
+    hasDrive: 'the First Echo data drive', readNote: "Salena's note",
+    j1: 'jingle charm one', j2: 'jingle charm two', gotMusicbox: "Mama's music box",
+    harborJoined: 'Harbor as an ally', harborHint: "Harbor's court hint",
+    vossLead: "Voss's money lead", scouted: 'the scouted route',
+    prayed: "the priest's blessing", boughtGun: 'The Hurricane',
+    boughtArmor: 'the Iron Chef armor', ledger: 'the evidence ledger',
+    marrsClue: "Marrs's keypad digit", coleClue: "Cole's keypad digit",
+    ruizClue: "Ruiz's keypad digit", marinaPass: 'the marina pass',
+    lobbyCard: 'the suite keycard', coords: 'the gala coordinates',
+    seraBond: "Sera's trust", seraMet: 'meeting Sera',
+    patched: 'Bonnie patched up', salenaSong: "Salena's song",
+    stealthEdge: 'stealth edge', gritBuff: 'grit buff', ch2_started: 'the road to the Block',
+  };
+  function journal() {
+    const s = Economy.state;
+    const sc = current.scene ? story.scenes[current.scene] : null;
+    const found = Object.keys(CLUE_NAMES).filter(f => s.flags[f]);
+    const items = s.items.length ? s.items.join(', ') : 'nothing yet';
+    const line = `Case journal. ${sc && sc.chapterName ? 'Chapter ' + sc.chapterName + '.' : ''} ` +
+      `Standing in ${sc ? (sc.location || 'the city') : 'the city'}. ` +
+      `Clues found: ${found.length ? found.map(f => CLUE_NAMES[f]).join(', ') : 'none yet'}. ` +
+      `Carrying ${items}. ${s.cc.toLocaleString()} CC, health ${s.health} of ${s.maxHealth}, heat ${s.heat}.`;
+    try { showCaption('glasses', line); } catch (e) {}
+    try { TTS.interrupt(line, { _skipReal: true }); } catch (e) {}
+  }
+  function repeatOptions() {
+    if ($('#game').hidden) return;
+    if (speaking) {
+      try { TTS.interrupt('The story is still playing. Press Enter to jump to the choices.', { _skipReal: true }); } catch (e) {}
+      return;
+    }
+    const btns = [...document.querySelectorAll('#choices .choice')];
+    if (!btns.length) {
+      try { TTS.interrupt('No options right now.', { _skipReal: true }); } catch (e) {}
+      return;
+    }
+    const list = btns.map(b => ({ letter: (b.dataset.hotkey || '?'), label: b.dataset.label }));
+    try {
+      TTS.interrupt('Options again. ' + announceChoices(list),
+        { pitch: 1.15, rate: 1.05, slot: 0, _skipReal: true });
+    } catch (e) {}
+  }
+
   /* ---------- global toggles - PROFESSIONAL BLIND GAME ---------- */
   function globalKey(key) {
     if (key === 'escape') {
@@ -737,9 +829,17 @@ const Game = (() => {
       $('#hud-focus').hidden = !on;
       TTS.speak(on ? 'Focus mode on.' : 'Focus mode off.', { _skipReal: true });
     } else if (key === 'highContrast') {
-      document.body.classList.toggle('high-contrast');
+      const on = !document.body.classList.contains('high-contrast');
+      document.body.classList.toggle('high-contrast', on);
+      try { localStorage.setItem('ccs-hc', on ? '1' : '0'); } catch (e) {}
     } else if (key === 'voiceToggle') {
       TTS.setEnabled(!TTS.isEnabled());
+    } else if (key === 'journal') {
+      journal();
+      return;
+    } else if (key === 'repeatOptions') {
+      repeatOptions();
+      return;
     } else if (key === 'e' || key === 'E' || key === 'enhancedListening') {
       // PROFESSIONAL BLIND: Enhanced Listening Mode - sonar sweep like TLOU2
       try {
