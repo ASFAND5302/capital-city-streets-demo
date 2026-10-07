@@ -19,6 +19,7 @@ const CityMode = (() => {
   const CELL = 44;
   const BUILD = 'v1.0';   // shown in the key bar — submission build
   const VOICE = { pitch: 1.1, rate: 1.15, slot: 1 }; // Smart Glasses voice
+  const BONNIE = { pitch: 1.45, rate: 1.08, slot: 10, gender: 'female', _charId: 'bonnie' }; // Bonnie voice
   // Location-specific music: now each district and POI has its own music field in city.json
   // Fallback map for old saves or missing fields
   const DIST_MOOD_FALLBACK = { old_chapel: 'chapel', midtown: 'midtown', southside: 'southside',
@@ -31,7 +32,9 @@ const CityMode = (() => {
     pawnshop_ledger: 'radio', velvet_room: 'club', diner_blue_note: 'radio',
     movie_theater: 'mansion', basketball_court: 'court', corner_store: 'radio',
     bonnie_garage: 'boat', marlow_pier: 'harbor', fish_market: 'night',
-    mansion: 'mansion', tess_workshop: 'industrial', carwash: 'rain', greenhouse: 'garden'
+    mansion: 'mansion', tess_workshop: 'industrial', carwash: 'rain', greenhouse: 'garden',
+    payphone_rusty: 'radio', chapel_crypt: 'church', pier_locker: 'harbor',
+    theater_seat9: 'mansion', greenhouse_bench: 'garden'
   };
   // v4.0 EACH AREA'S OWN SOUND: ambience bed per district + per landmark
   const DIST_AMB = { old_chapel: 'church', midtown: 'club', southside: 'radio',
@@ -43,7 +46,9 @@ const CityMode = (() => {
     pawnshop_ledger: 'radio', velvet_room: 'club', diner_blue_note: 'radio',
     movie_theater: 'radio', basketball_court: 'court', corner_store: 'radio',
     bonnie_garage: 'boat', marlow_pier: 'boat', fish_market: 'boat',
-    mansion: 'mansion', tess_workshop: 'precinct', carwash: 'rain', greenhouse: 'night'
+    mansion: 'mansion', tess_workshop: 'precinct', carwash: 'rain', greenhouse: 'night',
+    payphone_rusty: 'radio', chapel_crypt: 'church', pier_locker: 'boat',
+    theater_seat9: 'radio', greenhouse_bench: 'night'
   };
   // Hero's Call style radar: signature sound description per landmark
   const POI_SIG_DESC = {
@@ -51,7 +56,9 @@ const CityMode = (() => {
     pawnshop_ledger: 'a cash drawer', velvet_room: 'bass through the walls', diner_blue_note: 'clinking plates',
     movie_theater: 'an old projector', basketball_court: 'a bouncing ball', corner_store: 'a shop bell',
     bonnie_garage: 'an idling engine', marlow_pier: 'a foghorn', fish_market: 'gulls and ropes',
-    mansion: 'patrol boots', tess_workshop: 'a grinder', carwash: 'spraying water', greenhouse: 'rustling leaves'
+    mansion: 'patrol boots', tess_workshop: 'a grinder', carwash: 'spraying water', greenhouse: 'rustling leaves',
+    payphone_rusty: 'a dead-line hum', chapel_crypt: 'cold crypt air', pier_locker: 'a locker latch',
+    theater_seat9: 'velvet seat springs', greenhouse_bench: 'a creaking bench'
   };
 
   function getDistrictMusic(d) {
@@ -106,9 +113,9 @@ const CityMode = (() => {
     return parts.join('-') || 'right here';
   }
   const distTo = (tx, ty) => Math.abs(tx - pos.x) + Math.abs(ty - pos.y);
-  function say(text) {
+  function say(text, voice) {
     caption(text);
-    TTS.interrupt(text, VOICE);
+    TTS.interrupt(text, voice || VOICE);
   }
   function caption(text) {
     const cap = $('#city-caption');
@@ -280,10 +287,10 @@ const CityMode = (() => {
     }
 
     if (marker) line += ' ' + markerStatus();
-    say(line);
+    say(line, riding ? BONNIE : VOICE);
     if (marker && marker.x === pos.x && marker.y === pos.y) {
       marker = null; saveState(); stopBeacon();
-      setTimeout(() => say('You have reached your marker. Marker cleared.'), 1600);
+      setTimeout(() => say('You have reached your marker. Marker cleared.', riding ? BONNIE : VOICE), 1600);
     }
   }
 
@@ -378,6 +385,7 @@ const CityMode = (() => {
     { text: 'Two old men argue about the Mayor on a stoop. You catch a rumor: the precinct washes money through its own evidence room.', fx: null, sfx: 'tick' },
     { text: 'You find a quiet doorway, breathe, and roll your shoulders. Health up.', fx: { health: 15 }, sfx: 'success' },
     { text: 'Rain starts tapping the awnings. The whole block smells like iron and rain.', fx: null, sfx: null },
+    { text: 'A flower seller whispers as you pass: Salena hid five dead drops around this city. Sonar and the district guide will find them.', fx: null, sfx: 'tick' },
   ];
   let lastEncMove = 0;
   function maybeEncounter() {
@@ -496,6 +504,22 @@ const CityMode = (() => {
       return; 
     }
     const a = poi.action || {};
+    // v5.0 dead drops: one-time cache, first visit pays, later visits echo
+    if (a.type === 'cache') {
+      const flag = 'cache_' + poi.id;
+      if (!Economy.state.flags[flag]) {
+        try { Economy.apply({ ...(a.fx || {}), setFlag: flag }); Economy.save(); } catch (e) {}
+        SFX.play('success');
+        say((a.first || a.speakerLines || [{ speaker: 'glasses', text: poi.describe }])
+          .reduce((acc, l) => acc + ' ' + l.text, poi.name + '.'));
+      } else {
+        SFX.play('tick');
+        say((a.repeat || a.speakerLines || [{ speaker: 'glasses', text: poi.describe }])
+          .reduce((acc, l) => acc + ' ' + l.text, poi.name + '.'));
+      }
+      paintHUD();
+      return;
+    }
     const speakLines = () => (a.speakerLines || [{ speaker: 'glasses', text: poi.describe }])
       .reduce((acc, l) => acc + ' ' + l.text, poi.name + '.');
 
@@ -543,10 +567,10 @@ const CityMode = (() => {
     if (riding) {
       SFX.startEngine();
       SFX.play('success');
-      say('Bonnie rolls up. Riding — three blocks with every step. Press B to stop.');
+      say('Bonnie rolls up. Riding — three blocks with every step. Press B to stop.', BONNIE);
     } else {
       SFX.stopEngine();
-      say('You step out of Bonnie. On foot again.');
+      say('You step out of Bonnie. On foot again.', BONNIE);
     }
   }
 

@@ -64,16 +64,33 @@ const RealVoices = (() => {
     'nyx_gates': { file: 'audio/real/nyx_gates.mp3', character: 'nyx', text: 'Gates, guards, gala.', keywords: ['gates guards gala', 'two hundred liars'], chapter: 5 },
     'glasses_mansion': { file: 'audio/real/glasses_mansion.mp3', character: 'glasses', text: 'Two patrols, mirrored routes.', keywords: ['two patrols', 'mirrored routes', 'rose beds'], chapter: 5 },
     'glasses_ballroom': { file: 'audio/real/glasses_ballroom.mp3', character: 'glasses', text: 'Ballroom. Strings quartet.', keywords: ['ballroom', 'strings quartet', 'champagne towers'], chapter: 5 },
-    'bonnie_gate': { file: 'audio/real/bonnie_gate.mp3', character: 'bonnie', text: 'Bonnie through the gate at forty.', keywords: ['bonnie through the gate', 'guards scattering'], chapter: 5 },
+    'bonnie_gate': { file: 'audio/real/bonnie_gate.mp3', character: 'bonnie', text: 'Bonnie gate crash.', keywords: [], chapter: 5 },
     'priest_finale': { file: 'audio/real/priest_finale.mp3', character: 'priest', text: 'The city has watched you, Stoneface.', keywords: ['city has watched you', 'for salena', 'every name that bled'], chapter: 5 },
+    'bonnie_southside': { file: 'audio/real/bonnie_southside.mp3', character: 'bonnie', text: "Destination: Southside Blocks.", keywords: ["i'll steer", 'that has always been the deal'], chapter: 2 },
+    'bonnie_harbor': { file: 'audio/real/bonnie_harbor.mp3', character: 'bonnie', text: "The Southside is where the city keeps.", keywords: ['navy work, navy pay', 'man named marcus kane'], chapter: 2 },
+    'bonnie_drive_ref': { file: 'audio/real/bonnie_drive_ref.mp3', character: 'bonnie', text: "Salena's drive references him twice.", keywords: ['once as a witness', 'once as a warning'], chapter: 2 },
+    'bonnie_armor': { file: 'audio/real/bonnie_armor.mp3', character: 'bonnie', text: "My armor holds. My patience doesn't.", keywords: ['my armor holds'], chapter: 3 },
+    'bonnie_cracked': { file: 'audio/real/bonnie_cracked.mp3', character: 'bonnie', text: 'Left quarter cracked. I can still run.', keywords: ['left quarter cracked', 'will not run pretty'], chapter: 3 },
+    'bonnie_roof': { file: 'audio/real/bonnie_roof.mp3', character: 'bonnie', text: 'I can put you on the roof, Stoneface.', keywords: ['my nuclear heart is ready', 'put you on the roof'], chapter: 5 },
+    'bonnie_tellthem': { file: 'audio/real/bonnie_tellthem.mp3', character: 'bonnie', text: 'Tell them it was me.', keywords: ['tell them it was me'], chapter: 5 },
+    'bonnie_chopper': { file: 'audio/real/bonnie_chopper.mp3', character: 'bonnie', text: 'Extraction platform up.', keywords: ['machine-gun hello', "pilot's sightline"], chapter: 5 },
+    'bonnie_rollup': { file: 'audio/real/bonnie_rollup.mp3', character: 'bonnie', text: 'Bonnie rolls up.', keywords: ['bonnie rolls up'], chapter: 0 },
+    'bonnie_stepout': { file: 'audio/real/bonnie_stepout.mp3', character: 'bonnie', text: 'You step out of Bonnie.', keywords: ['step out of bonnie'], chapter: 0 },
   };
   
   let lookupCache = new Map();
   
+  // v5.0: story text uses curly apostrophes — normalize so keywords always match
+  function norm(s) { return String(s).toLowerCase().replace(/[\u2018\u2019]/g, "'"); }
   function findRealFile(text, character) {
     if (!enabled || !text) return null;
-    const lower = String(text).toLowerCase();
-    if (lower.includes('options available') || lower.includes('option 1:') || lower.includes('arrow keys') || lower.includes('press enter') || lower.includes('percent') || lower.length < 15) {
+    const lower = norm(text);
+    // v5.0: 'percent' only skips short UI lines ("Music 80 percent") — never
+    // story lines like Bonnie's "Armor at one hundred percent"
+    if (lower.includes('options available') || lower.includes('option 1:') || lower.includes('arrow keys') || lower.includes('press enter') || lower.length < 15) {
+      return null;
+    }
+    if (lower.includes('percent') && String(text).length < 80) {
       return null;
     }
     const cacheKey = lower.slice(0, 50);
@@ -81,13 +98,13 @@ const RealVoices = (() => {
     for (const info of Object.values(REAL_FILES)) {
       if (info.keywords) {
         for (const kw of info.keywords) {
-          if (lower.includes(kw.toLowerCase())) {
+          if (lower.includes(norm(kw))) {
             lookupCache.set(cacheKey, info.file);
             return info.file;
           }
         }
       }
-      if (info.text && lower.includes(info.text.toLowerCase().slice(0, 22))) {
+      if (info.text && lower.includes(norm(info.text).slice(0, 22))) {
         lookupCache.set(cacheKey, info.file);
         return info.file;
       }

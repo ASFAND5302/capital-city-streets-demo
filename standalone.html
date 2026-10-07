@@ -679,10 +679,7 @@ body.focus-mode #city-3d { filter: brightness(.45) grayscale(.5); }
 </style>
 </head>
 <body>
-
-<script>
-window.__CCS_DATA__=window.__CCS_DATA__||{};
-window.__CCS_DATA__["characters.json"]={
+<script>window.__CCS_DATA__={"characters.json":{
   "_help": "EDIT ME: each key is a speaker id used in chapters.json. 'name' is shown in captions; 'voice' controls TTS: pitch (0-2), rate (0.5-2), slot picks which system voice to use. Add new characters freely.",
   "characters": {
     "narrator": {
@@ -937,8 +934,7 @@ window.__CCS_DATA__["characters.json"]={
       "color": "#a0c9d4"
     }
   }
-};
-window.__CCS_DATA__["chapters.json"]={
+},"chapters.json":{
   "_help": "EDIT ME: every scene, line, choice and reward lives here. 'speaker' ids come from characters.json. 'goto' targets a scene id, or 'sceneId:nodeIndex' to jump to a specific node. Effects: cc, health, heat, level, setFlag, clearFlag, addItem. Conditions: flag/notFlag (string or array), item, ccMin, levelMin. 'chance.fail' = probability (0-1) the choice goes wrong, applying failEffects + failGoto.",
   "start": "intro",
   "knockoutGoto": "hospital",
@@ -979,6 +975,10 @@ window.__CCS_DATA__["chapters.json"]={
             {
               "speaker": "glasses",
               "text": "During the story, press Escape to return to the main menu. I will ask you to confirm — press Enter to leave, or Escape again to keep playing."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Rumor for roamers: Salena hid five dead drops across the city. Press P for sonar, K for the district guide — every cache pays."
             }
           ],
           "choices": [
@@ -1302,6 +1302,20 @@ window.__CCS_DATA__["chapters.json"]={
             {
               "label": "Examine the bedroom door",
               "goto": "jingle_door"
+            },
+            {
+              "label": "Return to the writing desk",
+              "goto": "desk",
+              "condition": {
+                "flag": "readNote"
+              }
+            },
+            {
+              "label": "Return to the bookshelf",
+              "goto": "bookshelf",
+              "condition": {
+                "flag": "gotMusicbox"
+              }
             }
           ]
         }
@@ -1340,6 +1354,10 @@ window.__CCS_DATA__["chapters.json"]={
                 "addItem": "case-files"
               },
               "sfx": "pickup"
+            },
+            {
+              "label": "Try the locked drawer",
+              "goto": "desk_lock"
             }
           ]
         }
@@ -1373,6 +1391,10 @@ window.__CCS_DATA__["chapters.json"]={
                 "addItem": "music-box"
               },
               "sfx": "pickup"
+            },
+            {
+              "label": "Study the book spines",
+              "goto": "bookshelf_cipher"
             }
           ]
         }
@@ -2159,7 +2181,7 @@ window.__CCS_DATA__["chapters.json"]={
           "choices": [
             {
               "label": "Continue to the court",
-              "goto": "court_intro"
+              "goto": "alley_dice"
             }
           ]
         }
@@ -2213,6 +2235,10 @@ window.__CCS_DATA__["chapters.json"]={
             {
               "label": "Head out",
               "goto": "southside_arrive"
+            },
+            {
+              "label": "Haggle over the shoebox tape",
+              "goto": "store_haggle"
             }
           ]
         }
@@ -2393,6 +2419,20 @@ window.__CCS_DATA__["chapters.json"]={
                 "setFlag": "stealthEdge"
               },
               "sfx": "whoosh"
+            },
+            {
+              "label": "Count the heartbeats first",
+              "goto": "stickup_plan"
+            },
+            {
+              "label": "Smart entry — the counting room's blind second",
+              "goto": "stickup_fight",
+              "effects": {
+                "setFlag": "stealthEdge"
+              },
+              "condition": {
+                "flag": "planSmart"
+              }
             }
           ]
         }
@@ -3321,7 +3361,7 @@ window.__CCS_DATA__["chapters.json"]={
           "choices": [
             {
               "label": "Call HIGH this time",
-              "goto": "dan_clue"
+              "goto": "dan_memory"
             },
             {
               "label": "Walk away and let him sweat",
@@ -3401,6 +3441,10 @@ window.__CCS_DATA__["chapters.json"]={
               "effects": {
                 "setFlag": "seraMet"
               }
+            },
+            {
+              "label": "Answer her riddle",
+              "goto": "sera_riddle"
             }
           ]
         }
@@ -3692,17 +3736,13 @@ window.__CCS_DATA__["chapters.json"]={
             },
             {
               "label": "Enter the code: 1-2-3 — mirror, charge, exhale",
-              "goto": "hitmen_board",
+              "goto": "ledger_cipher",
               "condition": {
                 "flag": [
                   "marrsClue",
                   "coleClue",
                   "ruizClue"
                 ]
-              },
-              "effects": {
-                "setFlag": "ledger",
-                "addItem": "precinct-ledger"
               }
             },
             {
@@ -4327,6 +4367,10 @@ window.__CCS_DATA__["chapters.json"]={
                 "heat": 1
               },
               "sfx": "glass"
+            },
+            {
+              "label": "Study the champagne tower",
+              "goto": "toast_guess"
             }
           ]
         }
@@ -4792,10 +4836,523 @@ window.__CCS_DATA__["chapters.json"]={
           ]
         }
       ]
+    },
+    "desk_lock": {
+      "chapter": 1,
+      "chapterName": "The First Echo",
+      "location": "Salena's apartment — desk",
+      "music": "mystery",
+      "amb": "crackle",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "The desk drawer is locked. Three brass symbols on the dial: a bell, a scale, a star."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Her note says it plain: faith before the stars she earned — the bell first, the scale of her lawyering second, Mama's star last. Bell, scale, star.",
+              "condition": {
+                "flag": "deskHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses about the symbols",
+              "goto": "desk_lock",
+              "effects": {
+                "setFlag": "deskHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Turn the dial: bell, scale, star",
+              "goto": "desk",
+              "effects": {
+                "cc": 150,
+                "setFlag": "deskCache"
+              },
+              "condition": {
+                "flag": "readNote"
+              }
+            },
+            {
+              "label": "Turn the dial: star, scale, bell",
+              "goto": "desk_lock"
+            },
+            {
+              "label": "Turn the dial: scale, bell, star",
+              "goto": "desk_lock"
+            },
+            {
+              "label": "Leave the drawer for now",
+              "goto": "desk"
+            }
+          ]
+        }
+      ],
+      "art": "img/desk.jpg"
+    },
+    "bookshelf_cipher": {
+      "chapter": 1,
+      "chapterName": "The First Echo",
+      "location": "Salena's apartment — bookshelf",
+      "music": "mystery",
+      "amb": "room",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "The law volumes are shelved by year — except one. Evidence, 2019, sits between Contracts 2016 and Torts 2021. Salena never mis-shelved by accident."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Out of order on purpose. The wrong book is the message: Evidence. Pull it.",
+              "condition": {
+                "flag": "shelfHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses about the wrong book",
+              "goto": "bookshelf_cipher",
+              "effects": {
+                "setFlag": "shelfHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Pull the mis-shelved Evidence volume",
+              "goto": "bookshelf",
+              "effects": {
+                "cc": 100,
+                "setFlag": "shelfCipher"
+              }
+            },
+            {
+              "label": "Pull Contracts 2016",
+              "goto": "bookshelf_cipher"
+            },
+            {
+              "label": "Pull Torts 2021",
+              "goto": "bookshelf_cipher"
+            },
+            {
+              "label": "Step back to the shelf",
+              "goto": "bookshelf"
+            }
+          ]
+        }
+      ]
+    },
+    "store_haggle": {
+      "chapter": 2,
+      "chapterName": "The Block",
+      "location": "Southside corner store",
+      "music": "drive",
+      "amb": "radio",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "The owner taps a shoebox under the counter. Quote: Salena paid fifty for the copy. You? Guess what I paid for the box — one, two, or three — and the tape is yours."
+            },
+            {
+              "speaker": "glasses",
+              "text": "His radio is playing track three and he keeps glancing at it. Three. The answer is three.",
+              "condition": {
+                "flag": "haggleHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses to read him",
+              "goto": "store_haggle",
+              "effects": {
+                "setFlag": "haggleHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Guess: one",
+              "goto": "store_haggle"
+            },
+            {
+              "label": "Guess: two",
+              "goto": "store_haggle"
+            },
+            {
+              "label": "Guess: three",
+              "goto": "corner_store",
+              "effects": {
+                "cc": 80,
+                "setFlag": "storeTape"
+              }
+            },
+            {
+              "label": "Leave the box",
+              "goto": "corner_store"
+            }
+          ]
+        }
+      ]
+    },
+    "alley_dice": {
+      "chapter": 2,
+      "chapterName": "The Block",
+      "location": "Southside alley",
+      "music": "tense",
+      "amb": "night",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "The two runners are back — with dice, not bottles. Quote: stranger tax refund. Call it right and the alley pays you."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Loaded dice. They always throw high — except when the big one breathes out. He just breathed out. Call low.",
+              "condition": {
+                "flag": "diceHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses to watch the dice",
+              "goto": "alley_dice",
+              "effects": {
+                "setFlag": "diceHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Call high",
+              "goto": "alley_dice",
+              "effects": {
+                "cc": -20
+              }
+            },
+            {
+              "label": "Call low",
+              "goto": "court_intro",
+              "effects": {
+                "cc": 120,
+                "setFlag": "alleyDice"
+              }
+            },
+            {
+              "label": "Call seven",
+              "goto": "alley_dice",
+              "effects": {
+                "cc": -20
+              }
+            },
+            {
+              "label": "Walk past them",
+              "goto": "court_intro"
+            }
+          ]
+        }
+      ]
+    },
+    "stickup_plan": {
+      "chapter": 2,
+      "chapterName": "The Block",
+      "location": "Southside — planning",
+      "music": "tense",
+      "amb": "club",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "Before we walk in: how many heartbeats in the back office? Get it right and I can time the counting machine's blind second."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Three. I counted three heartbeats through the wall. Say three.",
+              "condition": {
+                "flag": "planHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses to count again",
+              "goto": "stickup_plan",
+              "effects": {
+                "setFlag": "planHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Two heartbeats",
+              "goto": "stickup_plan"
+            },
+            {
+              "label": "Three heartbeats",
+              "goto": "stickup_brief",
+              "effects": {
+                "setFlag": "planSmart"
+              }
+            },
+            {
+              "label": "Four heartbeats",
+              "goto": "stickup_plan"
+            },
+            {
+              "label": "Forget it — go in loud",
+              "goto": "stickup_brief"
+            }
+          ]
+        }
+      ]
+    },
+    "dan_memory": {
+      "chapter": 3,
+      "chapterName": "Waterfront / Island",
+      "location": "Casino Royale",
+      "music": "casino",
+      "amb": "club",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "dan",
+              "text": "Memory first, detective. Three cards on the felt: queen, king, queen. I shuffle. Which hand holds the king — left, middle, or right?"
+            },
+            {
+              "speaker": "glasses",
+              "text": "His left sleeve hangs heavier. The king went left. Say left.",
+              "condition": {
+                "flag": "danHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses to watch the shuffle",
+              "goto": "dan_memory",
+              "effects": {
+                "setFlag": "danHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Left hand",
+              "goto": "dan_clue",
+              "effects": {
+                "cc": 200,
+                "setFlag": "danMemory"
+              }
+            },
+            {
+              "label": "Middle hand",
+              "goto": "dan_memory"
+            },
+            {
+              "label": "Right hand",
+              "goto": "dan_memory"
+            },
+            {
+              "label": "Fold and take the clue",
+              "goto": "dan_clue"
+            }
+          ]
+        }
+      ]
+    },
+    "sera_riddle": {
+      "chapter": 3,
+      "chapterName": "Waterfront / Island",
+      "location": "Casino Bar",
+      "music": "sera",
+      "amb": "island",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "sera",
+              "text": "Salena loved my riddles. Here is hers, back to you: I run but never walk. I have a mouth but never speak. I have a bed but never sleep. What am I?"
+            },
+            {
+              "speaker": "glasses",
+              "text": "Classic. A mouth, a bed, and it runs to the sea. A river. Say river.",
+              "condition": {
+                "flag": "seraHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses — you hate riddles",
+              "goto": "sera_riddle",
+              "effects": {
+                "setFlag": "seraHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "A river",
+              "goto": "c3_end",
+              "effects": {
+                "cc": 300,
+                "setFlag": "seraBond"
+              }
+            },
+            {
+              "label": "A road",
+              "goto": "sera_riddle"
+            },
+            {
+              "label": "A rumor",
+              "goto": "sera_riddle"
+            },
+            {
+              "label": "Laugh it off — keep it light",
+              "goto": "c3_end",
+              "effects": {
+                "setFlag": "seraMet"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "ledger_cipher": {
+      "chapter": 4,
+      "chapterName": "The Takedown",
+      "location": "Precinct 9",
+      "music": "conspiracy",
+      "amb": "precinct",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "The ledger is Voss's shorthand. Five names, five numbers beside them. The numbers aren't money. What do they order?"
+            },
+            {
+              "speaker": "glasses",
+              "text": "Cross-checked with the contracts: the numbers are the kill order. One dies first. Say: the order the five die in.",
+              "condition": {
+                "flag": "cipherHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses to cross-check",
+              "goto": "ledger_cipher",
+              "effects": {
+                "setFlag": "cipherHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "The order the five die in",
+              "goto": "hitmen_board",
+              "effects": {
+                "setFlags": [
+                  "ledger",
+                  "ledgerCipher"
+                ],
+                "addItem": "precinct-ledger"
+              }
+            },
+            {
+              "label": "The payoff amounts",
+              "goto": "ledger_cipher"
+            },
+            {
+              "label": "The dates of the hits",
+              "goto": "ledger_cipher"
+            },
+            {
+              "label": "Take the ledger raw — no time",
+              "goto": "hitmen_board",
+              "effects": {
+                "setFlags": [
+                  "ledger",
+                  "ledgerCipher"
+                ],
+                "addItem": "precinct-ledger",
+                "heat": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "toast_guess": {
+      "chapter": 5,
+      "chapterName": "The Grand Finale",
+      "location": "The Gala — Ballroom",
+      "music": "quartet",
+      "amb": "mansion",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "Wexler toasts at midnight. Three glasses on his tray. One is his — he never drinks what a server has touched."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Thermal: the middle glass is warm from his hand. The outer two are cold. Middle.",
+              "condition": {
+                "flag": "toastHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses which glass",
+              "goto": "toast_guess",
+              "effects": {
+                "setFlag": "toastHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "The left glass",
+              "goto": "toast_guess",
+              "effects": {
+                "health": -10
+              }
+            },
+            {
+              "label": "The middle glass",
+              "goto": "gala2",
+              "effects": {
+                "setFlag": "toastTell"
+              }
+            },
+            {
+              "label": "The right glass",
+              "goto": "toast_guess",
+              "effects": {
+                "health": -10
+              }
+            },
+            {
+              "label": "Skip the toast — move now",
+              "goto": "gala2"
+            }
+          ]
+        }
+      ]
     }
   }
-};
-window.__CCS_DATA__["city.json"]={
+},"city.json":{
   "_help": "EDIT ME: the open-world city. 20x20 grid. Avenues run north-south (x), streets run east-west (y). Districts are rectangles on the grid. POIs are landmarks with actions. Everything here is editable: rename streets, move landmarks, add districts, change prices and lines.",
   "gridSize": 20,
   "starterCC": 500,
@@ -4856,7 +5413,7 @@ window.__CCS_DATA__["city.json"]={
       "x1": 7,
       "y1": 6,
       "color": "#2a2438",
-      "ambience": "Calm, sacred echoes \u2014 church bells rolling over quiet stone.",
+      "ambience": "Calm, sacred echoes — church bells rolling over quiet stone.",
       "flavor": [
         "Bells roll out from a stone tower and fade over the rooftops.",
         "A rosary clicks softly somewhere out on a porch.",
@@ -4872,7 +5429,7 @@ window.__CCS_DATA__["city.json"]={
       "x1": 14,
       "y1": 6,
       "color": "#1e2a3a",
-      "ambience": "Music and neon \u2014 clubs breathing bass, restaurants humming.",
+      "ambience": "Music and neon — clubs breathing bass, restaurants humming.",
       "flavor": [
         "Neon buzzes and a club door spills brass notes onto the pavement.",
         "Laughter and glasses clink from a late kitchen.",
@@ -4888,7 +5445,7 @@ window.__CCS_DATA__["city.json"]={
       "x1": 19,
       "y1": 9,
       "color": "#26301f",
-      "ambience": "Wealth and security \u2014 mansion gates, private patrols, trimmed hedges.",
+      "ambience": "Wealth and security — mansion gates, private patrols, trimmed hedges.",
       "flavor": [
         "A black sedan idles behind wrought iron, engine purring.",
         "Security lights sweep a manicured lawn.",
@@ -4904,7 +5461,7 @@ window.__CCS_DATA__["city.json"]={
       "x1": 7,
       "y1": 9,
       "color": "#33291f",
-      "ambience": "Metal and engines \u2014 pawn shops, car wash, garages.",
+      "ambience": "Metal and engines — pawn shops, car wash, garages.",
       "flavor": [
         "A grinder sings one long note behind a garage door.",
         "Steam hisses from the car wash like a tired animal.",
@@ -4920,7 +5477,7 @@ window.__CCS_DATA__["city.json"]={
       "x1": 14,
       "y1": 9,
       "color": "#1f3328",
-      "ambience": "Breathing room \u2014 trees, basketball, stealth meetups.",
+      "ambience": "Breathing room — trees, basketball, stealth meetups.",
       "flavor": [
         "Leaves turn over in a warm wind.",
         "A chain net rattles; somebody's shooting late hoops.",
@@ -4936,11 +5493,11 @@ window.__CCS_DATA__["city.json"]={
       "x1": 19,
       "y1": 16,
       "color": "#33241f",
-      "ambience": "Danger and pressure \u2014 bass, barking dogs, watchful windows.",
+      "ambience": "Danger and pressure — bass, barking dogs, watchful windows.",
       "flavor": [
         "A chain-link fence rattles as a dog makes its opinion known.",
         "Bass rolls under the street like slow weather.",
-        "Somebody watches from a window \u2014 then the curtain drops."
+        "Somebody watches from a window — then the curtain drops."
       ],
       "music": "southside"
     },
@@ -4952,7 +5509,7 @@ window.__CCS_DATA__["city.json"]={
       "x1": 19,
       "y1": 19,
       "color": "#1f2a33",
-      "ambience": "Ropes, gulls, diesel \u2014 speedboats and the way off the map.",
+      "ambience": "Ropes, gulls, diesel — speedboats and the way off the map.",
       "flavor": [
         "Ropes creak against a mast in the dark.",
         "Diesel knocks twice from a boat engine, then settles.",
@@ -4965,7 +5522,7 @@ window.__CCS_DATA__["city.json"]={
     {
       "id": "safehouse",
       "name": "Stoneface's Safehouse",
-      "icon": "\ud83c\udfda",
+      "icon": "🏚",
       "x": 2,
       "y": 7,
       "describe": "The crew's safehouse. Creaking floorboards, a wall of maps, Salena's case pinned in the center.",
@@ -4983,7 +5540,7 @@ window.__CCS_DATA__["city.json"]={
     {
       "id": "salena_apartment",
       "name": "Salena's Apartment",
-      "icon": "\ud83c\udfe2",
+      "icon": "🏢",
       "x": 4,
       "y": 3,
       "describe": "Salena's seized apartment building. Police tape still across the door. The jingle lock waits inside.",
@@ -4992,7 +5549,7 @@ window.__CCS_DATA__["city.json"]={
         "speakerLines": [
           {
             "speaker": "stoneface",
-            "text": "Her window. Third floor. The tape says seized \u2014 the dust says waiting."
+            "text": "Her window. Third floor. The tape says seized — the dust says waiting."
           },
           {
             "speaker": "glasses",
@@ -5005,7 +5562,7 @@ window.__CCS_DATA__["city.json"]={
     {
       "id": "st_verity_church",
       "name": "St. Verity Church",
-      "icon": "\u26ea",
+      "icon": "⛪",
       "x": 6,
       "y": 2,
       "describe": "Old stone church. Candle smoke and low hymns. The one honest gatekeeper keeps office here.",
@@ -5033,7 +5590,7 @@ window.__CCS_DATA__["city.json"]={
     {
       "id": "pawnshop_ledger",
       "name": "Ledger's Pawn Shop",
-      "icon": "\ud83d\udcb0",
+      "icon": "💰",
       "x": 12,
       "y": 4,
       "describe": "Elias Ledger's pawn shop. Bars on the windows, bargains behind them.",
@@ -5042,7 +5599,7 @@ window.__CCS_DATA__["city.json"]={
         "speakerLines": [
           {
             "speaker": "ledger",
-            "text": "Stoneface! Windows full of trouble, shelves full of answers. The Hurricane, eight hundred. Iron Chef plate, seven hundred. Priest gates the big purchases \u2014 I just make the city feel real."
+            "text": "Stoneface! Windows full of trouble, shelves full of answers. The Hurricane, eight hundred. Iron Chef plate, seven hundred. Priest gates the big purchases — I just make the city feel real."
           }
         ]
       },
@@ -5056,7 +5613,7 @@ window.__CCS_DATA__["city.json"]={
     {
       "id": "velvet_room",
       "name": "The Velvet Room",
-      "icon": "\ud83c\udfb6",
+      "icon": "🎶",
       "x": 14,
       "y": 6,
       "describe": "Neon club. Bass you can feel through your shoes. The back office counts the block's money every night.",
@@ -5079,7 +5636,7 @@ window.__CCS_DATA__["city.json"]={
     {
       "id": "diner_blue_note",
       "name": "Blue Note Diner",
-      "icon": "\ud83c\udf7d",
+      "icon": "🍽",
       "x": 10,
       "y": 2,
       "describe": "All-night diner. Coffee, grits, and rumors in equal measures.",
@@ -5092,7 +5649,7 @@ window.__CCS_DATA__["city.json"]={
         "speakerLines": [
           {
             "speaker": "glasses",
-            "text": "Focus plate served \u2014 black coffee, cornbread, quiet booth. Health up, mind sharp. Minus forty CC."
+            "text": "Focus plate served — black coffee, cornbread, quiet booth. Health up, mind sharp. Minus forty CC."
           }
         ]
       },
@@ -5106,7 +5663,7 @@ window.__CCS_DATA__["city.json"]={
     {
       "id": "movie_theater",
       "name": "The Monarch Theater",
-      "icon": "\ud83c\udfac",
+      "icon": "🎬",
       "x": 11,
       "y": 5,
       "describe": "Old movie theater. Marquee flickers. Lobby posters, and lobby whispers.",
@@ -5133,7 +5690,7 @@ window.__CCS_DATA__["city.json"]={
     {
       "id": "basketball_court",
       "name": "The Ironrail Court",
-      "icon": "\ud83c\udfc0",
+      "icon": "🏀",
       "x": 5,
       "y": 14,
       "describe": "Chain nets, cracked asphalt. The loudest heartbeat on the Southside, and one very quiet one courtside.",
@@ -5156,7 +5713,7 @@ window.__CCS_DATA__["city.json"]={
     {
       "id": "corner_store",
       "name": "Southside Corner Store",
-      "icon": "\ud83c\udfea",
+      "icon": "🏪",
       "x": 9,
       "y": 13,
       "describe": "Fry oil, citrus cleaner, a radio playing low. The owner watches weather and strangers.",
@@ -5187,7 +5744,7 @@ window.__CCS_DATA__["city.json"]={
     {
       "id": "bonnie_garage",
       "name": "Bonnie's Garage",
-      "icon": "\ud83d\ude99",
+      "icon": "🚙",
       "x": 16,
       "y": 15,
       "describe": "A converted warehouse. Tools, armor plating, and one very patient bulletproof SUV.",
@@ -5210,7 +5767,7 @@ window.__CCS_DATA__["city.json"]={
     {
       "id": "marlow_pier",
       "name": "Marlow's Pier",
-      "icon": "\u26f5",
+      "icon": "⛵",
       "x": 10,
       "y": 18,
       "describe": "Old Marlow's speedboat, fueled and pretending to be a fishing boat.",
@@ -5224,7 +5781,7 @@ window.__CCS_DATA__["city.json"]={
     {
       "id": "fish_market",
       "name": "Fish Market",
-      "icon": "\ud83d\udc1f",
+      "icon": "🐟",
       "x": 4,
       "y": 18,
       "describe": "Ice, crates, and rumors priced by the pound.",
@@ -5238,16 +5795,16 @@ window.__CCS_DATA__["city.json"]={
     {
       "id": "mansion",
       "name": "Wexler's Mansion",
-      "icon": "\ud83c\udfdb",
+      "icon": "🏛",
       "x": 17,
       "y": 2,
-      "describe": "The Mayor's mansion \u2014 gates, guards, and a gala that ends a city's lie.",
+      "describe": "The Mayor's mansion — gates, guards, and a gala that ends a city's lie.",
       "music": "mansion"
     },
     {
       "id": "tess_workshop",
       "name": "Tess's Workshop",
-      "icon": "\ud83d\udd27",
+      "icon": "🔧",
       "x": 3,
       "y": 8,
       "describe": "Area Six's garage lab: armor plates, healing chamber, Bonnie's birthplace.",
@@ -5261,7 +5818,7 @@ window.__CCS_DATA__["city.json"]={
     {
       "id": "carwash",
       "name": "Ironrail Car Wash",
-      "icon": "\ud83d\udebf",
+      "icon": "🚿",
       "x": 6,
       "y": 9,
       "describe": "Steam, brushes, and a clean way to lose the police's eye.",
@@ -5270,33 +5827,150 @@ window.__CCS_DATA__["city.json"]={
     {
       "id": "greenhouse",
       "name": "Garden Greenhouse",
-      "icon": "\ud83c\udf3f",
+      "icon": "🌿",
       "x": 10,
       "y": 8,
-      "describe": "Warm glass and wet leaves \u2014 the quiet place crews meet when walls have ears.",
+      "describe": "Warm glass and wet leaves — the quiet place crews meet when walls have ears.",
       "music": "greenhouse"
+    },
+    {
+      "id": "payphone_rusty",
+      "name": "Rusty Payphone",
+      "icon": "📞",
+      "x": 13,
+      "y": 12,
+      "music": "southside",
+      "describe": "A dead payphone on Ironrail. The receiver hangs. The coin box rattles wrong.",
+      "action": {
+        "type": "cache",
+        "fx": {
+          "cc": 150
+        },
+        "first": [
+          {
+            "speaker": "glasses",
+            "text": "Salena's first dead drop. Under the coin box: an envelope, 150 CC, and a riddle for the next one — quote: where stone prays, the cold keeps her second secret."
+          }
+        ],
+        "repeat": [
+          {
+            "speaker": "glasses",
+            "text": "The payphone is empty. The dial tone hums for nobody."
+          }
+        ]
+      }
+    },
+    {
+      "id": "chapel_crypt",
+      "name": "Chapel Crypt",
+      "icon": "🕯️",
+      "x": 1,
+      "y": 5,
+      "music": "sacred",
+      "describe": "Beneath the chapel: a crypt door, candle smoke, and cold that keeps secrets.",
+      "action": {
+        "type": "cache",
+        "fx": {
+          "cc": 120
+        },
+        "first": [
+          {
+            "speaker": "glasses",
+            "text": "Second drop. Behind the third candle: a tin box, 120 CC, and her next riddle — quote: where ropes sleep and gulls stand guard, her locker waits."
+          }
+        ],
+        "repeat": [
+          {
+            "speaker": "glasses",
+            "text": "The crypt is empty. Only candles and cold."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pier_locker",
+      "name": "Pier Locker 9",
+      "icon": "🗝️",
+      "x": 14,
+      "y": 18,
+      "music": "pier",
+      "describe": "Marlow's far pier. Locker nine, rusted shut, salt in every seam.",
+      "action": {
+        "type": "cache",
+        "fx": {
+          "cc": 200
+        },
+        "first": [
+          {
+            "speaker": "glasses",
+            "text": "Third drop. Locker nine holds 200 CC and a ticket stub — row nine, seat nine — quote: where the projector dreams in the dark."
+          }
+        ],
+        "repeat": [
+          {
+            "speaker": "glasses",
+            "text": "Locker nine hangs open and empty. Gulls only."
+          }
+        ]
+      }
+    },
+    {
+      "id": "theater_seat9",
+      "name": "Theater Seat 9",
+      "icon": "🎭",
+      "x": 9,
+      "y": 5,
+      "music": "theater",
+      "describe": "The Monarch's back row. Seat nine springs sing when you sit.",
+      "action": {
+        "type": "cache",
+        "fx": {
+          "cc": 180
+        },
+        "first": [
+          {
+            "speaker": "glasses",
+            "text": "Fourth drop. Taped under seat nine: 180 CC and a pressed leaf — quote: where the leaves whisper her name, the last one waits."
+          }
+        ],
+        "repeat": [
+          {
+            "speaker": "glasses",
+            "text": "Seat nine is just a seat now. The projector hums on."
+          }
+        ]
+      }
+    },
+    {
+      "id": "greenhouse_bench",
+      "name": "Greenhouse Bench",
+      "icon": "🌿",
+      "x": 13,
+      "y": 8,
+      "music": "garden",
+      "describe": "The greenhouse rest bench. Warm glass, wet soil, one loose slat.",
+      "action": {
+        "type": "cache",
+        "fx": {
+          "cc": 300
+        },
+        "first": [
+          {
+            "speaker": "glasses",
+            "text": "Last drop. Under the bench slat: 300 CC and a note — quote: five drops, one sister. Spend it loud. Love, S."
+          }
+        ],
+        "repeat": [
+          {
+            "speaker": "glasses",
+            "text": "The bench just creaks. The chain is complete — five drops, one sister."
+          }
+        ]
+      }
     }
   ],
   "sonarRange": 7
-};
-console.log('[Standalone] Data inlined - no fetch needed');
-</script>
-<script>
-(function() {
-  var origFetch = window.fetch;
-  window.fetch = function(url, opts) {
-    if (typeof url === 'string' && url.indexOf('data/') !== -1) {
-      var key = url.split('/').pop();
-      if (window.__CCS_DATA__ && window.__CCS_DATA__[key]) {
-        var data = window.__CCS_DATA__[key];
-        return Promise.resolve({ ok: true, json: function() { return Promise.resolve(data); } });
-      }
-    }
-    return origFetch.apply(this, arguments);
-  };
-})();
-</script>
-
+}};</script>
 
   <!-- ══ Custom logo emblem: the city seen through Smart Glasses ══ -->
   <svg style="display:none" aria-hidden="true">
@@ -6125,16 +6799,33 @@ const RealVoices = (() => {
     'nyx_gates': { file: 'audio/real/nyx_gates.mp3', character: 'nyx', text: 'Gates, guards, gala.', keywords: ['gates guards gala', 'two hundred liars'], chapter: 5 },
     'glasses_mansion': { file: 'audio/real/glasses_mansion.mp3', character: 'glasses', text: 'Two patrols, mirrored routes.', keywords: ['two patrols', 'mirrored routes', 'rose beds'], chapter: 5 },
     'glasses_ballroom': { file: 'audio/real/glasses_ballroom.mp3', character: 'glasses', text: 'Ballroom. Strings quartet.', keywords: ['ballroom', 'strings quartet', 'champagne towers'], chapter: 5 },
-    'bonnie_gate': { file: 'audio/real/bonnie_gate.mp3', character: 'bonnie', text: 'Bonnie through the gate at forty.', keywords: ['bonnie through the gate', 'guards scattering'], chapter: 5 },
+    'bonnie_gate': { file: 'audio/real/bonnie_gate.mp3', character: 'bonnie', text: 'Bonnie gate crash.', keywords: [], chapter: 5 },
     'priest_finale': { file: 'audio/real/priest_finale.mp3', character: 'priest', text: 'The city has watched you, Stoneface.', keywords: ['city has watched you', 'for salena', 'every name that bled'], chapter: 5 },
+    'bonnie_southside': { file: 'audio/real/bonnie_southside.mp3', character: 'bonnie', text: "Destination: Southside Blocks.", keywords: ["i'll steer", 'that has always been the deal'], chapter: 2 },
+    'bonnie_harbor': { file: 'audio/real/bonnie_harbor.mp3', character: 'bonnie', text: "The Southside is where the city keeps.", keywords: ['navy work, navy pay', 'man named marcus kane'], chapter: 2 },
+    'bonnie_drive_ref': { file: 'audio/real/bonnie_drive_ref.mp3', character: 'bonnie', text: "Salena's drive references him twice.", keywords: ['once as a witness', 'once as a warning'], chapter: 2 },
+    'bonnie_armor': { file: 'audio/real/bonnie_armor.mp3', character: 'bonnie', text: "My armor holds. My patience doesn't.", keywords: ['my armor holds'], chapter: 3 },
+    'bonnie_cracked': { file: 'audio/real/bonnie_cracked.mp3', character: 'bonnie', text: 'Left quarter cracked. I can still run.', keywords: ['left quarter cracked', 'will not run pretty'], chapter: 3 },
+    'bonnie_roof': { file: 'audio/real/bonnie_roof.mp3', character: 'bonnie', text: 'I can put you on the roof, Stoneface.', keywords: ['my nuclear heart is ready', 'put you on the roof'], chapter: 5 },
+    'bonnie_tellthem': { file: 'audio/real/bonnie_tellthem.mp3', character: 'bonnie', text: 'Tell them it was me.', keywords: ['tell them it was me'], chapter: 5 },
+    'bonnie_chopper': { file: 'audio/real/bonnie_chopper.mp3', character: 'bonnie', text: 'Extraction platform up.', keywords: ['machine-gun hello', "pilot's sightline"], chapter: 5 },
+    'bonnie_rollup': { file: 'audio/real/bonnie_rollup.mp3', character: 'bonnie', text: 'Bonnie rolls up.', keywords: ['bonnie rolls up'], chapter: 0 },
+    'bonnie_stepout': { file: 'audio/real/bonnie_stepout.mp3', character: 'bonnie', text: 'You step out of Bonnie.', keywords: ['step out of bonnie'], chapter: 0 },
   };
   
   let lookupCache = new Map();
   
+  // v5.0: story text uses curly apostrophes — normalize so keywords always match
+  function norm(s) { return String(s).toLowerCase().replace(/[\u2018\u2019]/g, "'"); }
   function findRealFile(text, character) {
     if (!enabled || !text) return null;
-    const lower = String(text).toLowerCase();
-    if (lower.includes('options available') || lower.includes('option 1:') || lower.includes('arrow keys') || lower.includes('press enter') || lower.includes('percent') || lower.length < 15) {
+    const lower = norm(text);
+    // v5.0: 'percent' only skips short UI lines ("Music 80 percent") — never
+    // story lines like Bonnie's "Armor at one hundred percent"
+    if (lower.includes('options available') || lower.includes('option 1:') || lower.includes('arrow keys') || lower.includes('press enter') || lower.length < 15) {
+      return null;
+    }
+    if (lower.includes('percent') && String(text).length < 80) {
       return null;
     }
     const cacheKey = lower.slice(0, 50);
@@ -6142,13 +6833,13 @@ const RealVoices = (() => {
     for (const info of Object.values(REAL_FILES)) {
       if (info.keywords) {
         for (const kw of info.keywords) {
-          if (lower.includes(kw.toLowerCase())) {
+          if (lower.includes(norm(kw))) {
             lookupCache.set(cacheKey, info.file);
             return info.file;
           }
         }
       }
-      if (info.text && lower.includes(info.text.toLowerCase().slice(0, 22))) {
+      if (info.text && lower.includes(norm(info.text).slice(0, 22))) {
         lookupCache.set(cacheKey, info.file);
         return info.file;
       }
@@ -10445,6 +11136,15 @@ const Game = (() => {
     seraBond: "Sera's trust", seraMet: 'meeting Sera',
     patched: 'Bonnie patched up', salenaSong: "Salena's song",
     stealthEdge: 'stealth edge', gritBuff: 'grit buff', ch2_started: 'the road to the Block',
+    deskCache: "Salena's desk cache", shelfCipher: 'the bookshelf cipher',
+    storeTape: "the shopkeeper's tape", alleyDice: 'the alley dice game',
+    planSmart: 'the counting-room plan', danMemory: "Dan's memory game",
+    ledgerCipher: "Voss's cipher", toastTell: "Wexler's toast tell",
+    cache_payphone_rusty: 'dead drop one: the payphone',
+    cache_chapel_crypt: 'dead drop two: the crypt',
+    cache_pier_locker: 'dead drop three: the locker',
+    cache_theater_seat9: 'dead drop four: seat nine',
+    cache_greenhouse_bench: 'dead drop five: the bench',
   };
   function journal() {
     const s = Economy.state;
@@ -10618,7 +11318,7 @@ const Game = (() => {
 })();
 </script>
   <script>
-/* === vendor/three.min.js === */
+/* === three === */
 /**
  * @license
  * Copyright 2010-2021 Three.js Authors
@@ -11709,6 +12409,7 @@ const CityMode = (() => {
   const CELL = 44;
   const BUILD = 'v1.0';   // shown in the key bar — submission build
   const VOICE = { pitch: 1.1, rate: 1.15, slot: 1 }; // Smart Glasses voice
+  const BONNIE = { pitch: 1.45, rate: 1.08, slot: 10, gender: 'female', _charId: 'bonnie' }; // Bonnie voice
   // Location-specific music: now each district and POI has its own music field in city.json
   // Fallback map for old saves or missing fields
   const DIST_MOOD_FALLBACK = { old_chapel: 'chapel', midtown: 'midtown', southside: 'southside',
@@ -11721,7 +12422,9 @@ const CityMode = (() => {
     pawnshop_ledger: 'radio', velvet_room: 'club', diner_blue_note: 'radio',
     movie_theater: 'mansion', basketball_court: 'court', corner_store: 'radio',
     bonnie_garage: 'boat', marlow_pier: 'harbor', fish_market: 'night',
-    mansion: 'mansion', tess_workshop: 'industrial', carwash: 'rain', greenhouse: 'garden'
+    mansion: 'mansion', tess_workshop: 'industrial', carwash: 'rain', greenhouse: 'garden',
+    payphone_rusty: 'radio', chapel_crypt: 'church', pier_locker: 'harbor',
+    theater_seat9: 'mansion', greenhouse_bench: 'garden'
   };
   // v4.0 EACH AREA'S OWN SOUND: ambience bed per district + per landmark
   const DIST_AMB = { old_chapel: 'church', midtown: 'club', southside: 'radio',
@@ -11733,7 +12436,9 @@ const CityMode = (() => {
     pawnshop_ledger: 'radio', velvet_room: 'club', diner_blue_note: 'radio',
     movie_theater: 'radio', basketball_court: 'court', corner_store: 'radio',
     bonnie_garage: 'boat', marlow_pier: 'boat', fish_market: 'boat',
-    mansion: 'mansion', tess_workshop: 'precinct', carwash: 'rain', greenhouse: 'night'
+    mansion: 'mansion', tess_workshop: 'precinct', carwash: 'rain', greenhouse: 'night',
+    payphone_rusty: 'radio', chapel_crypt: 'church', pier_locker: 'boat',
+    theater_seat9: 'radio', greenhouse_bench: 'night'
   };
   // Hero's Call style radar: signature sound description per landmark
   const POI_SIG_DESC = {
@@ -11741,7 +12446,9 @@ const CityMode = (() => {
     pawnshop_ledger: 'a cash drawer', velvet_room: 'bass through the walls', diner_blue_note: 'clinking plates',
     movie_theater: 'an old projector', basketball_court: 'a bouncing ball', corner_store: 'a shop bell',
     bonnie_garage: 'an idling engine', marlow_pier: 'a foghorn', fish_market: 'gulls and ropes',
-    mansion: 'patrol boots', tess_workshop: 'a grinder', carwash: 'spraying water', greenhouse: 'rustling leaves'
+    mansion: 'patrol boots', tess_workshop: 'a grinder', carwash: 'spraying water', greenhouse: 'rustling leaves',
+    payphone_rusty: 'a dead-line hum', chapel_crypt: 'cold crypt air', pier_locker: 'a locker latch',
+    theater_seat9: 'velvet seat springs', greenhouse_bench: 'a creaking bench'
   };
 
   function getDistrictMusic(d) {
@@ -11796,9 +12503,9 @@ const CityMode = (() => {
     return parts.join('-') || 'right here';
   }
   const distTo = (tx, ty) => Math.abs(tx - pos.x) + Math.abs(ty - pos.y);
-  function say(text) {
+  function say(text, voice) {
     caption(text);
-    TTS.interrupt(text, VOICE);
+    TTS.interrupt(text, voice || VOICE);
   }
   function caption(text) {
     const cap = $('#city-caption');
@@ -11970,10 +12677,10 @@ const CityMode = (() => {
     }
 
     if (marker) line += ' ' + markerStatus();
-    say(line);
+    say(line, riding ? BONNIE : VOICE);
     if (marker && marker.x === pos.x && marker.y === pos.y) {
       marker = null; saveState(); stopBeacon();
-      setTimeout(() => say('You have reached your marker. Marker cleared.'), 1600);
+      setTimeout(() => say('You have reached your marker. Marker cleared.', riding ? BONNIE : VOICE), 1600);
     }
   }
 
@@ -12068,6 +12775,7 @@ const CityMode = (() => {
     { text: 'Two old men argue about the Mayor on a stoop. You catch a rumor: the precinct washes money through its own evidence room.', fx: null, sfx: 'tick' },
     { text: 'You find a quiet doorway, breathe, and roll your shoulders. Health up.', fx: { health: 15 }, sfx: 'success' },
     { text: 'Rain starts tapping the awnings. The whole block smells like iron and rain.', fx: null, sfx: null },
+    { text: 'A flower seller whispers as you pass: Salena hid five dead drops around this city. Sonar and the district guide will find them.', fx: null, sfx: 'tick' },
   ];
   let lastEncMove = 0;
   function maybeEncounter() {
@@ -12186,6 +12894,22 @@ const CityMode = (() => {
       return; 
     }
     const a = poi.action || {};
+    // v5.0 dead drops: one-time cache, first visit pays, later visits echo
+    if (a.type === 'cache') {
+      const flag = 'cache_' + poi.id;
+      if (!Economy.state.flags[flag]) {
+        try { Economy.apply({ ...(a.fx || {}), setFlag: flag }); Economy.save(); } catch (e) {}
+        SFX.play('success');
+        say((a.first || a.speakerLines || [{ speaker: 'glasses', text: poi.describe }])
+          .reduce((acc, l) => acc + ' ' + l.text, poi.name + '.'));
+      } else {
+        SFX.play('tick');
+        say((a.repeat || a.speakerLines || [{ speaker: 'glasses', text: poi.describe }])
+          .reduce((acc, l) => acc + ' ' + l.text, poi.name + '.'));
+      }
+      paintHUD();
+      return;
+    }
     const speakLines = () => (a.speakerLines || [{ speaker: 'glasses', text: poi.describe }])
       .reduce((acc, l) => acc + ' ' + l.text, poi.name + '.');
 
@@ -12233,10 +12957,10 @@ const CityMode = (() => {
     if (riding) {
       SFX.startEngine();
       SFX.play('success');
-      say('Bonnie rolls up. Riding — three blocks with every step. Press B to stop.');
+      say('Bonnie rolls up. Riding — three blocks with every step. Press B to stop.', BONNIE);
     } else {
       SFX.stopEngine();
-      say('You step out of Bonnie. On foot again.');
+      say('You step out of Bonnie. On foot again.', BONNIE);
     }
   }
 
@@ -13153,5 +13877,5 @@ Menu.start();
   })();
   </script>
 
-</body>
+<script>(function(){var o=window.fetch;window.fetch=function(u,a){if(typeof u==="string"&&u.indexOf("data/")!==-1){var k=u.split("/").pop();if(window.__CCS_DATA__&&window.__CCS_DATA__[k]){var w=window.__CCS_DATA__[k];return Promise.resolve({ok:true,json:function(){return Promise.resolve(w);}});}}return o.apply(this,arguments);};})();</script></body>
 </html>

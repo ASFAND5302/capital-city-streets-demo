@@ -785,6 +785,15 @@ const Game = (() => {
     seraBond: "Sera's trust", seraMet: 'meeting Sera',
     patched: 'Bonnie patched up', salenaSong: "Salena's song",
     stealthEdge: 'stealth edge', gritBuff: 'grit buff', ch2_started: 'the road to the Block',
+    deskCache: "Salena's desk cache", shelfCipher: 'the bookshelf cipher',
+    storeTape: "the shopkeeper's tape", alleyDice: 'the alley dice game',
+    planSmart: 'the counting-room plan', danMemory: "Dan's memory game",
+    ledgerCipher: "Voss's cipher", toastTell: "Wexler's toast tell",
+    cache_payphone_rusty: 'dead drop one: the payphone',
+    cache_chapel_crypt: 'dead drop two: the crypt',
+    cache_pier_locker: 'dead drop three: the locker',
+    cache_theater_seat9: 'dead drop four: seat nine',
+    cache_greenhouse_bench: 'dead drop five: the bench',
   };
   function journal() {
     const s = Economy.state;

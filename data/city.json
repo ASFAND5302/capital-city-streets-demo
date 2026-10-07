@@ -59,7 +59,7 @@
       "x1": 7,
       "y1": 6,
       "color": "#2a2438",
-      "ambience": "Calm, sacred echoes \u2014 church bells rolling over quiet stone.",
+      "ambience": "Calm, sacred echoes — church bells rolling over quiet stone.",
       "flavor": [
         "Bells roll out from a stone tower and fade over the rooftops.",
         "A rosary clicks softly somewhere out on a porch.",
@@ -75,7 +75,7 @@
       "x1": 14,
       "y1": 6,
       "color": "#1e2a3a",
-      "ambience": "Music and neon \u2014 clubs breathing bass, restaurants humming.",
+      "ambience": "Music and neon — clubs breathing bass, restaurants humming.",
       "flavor": [
         "Neon buzzes and a club door spills brass notes onto the pavement.",
         "Laughter and glasses clink from a late kitchen.",
@@ -91,7 +91,7 @@
       "x1": 19,
       "y1": 9,
       "color": "#26301f",
-      "ambience": "Wealth and security \u2014 mansion gates, private patrols, trimmed hedges.",
+      "ambience": "Wealth and security — mansion gates, private patrols, trimmed hedges.",
       "flavor": [
         "A black sedan idles behind wrought iron, engine purring.",
         "Security lights sweep a manicured lawn.",
@@ -107,7 +107,7 @@
       "x1": 7,
       "y1": 9,
       "color": "#33291f",
-      "ambience": "Metal and engines \u2014 pawn shops, car wash, garages.",
+      "ambience": "Metal and engines — pawn shops, car wash, garages.",
       "flavor": [
         "A grinder sings one long note behind a garage door.",
         "Steam hisses from the car wash like a tired animal.",
@@ -123,7 +123,7 @@
       "x1": 14,
       "y1": 9,
       "color": "#1f3328",
-      "ambience": "Breathing room \u2014 trees, basketball, stealth meetups.",
+      "ambience": "Breathing room — trees, basketball, stealth meetups.",
       "flavor": [
         "Leaves turn over in a warm wind.",
         "A chain net rattles; somebody's shooting late hoops.",
@@ -139,11 +139,11 @@
       "x1": 19,
       "y1": 16,
       "color": "#33241f",
-      "ambience": "Danger and pressure \u2014 bass, barking dogs, watchful windows.",
+      "ambience": "Danger and pressure — bass, barking dogs, watchful windows.",
       "flavor": [
         "A chain-link fence rattles as a dog makes its opinion known.",
         "Bass rolls under the street like slow weather.",
-        "Somebody watches from a window \u2014 then the curtain drops."
+        "Somebody watches from a window — then the curtain drops."
       ],
       "music": "southside"
     },
@@ -155,7 +155,7 @@
       "x1": 19,
       "y1": 19,
       "color": "#1f2a33",
-      "ambience": "Ropes, gulls, diesel \u2014 speedboats and the way off the map.",
+      "ambience": "Ropes, gulls, diesel — speedboats and the way off the map.",
       "flavor": [
         "Ropes creak against a mast in the dark.",
         "Diesel knocks twice from a boat engine, then settles.",
@@ -168,7 +168,7 @@
     {
       "id": "safehouse",
       "name": "Stoneface's Safehouse",
-      "icon": "\ud83c\udfda",
+      "icon": "🏚",
       "x": 2,
       "y": 7,
       "describe": "The crew's safehouse. Creaking floorboards, a wall of maps, Salena's case pinned in the center.",
@@ -186,7 +186,7 @@
     {
       "id": "salena_apartment",
       "name": "Salena's Apartment",
-      "icon": "\ud83c\udfe2",
+      "icon": "🏢",
       "x": 4,
       "y": 3,
       "describe": "Salena's seized apartment building. Police tape still across the door. The jingle lock waits inside.",
@@ -195,7 +195,7 @@
         "speakerLines": [
           {
             "speaker": "stoneface",
-            "text": "Her window. Third floor. The tape says seized \u2014 the dust says waiting."
+            "text": "Her window. Third floor. The tape says seized — the dust says waiting."
           },
           {
             "speaker": "glasses",
@@ -208,7 +208,7 @@
     {
       "id": "st_verity_church",
       "name": "St. Verity Church",
-      "icon": "\u26ea",
+      "icon": "⛪",
       "x": 6,
       "y": 2,
       "describe": "Old stone church. Candle smoke and low hymns. The one honest gatekeeper keeps office here.",
@@ -236,7 +236,7 @@
     {
       "id": "pawnshop_ledger",
       "name": "Ledger's Pawn Shop",
-      "icon": "\ud83d\udcb0",
+      "icon": "💰",
       "x": 12,
       "y": 4,
       "describe": "Elias Ledger's pawn shop. Bars on the windows, bargains behind them.",
@@ -245,7 +245,7 @@
         "speakerLines": [
           {
             "speaker": "ledger",
-            "text": "Stoneface! Windows full of trouble, shelves full of answers. The Hurricane, eight hundred. Iron Chef plate, seven hundred. Priest gates the big purchases \u2014 I just make the city feel real."
+            "text": "Stoneface! Windows full of trouble, shelves full of answers. The Hurricane, eight hundred. Iron Chef plate, seven hundred. Priest gates the big purchases — I just make the city feel real."
           }
         ]
       },
@@ -259,7 +259,7 @@
     {
       "id": "velvet_room",
       "name": "The Velvet Room",
-      "icon": "\ud83c\udfb6",
+      "icon": "🎶",
       "x": 14,
       "y": 6,
       "describe": "Neon club. Bass you can feel through your shoes. The back office counts the block's money every night.",
@@ -282,7 +282,7 @@
     {
       "id": "diner_blue_note",
       "name": "Blue Note Diner",
-      "icon": "\ud83c\udf7d",
+      "icon": "🍽",
       "x": 10,
       "y": 2,
       "describe": "All-night diner. Coffee, grits, and rumors in equal measures.",
@@ -295,7 +295,7 @@
         "speakerLines": [
           {
             "speaker": "glasses",
-            "text": "Focus plate served \u2014 black coffee, cornbread, quiet booth. Health up, mind sharp. Minus forty CC."
+            "text": "Focus plate served — black coffee, cornbread, quiet booth. Health up, mind sharp. Minus forty CC."
           }
         ]
       },
@@ -309,7 +309,7 @@
     {
       "id": "movie_theater",
       "name": "The Monarch Theater",
-      "icon": "\ud83c\udfac",
+      "icon": "🎬",
       "x": 11,
       "y": 5,
       "describe": "Old movie theater. Marquee flickers. Lobby posters, and lobby whispers.",
@@ -336,7 +336,7 @@
     {
       "id": "basketball_court",
       "name": "The Ironrail Court",
-      "icon": "\ud83c\udfc0",
+      "icon": "🏀",
       "x": 5,
       "y": 14,
       "describe": "Chain nets, cracked asphalt. The loudest heartbeat on the Southside, and one very quiet one courtside.",
@@ -359,7 +359,7 @@
     {
       "id": "corner_store",
       "name": "Southside Corner Store",
-      "icon": "\ud83c\udfea",
+      "icon": "🏪",
       "x": 9,
       "y": 13,
       "describe": "Fry oil, citrus cleaner, a radio playing low. The owner watches weather and strangers.",
@@ -390,7 +390,7 @@
     {
       "id": "bonnie_garage",
       "name": "Bonnie's Garage",
-      "icon": "\ud83d\ude99",
+      "icon": "🚙",
       "x": 16,
       "y": 15,
       "describe": "A converted warehouse. Tools, armor plating, and one very patient bulletproof SUV.",
@@ -413,7 +413,7 @@
     {
       "id": "marlow_pier",
       "name": "Marlow's Pier",
-      "icon": "\u26f5",
+      "icon": "⛵",
       "x": 10,
       "y": 18,
       "describe": "Old Marlow's speedboat, fueled and pretending to be a fishing boat.",
@@ -427,7 +427,7 @@
     {
       "id": "fish_market",
       "name": "Fish Market",
-      "icon": "\ud83d\udc1f",
+      "icon": "🐟",
       "x": 4,
       "y": 18,
       "describe": "Ice, crates, and rumors priced by the pound.",
@@ -441,16 +441,16 @@
     {
       "id": "mansion",
       "name": "Wexler's Mansion",
-      "icon": "\ud83c\udfdb",
+      "icon": "🏛",
       "x": 17,
       "y": 2,
-      "describe": "The Mayor's mansion \u2014 gates, guards, and a gala that ends a city's lie.",
+      "describe": "The Mayor's mansion — gates, guards, and a gala that ends a city's lie.",
       "music": "mansion"
     },
     {
       "id": "tess_workshop",
       "name": "Tess's Workshop",
-      "icon": "\ud83d\udd27",
+      "icon": "🔧",
       "x": 3,
       "y": 8,
       "describe": "Area Six's garage lab: armor plates, healing chamber, Bonnie's birthplace.",
@@ -464,7 +464,7 @@
     {
       "id": "carwash",
       "name": "Ironrail Car Wash",
-      "icon": "\ud83d\udebf",
+      "icon": "🚿",
       "x": 6,
       "y": 9,
       "describe": "Steam, brushes, and a clean way to lose the police's eye.",
@@ -473,11 +473,146 @@
     {
       "id": "greenhouse",
       "name": "Garden Greenhouse",
-      "icon": "\ud83c\udf3f",
+      "icon": "🌿",
       "x": 10,
       "y": 8,
-      "describe": "Warm glass and wet leaves \u2014 the quiet place crews meet when walls have ears.",
+      "describe": "Warm glass and wet leaves — the quiet place crews meet when walls have ears.",
       "music": "greenhouse"
+    },
+    {
+      "id": "payphone_rusty",
+      "name": "Rusty Payphone",
+      "icon": "📞",
+      "x": 13,
+      "y": 12,
+      "music": "southside",
+      "describe": "A dead payphone on Ironrail. The receiver hangs. The coin box rattles wrong.",
+      "action": {
+        "type": "cache",
+        "fx": {
+          "cc": 150
+        },
+        "first": [
+          {
+            "speaker": "glasses",
+            "text": "Salena's first dead drop. Under the coin box: an envelope, 150 CC, and a riddle for the next one — quote: where stone prays, the cold keeps her second secret."
+          }
+        ],
+        "repeat": [
+          {
+            "speaker": "glasses",
+            "text": "The payphone is empty. The dial tone hums for nobody."
+          }
+        ]
+      }
+    },
+    {
+      "id": "chapel_crypt",
+      "name": "Chapel Crypt",
+      "icon": "🕯️",
+      "x": 1,
+      "y": 5,
+      "music": "sacred",
+      "describe": "Beneath the chapel: a crypt door, candle smoke, and cold that keeps secrets.",
+      "action": {
+        "type": "cache",
+        "fx": {
+          "cc": 120
+        },
+        "first": [
+          {
+            "speaker": "glasses",
+            "text": "Second drop. Behind the third candle: a tin box, 120 CC, and her next riddle — quote: where ropes sleep and gulls stand guard, her locker waits."
+          }
+        ],
+        "repeat": [
+          {
+            "speaker": "glasses",
+            "text": "The crypt is empty. Only candles and cold."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pier_locker",
+      "name": "Pier Locker 9",
+      "icon": "🗝️",
+      "x": 14,
+      "y": 18,
+      "music": "pier",
+      "describe": "Marlow's far pier. Locker nine, rusted shut, salt in every seam.",
+      "action": {
+        "type": "cache",
+        "fx": {
+          "cc": 200
+        },
+        "first": [
+          {
+            "speaker": "glasses",
+            "text": "Third drop. Locker nine holds 200 CC and a ticket stub — row nine, seat nine — quote: where the projector dreams in the dark."
+          }
+        ],
+        "repeat": [
+          {
+            "speaker": "glasses",
+            "text": "Locker nine hangs open and empty. Gulls only."
+          }
+        ]
+      }
+    },
+    {
+      "id": "theater_seat9",
+      "name": "Theater Seat 9",
+      "icon": "🎭",
+      "x": 9,
+      "y": 5,
+      "music": "theater",
+      "describe": "The Monarch's back row. Seat nine springs sing when you sit.",
+      "action": {
+        "type": "cache",
+        "fx": {
+          "cc": 180
+        },
+        "first": [
+          {
+            "speaker": "glasses",
+            "text": "Fourth drop. Taped under seat nine: 180 CC and a pressed leaf — quote: where the leaves whisper her name, the last one waits."
+          }
+        ],
+        "repeat": [
+          {
+            "speaker": "glasses",
+            "text": "Seat nine is just a seat now. The projector hums on."
+          }
+        ]
+      }
+    },
+    {
+      "id": "greenhouse_bench",
+      "name": "Greenhouse Bench",
+      "icon": "🌿",
+      "x": 13,
+      "y": 8,
+      "music": "garden",
+      "describe": "The greenhouse rest bench. Warm glass, wet soil, one loose slat.",
+      "action": {
+        "type": "cache",
+        "fx": {
+          "cc": 300
+        },
+        "first": [
+          {
+            "speaker": "glasses",
+            "text": "Last drop. Under the bench slat: 300 CC and a note — quote: five drops, one sister. Spend it loud. Love, S."
+          }
+        ],
+        "repeat": [
+          {
+            "speaker": "glasses",
+            "text": "The bench just creaks. The chain is complete — five drops, one sister."
+          }
+        ]
+      }
     }
   ],
   "sonarRange": 7

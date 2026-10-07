@@ -39,6 +39,10 @@
             {
               "speaker": "glasses",
               "text": "During the story, press Escape to return to the main menu. I will ask you to confirm — press Enter to leave, or Escape again to keep playing."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Rumor for roamers: Salena hid five dead drops across the city. Press P for sonar, K for the district guide — every cache pays."
             }
           ],
           "choices": [
@@ -362,6 +366,20 @@
             {
               "label": "Examine the bedroom door",
               "goto": "jingle_door"
+            },
+            {
+              "label": "Return to the writing desk",
+              "goto": "desk",
+              "condition": {
+                "flag": "readNote"
+              }
+            },
+            {
+              "label": "Return to the bookshelf",
+              "goto": "bookshelf",
+              "condition": {
+                "flag": "gotMusicbox"
+              }
             }
           ]
         }
@@ -400,6 +418,10 @@
                 "addItem": "case-files"
               },
               "sfx": "pickup"
+            },
+            {
+              "label": "Try the locked drawer",
+              "goto": "desk_lock"
             }
           ]
         }
@@ -433,6 +455,10 @@
                 "addItem": "music-box"
               },
               "sfx": "pickup"
+            },
+            {
+              "label": "Study the book spines",
+              "goto": "bookshelf_cipher"
             }
           ]
         }
@@ -1219,7 +1245,7 @@
           "choices": [
             {
               "label": "Continue to the court",
-              "goto": "court_intro"
+              "goto": "alley_dice"
             }
           ]
         }
@@ -1273,6 +1299,10 @@
             {
               "label": "Head out",
               "goto": "southside_arrive"
+            },
+            {
+              "label": "Haggle over the shoebox tape",
+              "goto": "store_haggle"
             }
           ]
         }
@@ -1453,6 +1483,20 @@
                 "setFlag": "stealthEdge"
               },
               "sfx": "whoosh"
+            },
+            {
+              "label": "Count the heartbeats first",
+              "goto": "stickup_plan"
+            },
+            {
+              "label": "Smart entry — the counting room's blind second",
+              "goto": "stickup_fight",
+              "effects": {
+                "setFlag": "stealthEdge"
+              },
+              "condition": {
+                "flag": "planSmart"
+              }
             }
           ]
         }
@@ -2381,7 +2425,7 @@
           "choices": [
             {
               "label": "Call HIGH this time",
-              "goto": "dan_clue"
+              "goto": "dan_memory"
             },
             {
               "label": "Walk away and let him sweat",
@@ -2461,6 +2505,10 @@
               "effects": {
                 "setFlag": "seraMet"
               }
+            },
+            {
+              "label": "Answer her riddle",
+              "goto": "sera_riddle"
             }
           ]
         }
@@ -2752,17 +2800,13 @@
             },
             {
               "label": "Enter the code: 1-2-3 — mirror, charge, exhale",
-              "goto": "hitmen_board",
+              "goto": "ledger_cipher",
               "condition": {
                 "flag": [
                   "marrsClue",
                   "coleClue",
                   "ruizClue"
                 ]
-              },
-              "effects": {
-                "setFlag": "ledger",
-                "addItem": "precinct-ledger"
               }
             },
             {
@@ -3387,6 +3431,10 @@
                 "heat": 1
               },
               "sfx": "glass"
+            },
+            {
+              "label": "Study the champagne tower",
+              "goto": "toast_guess"
             }
           ]
         }
@@ -3848,6 +3896,520 @@
               "effects": {
                 "setFlag": "lobbyCard"
               }
+            }
+          ]
+        }
+      ]
+    },
+    "desk_lock": {
+      "chapter": 1,
+      "chapterName": "The First Echo",
+      "location": "Salena's apartment — desk",
+      "music": "mystery",
+      "amb": "crackle",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "The desk drawer is locked. Three brass symbols on the dial: a bell, a scale, a star."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Her note says it plain: faith before the stars she earned — the bell first, the scale of her lawyering second, Mama's star last. Bell, scale, star.",
+              "condition": {
+                "flag": "deskHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses about the symbols",
+              "goto": "desk_lock",
+              "effects": {
+                "setFlag": "deskHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Turn the dial: bell, scale, star",
+              "goto": "desk",
+              "effects": {
+                "cc": 150,
+                "setFlag": "deskCache"
+              },
+              "condition": {
+                "flag": "readNote"
+              }
+            },
+            {
+              "label": "Turn the dial: star, scale, bell",
+              "goto": "desk_lock"
+            },
+            {
+              "label": "Turn the dial: scale, bell, star",
+              "goto": "desk_lock"
+            },
+            {
+              "label": "Leave the drawer for now",
+              "goto": "desk"
+            }
+          ]
+        }
+      ],
+      "art": "img/desk.jpg"
+    },
+    "bookshelf_cipher": {
+      "chapter": 1,
+      "chapterName": "The First Echo",
+      "location": "Salena's apartment — bookshelf",
+      "music": "mystery",
+      "amb": "room",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "The law volumes are shelved by year — except one. Evidence, 2019, sits between Contracts 2016 and Torts 2021. Salena never mis-shelved by accident."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Out of order on purpose. The wrong book is the message: Evidence. Pull it.",
+              "condition": {
+                "flag": "shelfHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses about the wrong book",
+              "goto": "bookshelf_cipher",
+              "effects": {
+                "setFlag": "shelfHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Pull the mis-shelved Evidence volume",
+              "goto": "bookshelf",
+              "effects": {
+                "cc": 100,
+                "setFlag": "shelfCipher"
+              }
+            },
+            {
+              "label": "Pull Contracts 2016",
+              "goto": "bookshelf_cipher"
+            },
+            {
+              "label": "Pull Torts 2021",
+              "goto": "bookshelf_cipher"
+            },
+            {
+              "label": "Step back to the shelf",
+              "goto": "bookshelf"
+            }
+          ]
+        }
+      ]
+    },
+    "store_haggle": {
+      "chapter": 2,
+      "chapterName": "The Block",
+      "location": "Southside corner store",
+      "music": "drive",
+      "amb": "radio",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "The owner taps a shoebox under the counter. Quote: Salena paid fifty for the copy. You? Guess what I paid for the box — one, two, or three — and the tape is yours."
+            },
+            {
+              "speaker": "glasses",
+              "text": "His radio is playing track three and he keeps glancing at it. Three. The answer is three.",
+              "condition": {
+                "flag": "haggleHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses to read him",
+              "goto": "store_haggle",
+              "effects": {
+                "setFlag": "haggleHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Guess: one",
+              "goto": "store_haggle"
+            },
+            {
+              "label": "Guess: two",
+              "goto": "store_haggle"
+            },
+            {
+              "label": "Guess: three",
+              "goto": "corner_store",
+              "effects": {
+                "cc": 80,
+                "setFlag": "storeTape"
+              }
+            },
+            {
+              "label": "Leave the box",
+              "goto": "corner_store"
+            }
+          ]
+        }
+      ]
+    },
+    "alley_dice": {
+      "chapter": 2,
+      "chapterName": "The Block",
+      "location": "Southside alley",
+      "music": "tense",
+      "amb": "night",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "The two runners are back — with dice, not bottles. Quote: stranger tax refund. Call it right and the alley pays you."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Loaded dice. They always throw high — except when the big one breathes out. He just breathed out. Call low.",
+              "condition": {
+                "flag": "diceHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses to watch the dice",
+              "goto": "alley_dice",
+              "effects": {
+                "setFlag": "diceHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Call high",
+              "goto": "alley_dice",
+              "effects": {
+                "cc": -20
+              }
+            },
+            {
+              "label": "Call low",
+              "goto": "court_intro",
+              "effects": {
+                "cc": 120,
+                "setFlag": "alleyDice"
+              }
+            },
+            {
+              "label": "Call seven",
+              "goto": "alley_dice",
+              "effects": {
+                "cc": -20
+              }
+            },
+            {
+              "label": "Walk past them",
+              "goto": "court_intro"
+            }
+          ]
+        }
+      ]
+    },
+    "stickup_plan": {
+      "chapter": 2,
+      "chapterName": "The Block",
+      "location": "Southside — planning",
+      "music": "tense",
+      "amb": "club",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "Before we walk in: how many heartbeats in the back office? Get it right and I can time the counting machine's blind second."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Three. I counted three heartbeats through the wall. Say three.",
+              "condition": {
+                "flag": "planHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses to count again",
+              "goto": "stickup_plan",
+              "effects": {
+                "setFlag": "planHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Two heartbeats",
+              "goto": "stickup_plan"
+            },
+            {
+              "label": "Three heartbeats",
+              "goto": "stickup_brief",
+              "effects": {
+                "setFlag": "planSmart"
+              }
+            },
+            {
+              "label": "Four heartbeats",
+              "goto": "stickup_plan"
+            },
+            {
+              "label": "Forget it — go in loud",
+              "goto": "stickup_brief"
+            }
+          ]
+        }
+      ]
+    },
+    "dan_memory": {
+      "chapter": 3,
+      "chapterName": "Waterfront / Island",
+      "location": "Casino Royale",
+      "music": "casino",
+      "amb": "club",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "dan",
+              "text": "Memory first, detective. Three cards on the felt: queen, king, queen. I shuffle. Which hand holds the king — left, middle, or right?"
+            },
+            {
+              "speaker": "glasses",
+              "text": "His left sleeve hangs heavier. The king went left. Say left.",
+              "condition": {
+                "flag": "danHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses to watch the shuffle",
+              "goto": "dan_memory",
+              "effects": {
+                "setFlag": "danHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Left hand",
+              "goto": "dan_clue",
+              "effects": {
+                "cc": 200,
+                "setFlag": "danMemory"
+              }
+            },
+            {
+              "label": "Middle hand",
+              "goto": "dan_memory"
+            },
+            {
+              "label": "Right hand",
+              "goto": "dan_memory"
+            },
+            {
+              "label": "Fold and take the clue",
+              "goto": "dan_clue"
+            }
+          ]
+        }
+      ]
+    },
+    "sera_riddle": {
+      "chapter": 3,
+      "chapterName": "Waterfront / Island",
+      "location": "Casino Bar",
+      "music": "sera",
+      "amb": "island",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "sera",
+              "text": "Salena loved my riddles. Here is hers, back to you: I run but never walk. I have a mouth but never speak. I have a bed but never sleep. What am I?"
+            },
+            {
+              "speaker": "glasses",
+              "text": "Classic. A mouth, a bed, and it runs to the sea. A river. Say river.",
+              "condition": {
+                "flag": "seraHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses — you hate riddles",
+              "goto": "sera_riddle",
+              "effects": {
+                "setFlag": "seraHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "A river",
+              "goto": "c3_end",
+              "effects": {
+                "cc": 300,
+                "setFlag": "seraBond"
+              }
+            },
+            {
+              "label": "A road",
+              "goto": "sera_riddle"
+            },
+            {
+              "label": "A rumor",
+              "goto": "sera_riddle"
+            },
+            {
+              "label": "Laugh it off — keep it light",
+              "goto": "c3_end",
+              "effects": {
+                "setFlag": "seraMet"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "ledger_cipher": {
+      "chapter": 4,
+      "chapterName": "The Takedown",
+      "location": "Precinct 9",
+      "music": "conspiracy",
+      "amb": "precinct",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "The ledger is Voss's shorthand. Five names, five numbers beside them. The numbers aren't money. What do they order?"
+            },
+            {
+              "speaker": "glasses",
+              "text": "Cross-checked with the contracts: the numbers are the kill order. One dies first. Say: the order the five die in.",
+              "condition": {
+                "flag": "cipherHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses to cross-check",
+              "goto": "ledger_cipher",
+              "effects": {
+                "setFlag": "cipherHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "The order the five die in",
+              "goto": "hitmen_board",
+              "effects": {
+                "setFlags": [
+                  "ledger",
+                  "ledgerCipher"
+                ],
+                "addItem": "precinct-ledger"
+              }
+            },
+            {
+              "label": "The payoff amounts",
+              "goto": "ledger_cipher"
+            },
+            {
+              "label": "The dates of the hits",
+              "goto": "ledger_cipher"
+            },
+            {
+              "label": "Take the ledger raw — no time",
+              "goto": "hitmen_board",
+              "effects": {
+                "setFlags": [
+                  "ledger",
+                  "ledgerCipher"
+                ],
+                "addItem": "precinct-ledger",
+                "heat": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "toast_guess": {
+      "chapter": 5,
+      "chapterName": "The Grand Finale",
+      "location": "The Gala — Ballroom",
+      "music": "quartet",
+      "amb": "mansion",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "Wexler toasts at midnight. Three glasses on his tray. One is his — he never drinks what a server has touched."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Thermal: the middle glass is warm from his hand. The outer two are cold. Middle.",
+              "condition": {
+                "flag": "toastHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses which glass",
+              "goto": "toast_guess",
+              "effects": {
+                "setFlag": "toastHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "The left glass",
+              "goto": "toast_guess",
+              "effects": {
+                "health": -10
+              }
+            },
+            {
+              "label": "The middle glass",
+              "goto": "gala2",
+              "effects": {
+                "setFlag": "toastTell"
+              }
+            },
+            {
+              "label": "The right glass",
+              "goto": "toast_guess",
+              "effects": {
+                "health": -10
+              }
+            },
+            {
+              "label": "Skip the toast — move now",
+              "goto": "gala2"
             }
           ]
         }
