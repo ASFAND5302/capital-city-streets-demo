@@ -794,6 +794,9 @@ const Game = (() => {
     cache_pier_locker: 'dead drop three: the locker',
     cache_theater_seat9: 'dead drop four: seat nine',
     cache_greenhouse_bench: 'dead drop five: the bench',
+    deduceHit: 'the hitmen deduction', studyLock: "the study's kitchen code",
+    signalCode: "Marlow's buoy signal", fogRun: 'the fog-bank run',
+    quietEntry: 'the quiet window entry', roofRun: 'the rooftop run',
   };
   function journal() {
     const s = Economy.state;

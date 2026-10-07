@@ -311,6 +311,10 @@
               "label": "Step into the apartment",
               "goto": "livingroom",
               "sfx": "door"
+            },
+            {
+              "label": "Work the painted latch quietly",
+              "goto": "window_latch"
             }
           ]
         }
@@ -987,6 +991,10 @@
             {
               "label": "Melt into the night",
               "goto": "chapter1_end"
+            },
+            {
+              "label": "Take the rooftops at a run",
+              "goto": "rooftop_run"
             }
           ]
         }
@@ -2305,6 +2313,10 @@
               "label": "Board the boat",
               "goto": "speedboat",
               "sfx": "boat"
+            },
+            {
+              "label": "Watch the far buoy light",
+              "goto": "pier_signal"
             }
           ]
         }
@@ -2335,6 +2347,10 @@
             {
               "label": "Come in quiet, through the marina",
               "goto": "island_arrive"
+            },
+            {
+              "label": "Run the fog bank at full throttle",
+              "goto": "fog_dodge"
             }
           ]
         }
@@ -2846,6 +2862,10 @@
             {
               "label": "Hunt the Dancer, Midtown",
               "goto": "h1"
+            },
+            {
+              "label": "Study the ledger's kill order first",
+              "goto": "hitmen_deduce"
             }
           ]
         }
@@ -3463,7 +3483,7 @@
           "choices": [
             {
               "label": "Steam-vent distraction, then the study",
-              "goto": "heli",
+              "goto": "study_lock",
               "sfx": "whoosh"
             },
             {
@@ -3500,6 +3520,13 @@
             {
               "speaker": "bonnie",
               "text": "Extraction platform up. I'll feed that rotor a machine-gun hello. You take the pilot's sightline."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Rotor wash in threes: beat, beat, gap. Move on the gap — never on the beat.",
+              "condition": {
+                "flag": "heliHint"
+              }
             }
           ],
           "choices": [
@@ -3517,6 +3544,25 @@
                   "health": -25
                 },
                 "failGoto": "heli"
+              }
+            },
+            {
+              "label": "Ask the glasses to time the rotors",
+              "goto": "heli",
+              "effects": {
+                "setFlag": "heliHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Rush between rotor beats",
+              "goto": "confront",
+              "chance": {
+                "fail": 0.4,
+                "failGoto": "heli",
+                "failEffects": {
+                  "health": -15
+                }
               }
             }
           ]
@@ -4410,6 +4456,350 @@
             {
               "label": "Skip the toast — move now",
               "goto": "gala2"
+            }
+          ]
+        }
+      ]
+    },
+    "hitmen_deduce": {
+      "chapter": 4,
+      "chapterName": "The Takedown",
+      "location": "Safehouse",
+      "music": "noir",
+      "amb": "room",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "The ledger numbers the five, one through five. But ink tells more than numbers — Voss pressed hardest on the first name. The paper remembers. Which of the five dies first?"
+            },
+            {
+              "speaker": "glasses",
+              "text": "The Dancer's name is pressed deepest into the page. Voss always kills the rhythm first. Say Dancer.",
+              "condition": {
+                "flag": "deduceHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses to feel the ink",
+              "goto": "hitmen_deduce",
+              "effects": {
+                "setFlag": "deduceHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "The Dancer — Midtown's neon",
+              "goto": "h1",
+              "effects": {
+                "cc": 250,
+                "setFlag": "deduceHit"
+              }
+            },
+            {
+              "label": "The Welder — Industrial Row",
+              "goto": "hitmen_deduce"
+            },
+            {
+              "label": "The Choir — chapel silence",
+              "goto": "hitmen_deduce"
+            },
+            {
+              "label": "The Gardener — the parks",
+              "goto": "hitmen_deduce"
+            },
+            {
+              "label": "The Suit — Upper Hills",
+              "goto": "hitmen_deduce"
+            },
+            {
+              "label": "Skip the paperwork — hunt",
+              "goto": "h1"
+            }
+          ]
+        }
+      ]
+    },
+    "study_lock": {
+      "chapter": 5,
+      "chapterName": "The Grand Finale",
+      "location": "The Gala — Service Halls",
+      "music": "quartet",
+      "amb": "mansion",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "The PRIVATE door wears a three-plate lock: SOUP, ROAST, SWEET. The kitchen staff chant the order every service — but tonight they argue about the middle course."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Listen past the argument: soup first, always. The chef screams SWEET last. Soup, roast, sweet.",
+              "condition": {
+                "flag": "studyHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses to listen closer",
+              "goto": "study_lock",
+              "effects": {
+                "setFlag": "studyHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Press: soup, roast, sweet",
+              "goto": "heli",
+              "effects": {
+                "setFlag": "studyLock"
+              }
+            },
+            {
+              "label": "Press: roast, soup, sweet",
+              "goto": "study_lock"
+            },
+            {
+              "label": "Press: sweet, roast, soup",
+              "goto": "study_lock"
+            },
+            {
+              "label": "Kick the door instead",
+              "goto": "heli",
+              "effects": {
+                "heat": 1,
+                "health": -5
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "pier_signal": {
+      "chapter": 3,
+      "chapterName": "Waterfront / Island",
+      "location": "Harborfront",
+      "music": "sea",
+      "amb": "night",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "The far buoy blinks through the dark: long, long, short. Marlow's code — flash it back with your light or his boat never leaves this pier."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Long, long, short. Like a tired heartbeat. Flash it back exactly.",
+              "condition": {
+                "flag": "signalHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses to count the flashes",
+              "goto": "pier_signal",
+              "effects": {
+                "setFlag": "signalHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Flash back: long, long, short",
+              "goto": "speedboat",
+              "effects": {
+                "setFlag": "signalCode"
+              }
+            },
+            {
+              "label": "Flash back: short, short, long",
+              "goto": "pier_signal"
+            },
+            {
+              "label": "Flash back: long, short, long",
+              "goto": "pier_signal"
+            },
+            {
+              "label": "Let Marlow handle the signals",
+              "goto": "speedboat"
+            }
+          ]
+        }
+      ]
+    },
+    "fog_dodge": {
+      "chapter": 3,
+      "chapterName": "Waterfront / Island",
+      "location": "The Crossing",
+      "music": "sea",
+      "amb": "boat",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "Fog bank ahead, thick as wool. Three bell buoys mark the channels — port, middle, starboard. Only one channel runs deep. The gulls only fish the deep one."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Gulls starboard, crying over black water. The deep channel runs starboard. Say starboard.",
+              "condition": {
+                "flag": "fogHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses where the gulls fish",
+              "goto": "fog_dodge",
+              "effects": {
+                "setFlag": "fogHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Run port channel",
+              "goto": "fog_dodge",
+              "effects": {
+                "health": -10
+              }
+            },
+            {
+              "label": "Run middle channel",
+              "goto": "fog_dodge",
+              "effects": {
+                "health": -10
+              }
+            },
+            {
+              "label": "Run starboard channel",
+              "goto": "island_arrive",
+              "effects": {
+                "setFlag": "fogRun"
+              }
+            },
+            {
+              "label": "Slow down and follow Marlow's wake",
+              "goto": "island_arrive"
+            }
+          ]
+        }
+      ]
+    },
+    "window_latch": {
+      "chapter": 1,
+      "chapterName": "The First Echo",
+      "location": "Fire escape, 3rd floor",
+      "music": "tense",
+      "amb": "night",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "The latch is painted shut — three thick layers. Force it and the whole block hears. Pick your tool: your badge edge, a rosary bead, or the music box crank."
+            },
+            {
+              "speaker": "glasses",
+              "text": "The badge edge. Thin, flat, patient. Slide it under the paint, don't fight it.",
+              "condition": {
+                "flag": "latchHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses which tool",
+              "goto": "window_latch",
+              "effects": {
+                "setFlag": "latchHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Slide the badge edge under the paint",
+              "goto": "livingroom",
+              "effects": {
+                "setFlag": "quietEntry"
+              }
+            },
+            {
+              "label": "Roll a rosary bead along the seam",
+              "goto": "window_latch"
+            },
+            {
+              "label": "Crank the music box against it",
+              "goto": "window_latch"
+            },
+            {
+              "label": "Force the window and step in",
+              "goto": "livingroom"
+            }
+          ]
+        }
+      ]
+    },
+    "rooftop_run": {
+      "chapter": 1,
+      "chapterName": "The First Echo",
+      "location": "Fire escape",
+      "music": "pulse",
+      "amb": "night",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "Three rooftops between you and the alley: tar paper, gravel, and a greenhouse roof. One holds a running man. The sirens vote hurry — the glass votes otherwise."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Gravel. Tar hides soft spots and the greenhouse is a drum. Take the gravel roof.",
+              "condition": {
+                "flag": "roofHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses which roof holds",
+              "goto": "rooftop_run",
+              "effects": {
+                "setFlag": "roofHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Sprint the tar-paper roof",
+              "goto": "rooftop_run",
+              "effects": {
+                "health": -5
+              }
+            },
+            {
+              "label": "Sprint the gravel roof",
+              "goto": "chapter1_end",
+              "effects": {
+                "cc": 100,
+                "setFlag": "roofRun"
+              }
+            },
+            {
+              "label": "Sprint the greenhouse roof",
+              "goto": "rooftop_run",
+              "effects": {
+                "health": -5
+              }
+            },
+            {
+              "label": "Climb down and melt into the night",
+              "goto": "chapter1_end"
             }
           ]
         }

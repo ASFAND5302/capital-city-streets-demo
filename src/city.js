@@ -386,6 +386,12 @@ const CityMode = (() => {
     { text: 'You find a quiet doorway, breathe, and roll your shoulders. Health up.', fx: { health: 15 }, sfx: 'success' },
     { text: 'Rain starts tapping the awnings. The whole block smells like iron and rain.', fx: null, sfx: null },
     { text: 'A flower seller whispers as you pass: Salena hid five dead drops around this city. Sonar and the district guide will find them.', fx: null, sfx: 'tick' },
+    { text: 'A blind street musician plays something like Mama\u2019s song. You tip 20 CC and stand straighter. Health up.', fx: { cc: -20, health: 10 }, sfx: 'coin' },
+    { text: 'You catch a lucky coin bouncing off a parking meter. Sixty CC, no owner in earshot.', fx: { cc: 60 }, sfx: 'coin' },
+    { text: 'A drunk thug swings at the dark and finds only your shoulder. You slip away, sore but wiser.', fx: { health: -10 }, sfx: 'fail' },
+    { text: 'Blackout! One whole block goes dark. In the confusion you slip your tail. Heat down.', fx: { heat: -1 }, sfx: 'tick' },
+    { text: 'Kids playing stickball use you as home base. Safe! You laugh for the first time all night.', fx: { health: 5 }, sfx: 'success' },
+    { text: 'A hooded informant sells you a precinct rumor for 40 CC: the night ledger moves at midnight.', fx: { cc: -40 }, sfx: 'tick' },
   ];
   let lastEncMove = 0;
   function maybeEncounter() {
