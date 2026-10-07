@@ -626,6 +626,8 @@ const CityMode = (() => {
     loadState();
     // v4.0: clear stale story choices — their keys must never leak into the city
     try { document.getElementById('choices').innerHTML = ''; } catch (e) {}
+    // v4.1: cancel any pending "N options..." announcement from the story
+    try { if (typeof Game !== 'undefined' && Game.cancelOptions) Game.cancelOptions(); } catch (e) {}
 
     // FIX: Stop lobby loud music when entering city free roam
     try { if (typeof Music !== 'undefined') Music.stop(); if (typeof OGAudio !== 'undefined') OGAudio.stopMusic(true); } catch (e) {}
@@ -777,7 +779,7 @@ const CityMode = (() => {
 
     const handled = ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','W','A','S','D',
                      'Enter',' ','l','L','m','M','n','N','x','X','b','B','p','P','g','G','k','K','u','U',
-                     'c','C','o','O','i','I','r','R','t','T','h','H','j','J','y','Y','Backspace','Escape'];
+                     'c','C','o','O','i','I','r','R','t','T','h','H','j','J','y','Y','e','E','Backspace','Escape'];
     if (!handled.includes(K)) return;
     e.preventDefault();
 
@@ -804,6 +806,7 @@ const CityMode = (() => {
       case 'h': case 'H': { const on = !document.body.classList.contains('high-contrast'); document.body.classList.toggle('high-contrast', on); try { localStorage.setItem('ccs-hc', on ? '1' : '0'); } catch (e) {} say(`High contrast ${on ? 'on' : 'off'}.`); break; }
       case 'j': case 'J': cityJournal(); break;
       case 'y': case 'Y': toggleBeacon(); break;
+      case 'e': case 'E': echoPing(); break;
       case 'Backspace': stepBack(); break;
       case 'Escape': gotoActive ? (gotoActive = false, say('Go-to cancelled.')) : exit(); break;
     }

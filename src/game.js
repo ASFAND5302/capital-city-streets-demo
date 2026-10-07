@@ -435,6 +435,7 @@ const Game = (() => {
      Same reserved letters as input.js, so badges never clash with hotkeys. */
   const CHOICE_LETTERS = ['a', 'b', 'c', 'd', 'g', 'i', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'u', 'x', 'y', 'z'];
   let picking = false;
+  let choicesArmedAt = 0; // v4.1: options need a moment before they accept input
 
   function shuffledChoices(choices) {
     const normal = [], hints = [];
@@ -458,6 +459,7 @@ const Game = (() => {
 
   function renderChoices(node) {
     picking = false;
+    choicesArmedAt = Date.now();
     const box = $('#choices');
     box.innerHTML = '';
     const shown = shuffledChoices(node.choices);
@@ -507,7 +509,13 @@ const Game = (() => {
     showScene(sceneId, idx ? Number(idx) : 0);
   }
 
+  // v4.1: stop a pending "N options..." announcement when leaving the story
+  function cancelOptions() {
+    if (optionsTTSTimer) { clearTimeout(optionsTTSTimer); optionsTTSTimer = null; }
+  }
+
   function toMenu() {
+    cancelOptions();
     try { if (typeof TTS !== 'undefined') { if (TTS.hardStop) TTS.hardStop(); else TTS.stop(); } } catch (e) {}
     try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (e) {}
     try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
@@ -520,6 +528,9 @@ const Game = (() => {
   function pick(choice) {
     if (speaking) return;
     if (picking) return; // v4.0: one pick only — Enter+click can never double-fire
+    // v4.1: ignore input for a beat after options appear — holding Enter to
+    // skip narration must never auto-select the first option unheard.
+    if (Date.now() - choicesArmedAt < 450) return;
     picking = true;
     armed = false;
     try { document.querySelectorAll('#choices .choice').forEach(b => { b.disabled = true; }); } catch (e) {}
@@ -906,6 +917,7 @@ const Game = (() => {
 
   /** BUG FIX v2.1: Enter story - hard stop ALL music/ambience, no lobby overlap, no double voice */
   function play(sceneId, fresh = false) {
+    cancelOptions();
     if (fresh) lastChapter = -1;
     const hardStopAll = () => {
       try { if (typeof TTS !== 'undefined') { if (TTS.hardStop) TTS.hardStop(); else TTS.stop(); } } catch (e) {}
@@ -941,6 +953,6 @@ const Game = (() => {
     }
   }
 
-  return { boot, play, toMenu, exitArmed: () => armed, doExit: () => { armed = false; toMenu(); },
+  return { boot, play, toMenu, cancelOptions, exitArmed: () => armed, doExit: () => { armed = false; toMenu(); },
            skip, isSpeaking: () => speaking, chars: () => chars, story: () => story };
 })();
