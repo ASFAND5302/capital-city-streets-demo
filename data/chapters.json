@@ -1702,6 +1702,10 @@
                 "setFlag": "vossLead"
               },
               "sfx": "cash"
+            },
+            {
+              "label": "Crack the back-office safe",
+              "goto": "velvet_safe"
             }
           ]
         }
@@ -3208,6 +3212,10 @@
               "effects": {
                 "setFlag": "courtHint"
               }
+            },
+            {
+              "label": "Count Harbor's whistle blasts first",
+              "goto": "whistle_count"
             }
           ]
         }
@@ -3455,6 +3463,10 @@
             {
               "label": "Study the champagne tower",
               "goto": "toast_guess"
+            },
+            {
+              "label": "Decode the guest list",
+              "goto": "guest_cipher"
             }
           ]
         }
@@ -3741,6 +3753,14 @@
             {
               "label": "Stand on Chapel Row with the crew",
               "goto": "the_end"
+            },
+            {
+              "label": "Ride with Nyx to the city line",
+              "goto": "epilogue_nyx"
+            },
+            {
+              "label": "Walk Harbor's court one last time",
+              "goto": "epilogue_harbor"
             }
           ]
         }
@@ -4800,6 +4820,237 @@
             {
               "label": "Climb down and melt into the night",
               "goto": "chapter1_end"
+            }
+          ]
+        }
+      ]
+    },
+    "velvet_safe": {
+      "chapter": 2,
+      "chapterName": "The Block",
+      "location": "Velvet Room — back office",
+      "music": "conspiracy",
+      "amb": "club",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "Behind the desk: a floor safe with a three-number dial. The thug you dropped keeps groaning about payday. His slip is on the desk: paid on the 12th, two thousand, one boss."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Twelfth of the month, two thousand, one boss. Twelve, two, one. The club counts its own greed.",
+              "condition": {
+                "flag": "safeHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses to read the payday slip",
+              "goto": "velvet_safe",
+              "effects": {
+                "setFlag": "safeHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Dial 12-2-1",
+              "goto": "crew_meet",
+              "effects": {
+                "cc": 1800,
+                "heat": 1,
+                "setFlags": [
+                  "vossLead",
+                  "velvetSafe"
+                ]
+              }
+            },
+            {
+              "label": "Dial 1-2-12",
+              "goto": "velvet_safe"
+            },
+            {
+              "label": "Dial 2-12-1",
+              "goto": "velvet_safe"
+            },
+            {
+              "label": "Just take the bag",
+              "goto": "crew_meet",
+              "effects": {
+                "cc": 1200,
+                "heat": 1,
+                "setFlag": "vossLead"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "whistle_count": {
+      "chapter": 4,
+      "chapterName": "The Takedown",
+      "location": "Southside Blocks",
+      "music": "brawl",
+      "amb": "court",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "Harbor's whistle has a code, and the whole court knows it: one blast means hold, two means turn, three means NOW. How many blasts before you move?"
+            },
+            {
+              "speaker": "glasses",
+              "text": "Three shooters, three blasts. Hold on one, coil on two, move on three.",
+              "condition": {
+                "flag": "whistleHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses for the code",
+              "goto": "whistle_count",
+              "effects": {
+                "setFlag": "whistleHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Move on the first blast",
+              "goto": "whistle_count"
+            },
+            {
+              "label": "Move on the second blast",
+              "goto": "whistle_count"
+            },
+            {
+              "label": "Move on the third blast",
+              "goto": "c4_marina",
+              "effects": {
+                "setFlag": "whistleCount"
+              }
+            },
+            {
+              "label": "Just move on the whistle",
+              "goto": "c4_marina"
+            }
+          ]
+        }
+      ]
+    },
+    "guest_cipher": {
+      "chapter": 5,
+      "chapterName": "The Grand Finale",
+      "location": "The Gala — Ballroom",
+      "music": "quartet",
+      "amb": "mansion",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "glasses",
+              "text": "The guest list at the door: two hundred names, four circled in the same red as Salena's ink. Circled tables: 3, 7, 9, 12. Wexler always sits prime — and the band holds table 7."
+            },
+            {
+              "speaker": "glasses",
+              "text": "Prime tables are 3 and 7. The band holds 7. Wexler sits at 3.",
+              "condition": {
+                "flag": "guestHint"
+              }
+            }
+          ],
+          "choices": [
+            {
+              "label": "Ask the glasses to work the numbers",
+              "goto": "guest_cipher",
+              "effects": {
+                "setFlag": "guestHint"
+              },
+              "hint": true
+            },
+            {
+              "label": "Table 3 — prime, band holds 7",
+              "goto": "gala2",
+              "effects": {
+                "setFlag": "guestCipher"
+              }
+            },
+            {
+              "label": "Table 9 — circled boldest",
+              "goto": "guest_cipher"
+            },
+            {
+              "label": "Table 12 — head of the hall",
+              "goto": "guest_cipher"
+            },
+            {
+              "label": "Skip the list — move now",
+              "goto": "gala2"
+            }
+          ]
+        }
+      ]
+    },
+    "epilogue_nyx": {
+      "chapter": 5,
+      "chapterName": "The Grand Finale",
+      "location": "Capitol City",
+      "music": "noir",
+      "amb": "night",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "nyx",
+              "text": "City line, Stoneface. You walk back famous. I walk on invisible. That was always the deal."
+            },
+            {
+              "speaker": "stoneface",
+              "text": "The deal just changed. The crew has a name now. Say it with us."
+            },
+            {
+              "speaker": "narrator",
+              "text": "Two shadows split at the city line — one toward the noise, one toward the quiet. Both, for once, unowned."
+            }
+          ],
+          "choices": [
+            {
+              "label": "Walk back to the crew",
+              "goto": "the_end"
+            }
+          ]
+        }
+      ]
+    },
+    "epilogue_harbor": {
+      "chapter": 5,
+      "chapterName": "The Grand Finale",
+      "location": "Southside — the court",
+      "music": "blues",
+      "amb": "court",
+      "nodes": [
+        {
+          "lines": [
+            {
+              "speaker": "harbor",
+              "text": "My court, champion. One last run — no whistle, no shooters. Just a ball and a blind man who never missed what mattered."
+            },
+            {
+              "speaker": "stoneface",
+              "text": "Salena's shot first. Then mine. Then we go home."
+            },
+            {
+              "speaker": "narrator",
+              "text": "The ball arcs over Ironrail and drops through clean. Somewhere, a sister keeps score."
+            }
+          ],
+          "choices": [
+            {
+              "label": "Take the last shot",
+              "goto": "the_end"
             }
           ]
         }

@@ -613,6 +613,18 @@
           }
         ]
       }
+    },
+    {
+      "id": "precinct_9",
+      "name": "Precinct 9",
+      "icon": "🏛️",
+      "x": 5,
+      "y": 7,
+      "music": "conspiracy",
+      "describe": "Bulletproof glass, ringing phones, and a wall of wanted faces. The bounty board pays cash.",
+      "action": {
+        "type": "bounty"
+      }
     }
   ],
   "sonarRange": 7

@@ -34,7 +34,7 @@ const CityMode = (() => {
     bonnie_garage: 'boat', marlow_pier: 'harbor', fish_market: 'night',
     mansion: 'mansion', tess_workshop: 'industrial', carwash: 'rain', greenhouse: 'garden',
     payphone_rusty: 'radio', chapel_crypt: 'church', pier_locker: 'harbor',
-    theater_seat9: 'mansion', greenhouse_bench: 'garden'
+    theater_seat9: 'mansion', greenhouse_bench: 'garden', precinct_9: 'precinct'
   };
   // v4.0 EACH AREA'S OWN SOUND: ambience bed per district + per landmark
   const DIST_AMB = { old_chapel: 'church', midtown: 'club', southside: 'radio',
@@ -48,7 +48,7 @@ const CityMode = (() => {
     bonnie_garage: 'boat', marlow_pier: 'boat', fish_market: 'boat',
     mansion: 'mansion', tess_workshop: 'precinct', carwash: 'rain', greenhouse: 'night',
     payphone_rusty: 'radio', chapel_crypt: 'church', pier_locker: 'boat',
-    theater_seat9: 'radio', greenhouse_bench: 'night'
+    theater_seat9: 'radio', greenhouse_bench: 'night', precinct_9: 'precinct'
   };
   // Hero's Call style radar: signature sound description per landmark
   const POI_SIG_DESC = {
@@ -58,7 +58,8 @@ const CityMode = (() => {
     bonnie_garage: 'an idling engine', marlow_pier: 'a foghorn', fish_market: 'gulls and ropes',
     mansion: 'patrol boots', tess_workshop: 'a grinder', carwash: 'spraying water', greenhouse: 'rustling leaves',
     payphone_rusty: 'a dead-line hum', chapel_crypt: 'cold crypt air', pier_locker: 'a locker latch',
-    theater_seat9: 'velvet seat springs', greenhouse_bench: 'a creaking bench'
+    theater_seat9: 'velvet seat springs', greenhouse_bench: 'a creaking bench',
+    precinct_9: 'a radio squawk'
   };
 
   function getDistrictMusic(d) {
@@ -392,6 +393,9 @@ const CityMode = (() => {
     { text: 'Blackout! One whole block goes dark. In the confusion you slip your tail. Heat down.', fx: { heat: -1 }, sfx: 'tick' },
     { text: 'Kids playing stickball use you as home base. Safe! You laugh for the first time all night.', fx: { health: 5 }, sfx: 'success' },
     { text: 'A hooded informant sells you a precinct rumor for 40 CC: the night ledger moves at midnight.', fx: { cc: -40 }, sfx: 'tick' },
+    { text: 'You spot the Mirror Mugger working the crowd — you memorize his limp for the bounty board at Precinct 9.', fx: { setFlag: 'bounty_mug' }, sfx: 'tick' },
+    { text: 'You smell lamp oil and hear running feet — the Dock Arsonist, just ahead of the flames. Precinct 9 pays for him.', fx: { setFlag: 'bounty_arson' }, sfx: 'tick' },
+    { text: 'A velvet glove brushes your pocket and misses — the Velvet Pickpocket. You log the face for Precinct 9.', fx: { setFlag: 'bounty_pick' }, sfx: 'tick' },
   ];
   let lastEncMove = 0;
   function maybeEncounter() {
@@ -510,6 +514,37 @@ const CityMode = (() => {
       return; 
     }
     const a = poi.action || {};
+    // v5.2 bounty board: turn spotted wanted faces into cash
+    if (a.type === 'bounty') {
+      const board = [
+        { flag: 'bounty_mug', pay: 200, name: 'the Mirror Mugger' },
+        { flag: 'bounty_arson', pay: 300, name: 'the Dock Arsonist' },
+        { flag: 'bounty_pick', pay: 250, name: 'the Velvet Pickpocket' },
+      ];
+      const paid = [];
+      let total = 0;
+      for (const b of board) {
+        if (Economy.state.flags[b.flag] && !Economy.state.flags[b.flag + '_paid']) {
+          try { Economy.apply({ cc: b.pay, setFlag: b.flag + '_paid' }); } catch (e) {}
+          paid.push(`${b.name} — ${b.pay} CC`);
+          total += b.pay;
+        }
+      }
+      try { Economy.save(); } catch (e) {}
+      paintHUD();
+      if (paid.length) {
+        SFX.play('coin');
+        say(`Precinct 9 bounty board. Paid: ${paid.join('. ')}. Total ${total} CC. ` +
+          'More faces out there — keep your ears open on the streets.');
+      } else {
+        const wanted = board.filter(b => !Economy.state.flags[b.flag]).map(b => b.name);
+        SFX.play('tick');
+        say(wanted.length
+          ? `Precinct 9 bounty board. Nothing to collect. Still wanted: ${wanted.join(', ')}. Spot them while roaming and come back.`
+          : 'Precinct 9 bounty board. All bounties collected. The wall is clean — for now.');
+      }
+      return;
+    }
     // v5.0 dead drops: one-time cache, first visit pays, later visits echo
     if (a.type === 'cache') {
       const flag = 'cache_' + poi.id;

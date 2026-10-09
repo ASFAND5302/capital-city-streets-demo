@@ -797,6 +797,9 @@ const Game = (() => {
     deduceHit: 'the hitmen deduction', studyLock: "the study's kitchen code",
     signalCode: "Marlow's buoy signal", fogRun: 'the fog-bank run',
     quietEntry: 'the quiet window entry', roofRun: 'the rooftop run',
+    velvetSafe: 'the Velvet safe', whistleCount: "Harbor's whistle code",
+    guestCipher: "Wexler's table cipher", bounty_mug: 'bounty: the Mirror Mugger',
+    bounty_arson: 'bounty: the Dock Arsonist', bounty_pick: 'bounty: the Velvet Pickpocket',
   };
   function journal() {
     const s = Economy.state;
