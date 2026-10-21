@@ -59,7 +59,8 @@ const Input = (() => {
       const letter = (el.dataset.hotkey || '').toUpperCase();
       const prefix = letter ? `Option ${letter}, ${idx + 1} of ${list.length}` : `Option ${idx + 1} of ${list.length}`;
       try {
-        TTS.interrupt(`${prefix}: ${el.dataset.label}`,
+        // v5.3: throttled nav speech — holding arrows can't wedge the narrator
+        (TTS.sayNav || TTS.interrupt).call(TTS, `${prefix}: ${el.dataset.label}`,
           { pitch: 1.15, rate: 1.1, slot: 0, _skipReal: true });
       } catch (e) {}
     }
@@ -75,6 +76,7 @@ const Input = (() => {
 
     // Main menu owns arrows/enter/numbers — only global toggles here.
     if (!gameOpen()) {
+      if (e.repeat) return; // v5.3: holding a toggle must not flap it
       switch (e.key) {
         case 'r': case 'R': try { TTS.replay(); } catch (err) {} break;
         case 'h': case 'H': handlers.global?.('highContrast'); break;
@@ -85,6 +87,8 @@ const Input = (() => {
     }
 
     // ---- story mode ----
+    // v5.3: toggles fire once per press — holding T/H/F/E/J/R must not flap or spam
+    if (e.repeat && !['ArrowUp', 'ArrowDown', 'w', 'W', 's', 'S', 'Enter', ' '].includes(e.key)) return;
     const { list, index } = storyChoices();
 
     switch (e.key) {

@@ -162,9 +162,8 @@ const Menu = (() => {
   /* ---------- actions - BUG FIX v2.1: No double voice, no lobby music overlap ---------- */
   function doAction(action, el) {
     const hardStopAll = () => {
-      try { if (typeof TTS !== 'undefined') { if (TTS.hardStop) TTS.hardStop(); else TTS.stop(); } } catch (e) {}
-      try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (e) {}
-      try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
+      // v5.3: one call — TTS.hardStop already stops RealVoices + cancels + unducks
+      try { if (typeof TTS !== 'undefined') TTS.hardStop(); } catch (e) {}
     };
     const hardStopMusic = () => {
       try { if (typeof Music !== 'undefined') Music.stop(true); } catch (e) {}
@@ -356,20 +355,21 @@ const Menu = (() => {
     layer().addEventListener('click', handleAction);
 
     // BUG FIX: Focus speech with try/catch - prevents SFX error breaking keys
+    // v5.3 INSTANT KEYS: one tick + throttled speak. (Was: 3 redundant
+    // speech stops per focus — cancel-storms wedged the narrator.)
     layer().addEventListener('focusin', e => {
       const t = e.target.closest('[data-speak]');
       if (t) {
         try { if (typeof SFX !== 'undefined' && SFX.play) SFX.play('tick'); } catch (err) {}
-        try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (err) {}
-        try { if (typeof TTS !== 'undefined' && TTS.hardStop) TTS.hardStop(); } catch (err) {}
-        try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (err) {}
-        try { if (typeof TTS !== 'undefined') TTS.interrupt(t.dataset.speak, MENU_VOICE); } catch (err) {}
+        try { if (typeof TTS !== 'undefined') (TTS.sayNav || TTS.interrupt).call(TTS, t.dataset.speak, MENU_VOICE); } catch (err) {}
       }
     });
 
     // Arrow-key navigation between focusable elements of the visible panel
     document.addEventListener('keydown', e => {
       if (layer().hidden) return;
+      // v5.3: holding Enter/Space must not machine-gun menu buttons
+      if (e.repeat && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); return; }
       if (e.key === 'Escape') {
         if (!visiblePanel().id.includes('menu-list')) {
           e.preventDefault();
@@ -538,9 +538,8 @@ const CHAPTERS = {
     const c = CHAPTERS[n];
     if (!c) return;
     const hardStopAll = () => {
-      try { if (typeof TTS !== 'undefined') { if (TTS.hardStop) TTS.hardStop(); else TTS.stop(); } } catch (e) {}
-      try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (e) {}
-      try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
+      // v5.3: one call — TTS.hardStop already stops RealVoices + cancels + unducks
+      try { if (typeof TTS !== 'undefined') TTS.hardStop(); } catch (e) {}
     };
     const hardStopMusic = () => {
       try { if (typeof Music !== 'undefined') Music.stop(true); } catch (e) {}
@@ -574,6 +573,18 @@ const CHAPTERS = {
         try { if (typeof BlindMusic !== 'undefined') { BlindMusic.init(); BlindMusic.playBase('noir_soft'); BlindMusic.setIntensity(0); } } catch (e) {}
         try { if (typeof PremiumAudio !== 'undefined') PremiumAudio.init(); } catch (e) {}
       }, 1000);
+      // v5.3 INSTANT KEYS: warm audio graphs off the key path + preload UI
+      // SFX buffers in background, so the first keypress never builds them.
+      setTimeout(() => {
+        try { if (typeof SFX !== 'undefined' && SFX.unlockMobile) SFX.unlockMobile(); } catch (e) {}
+        try { if (typeof OGAudio !== 'undefined') {
+          if (OGAudio.unlockMobile) OGAudio.unlockMobile();
+          if (OGAudio.preloadSFX) OGAudio.preloadSFX();
+        } } catch (e) {}
+        try { if (typeof Realistic !== 'undefined' && Realistic.unlockMobile) Realistic.unlockMobile(); } catch (e) {}
+        try { if (typeof BlindMusic !== 'undefined' && BlindMusic.unlockMobile) BlindMusic.unlockMobile(); } catch (e) {}
+        try { if (typeof Music !== 'undefined' && Music.unlockMobile) Music.unlockMobile(); } catch (e) {}
+      }, 1800);
     },
     open,
   };

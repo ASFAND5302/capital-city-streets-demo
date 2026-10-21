@@ -7233,6 +7233,7 @@ const TTS = (() => {
     clearTimeout(interruptTimer); interruptTimer = null;
     clearTimeout(chunkTimer); chunkTimer = null;
     clearTimeout(watchdogTimer); watchdogTimer = null;
+    clearTimeout(navTimer); navTimer = null; navPending = null; // v5.3: drop trailing nav speech
     try {
       if (window.speechSynthesis) window.speechSynthesis.cancel();
     } catch (e) {}
@@ -7365,6 +7366,35 @@ const TTS = (() => {
     return queueSpeak(text, profile || {}, isMobile ? 90 : 45);
   }
 
+  /* v5.3 INSTANT KEYS: throttled navigation speech. Holding an arrow key
+     fires ~30 keydowns/sec — speaking every one cancel-storms Chrome's
+     speech engine until it wedges (the stuck/silent keys bug). sayNav
+     speaks immediately, collapses repeats within 160ms, and a trailing
+     timer guarantees the LAST focused option is always announced. */
+  let navTimer = null, navPending = null, lastNavAt = 0;
+  function sayNav(text, profile) {
+    profile = profile || { pitch: 1.15, rate: 1.1, slot: 0, _skipReal: true };
+    lastSpoken = { text, profile };
+    if (!enabled || !window.speechSynthesis) return Promise.resolve();
+    const now = Date.now();
+    navPending = { text, profile };
+    if (now - lastNavAt >= 160) {
+      clearTimeout(navTimer); navTimer = null;
+      lastNavAt = now; navPending = null;
+      return interrupt(text, profile);
+    }
+    if (!navTimer) {
+      navTimer = setTimeout(() => {
+        navTimer = null;
+        if (!navPending) return;
+        lastNavAt = Date.now();
+        const pend = navPending; navPending = null;
+        interrupt(pend.text, pend.profile);
+      }, 160 - (now - lastNavAt));
+    }
+    return Promise.resolve();
+  }
+
   function stop() { hardStop(); }
 
   function replay() {
@@ -7372,7 +7402,7 @@ const TTS = (() => {
   }
 
   return {
-    speak, interrupt, stop, replay, hardStop,
+    speak, interrupt, sayNav, stop, replay, hardStop,
     setEnabled(v) { enabled = v; localStorage.setItem('ccs-tts', v ? '1' : '0'); if (!v) stop(); window.dispatchEvent(new CustomEvent('tts-toggle', { detail: v })); },
     isEnabled: () => enabled,
     setRateMultiplier(m) { rateMul = Math.min(1.6, Math.max(0.6, m)); localStorage.setItem('ccs-rate', String(rateMul)); },
@@ -10836,7 +10866,8 @@ const Input = (() => {
       const letter = (el.dataset.hotkey || '').toUpperCase();
       const prefix = letter ? `Option ${letter}, ${idx + 1} of ${list.length}` : `Option ${idx + 1} of ${list.length}`;
       try {
-        TTS.interrupt(`${prefix}: ${el.dataset.label}`,
+        // v5.3: throttled nav speech — holding arrows can't wedge the narrator
+        (TTS.sayNav || TTS.interrupt).call(TTS, `${prefix}: ${el.dataset.label}`,
           { pitch: 1.15, rate: 1.1, slot: 0, _skipReal: true });
       } catch (e) {}
     }
@@ -10852,6 +10883,7 @@ const Input = (() => {
 
     // Main menu owns arrows/enter/numbers — only global toggles here.
     if (!gameOpen()) {
+      if (e.repeat) return; // v5.3: holding a toggle must not flap it
       switch (e.key) {
         case 'r': case 'R': try { TTS.replay(); } catch (err) {} break;
         case 'h': case 'H': handlers.global?.('highContrast'); break;
@@ -10862,6 +10894,8 @@ const Input = (() => {
     }
 
     // ---- story mode ----
+    // v5.3: toggles fire once per press — holding T/H/F/E/J/R must not flap or spam
+    if (e.repeat && !['ArrowUp', 'ArrowDown', 'w', 'W', 's', 'S', 'Enter', ' '].includes(e.key)) return;
     const { list, index } = storyChoices();
 
     switch (e.key) {
@@ -13167,6 +13201,15 @@ const CityMode = (() => {
     caption(text);
     TTS.interrupt(text, voice || VOICE);
   }
+  // v5.3 INSTANT KEYS: throttled speech for rapid movement — holding an
+  // arrow key moves fast but only announces ~6x/sec + the final block.
+  function sayNav(text, voice) {
+    caption(text);
+    try {
+      if (typeof TTS !== 'undefined' && TTS.sayNav) TTS.sayNav(text, voice || VOICE);
+      else TTS.interrupt(text, voice || VOICE);
+    } catch (e) {}
+  }
   function caption(text) {
     const cap = $('#city-caption');
     cap.textContent = text;
@@ -13337,7 +13380,7 @@ const CityMode = (() => {
     }
 
     if (marker) line += ' ' + markerStatus();
-    say(line, riding ? BONNIE : VOICE);
+    sayNav(line, riding ? BONNIE : VOICE);
     if (marker && marker.x === pos.x && marker.y === pos.y) {
       marker = null; saveState(); stopBeacon();
       setTimeout(() => say('You have reached your marker. Marker cleared.', riding ? BONNIE : VOICE), 1600);
@@ -13891,6 +13934,9 @@ const CityMode = (() => {
       if (K === '0') { e.preventDefault(); gotoActive = false; say('Go-to cancelled. Back to the streets.'); return; }
     }
 
+    // v5.3: only movement auto-repeats — holding Enter/B/T must not machine-gun
+    const isMoveKey = ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','W','A','S','D'].includes(K);
+    if (e.repeat && !isMoveKey) return;
     const handled = ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','W','A','S','D',
                      'Enter',' ','l','L','m','M','n','N','x','X','b','B','p','P','g','G','k','K','u','U',
                      'c','C','o','O','i','I','r','R','t','T','h','H','j','J','y','Y','e','E','Backspace','Escape'];
@@ -14096,9 +14142,8 @@ const Menu = (() => {
   /* ---------- actions - BUG FIX v2.1: No double voice, no lobby music overlap ---------- */
   function doAction(action, el) {
     const hardStopAll = () => {
-      try { if (typeof TTS !== 'undefined') { if (TTS.hardStop) TTS.hardStop(); else TTS.stop(); } } catch (e) {}
-      try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (e) {}
-      try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
+      // v5.3: one call — TTS.hardStop already stops RealVoices + cancels + unducks
+      try { if (typeof TTS !== 'undefined') TTS.hardStop(); } catch (e) {}
     };
     const hardStopMusic = () => {
       try { if (typeof Music !== 'undefined') Music.stop(true); } catch (e) {}
@@ -14290,20 +14335,21 @@ const Menu = (() => {
     layer().addEventListener('click', handleAction);
 
     // BUG FIX: Focus speech with try/catch - prevents SFX error breaking keys
+    // v5.3 INSTANT KEYS: one tick + throttled speak. (Was: 3 redundant
+    // speech stops per focus — cancel-storms wedged the narrator.)
     layer().addEventListener('focusin', e => {
       const t = e.target.closest('[data-speak]');
       if (t) {
         try { if (typeof SFX !== 'undefined' && SFX.play) SFX.play('tick'); } catch (err) {}
-        try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (err) {}
-        try { if (typeof TTS !== 'undefined' && TTS.hardStop) TTS.hardStop(); } catch (err) {}
-        try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (err) {}
-        try { if (typeof TTS !== 'undefined') TTS.interrupt(t.dataset.speak, MENU_VOICE); } catch (err) {}
+        try { if (typeof TTS !== 'undefined') (TTS.sayNav || TTS.interrupt).call(TTS, t.dataset.speak, MENU_VOICE); } catch (err) {}
       }
     });
 
     // Arrow-key navigation between focusable elements of the visible panel
     document.addEventListener('keydown', e => {
       if (layer().hidden) return;
+      // v5.3: holding Enter/Space must not machine-gun menu buttons
+      if (e.repeat && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); return; }
       if (e.key === 'Escape') {
         if (!visiblePanel().id.includes('menu-list')) {
           e.preventDefault();
@@ -14472,9 +14518,8 @@ const CHAPTERS = {
     const c = CHAPTERS[n];
     if (!c) return;
     const hardStopAll = () => {
-      try { if (typeof TTS !== 'undefined') { if (TTS.hardStop) TTS.hardStop(); else TTS.stop(); } } catch (e) {}
-      try { if (typeof RealVoices !== 'undefined') RealVoices.stop(); } catch (e) {}
-      try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
+      // v5.3: one call — TTS.hardStop already stops RealVoices + cancels + unducks
+      try { if (typeof TTS !== 'undefined') TTS.hardStop(); } catch (e) {}
     };
     const hardStopMusic = () => {
       try { if (typeof Music !== 'undefined') Music.stop(true); } catch (e) {}
@@ -14508,6 +14553,18 @@ const CHAPTERS = {
         try { if (typeof BlindMusic !== 'undefined') { BlindMusic.init(); BlindMusic.playBase('noir_soft'); BlindMusic.setIntensity(0); } } catch (e) {}
         try { if (typeof PremiumAudio !== 'undefined') PremiumAudio.init(); } catch (e) {}
       }, 1000);
+      // v5.3 INSTANT KEYS: warm audio graphs off the key path + preload UI
+      // SFX buffers in background, so the first keypress never builds them.
+      setTimeout(() => {
+        try { if (typeof SFX !== 'undefined' && SFX.unlockMobile) SFX.unlockMobile(); } catch (e) {}
+        try { if (typeof OGAudio !== 'undefined') {
+          if (OGAudio.unlockMobile) OGAudio.unlockMobile();
+          if (OGAudio.preloadSFX) OGAudio.preloadSFX();
+        } } catch (e) {}
+        try { if (typeof Realistic !== 'undefined' && Realistic.unlockMobile) Realistic.unlockMobile(); } catch (e) {}
+        try { if (typeof BlindMusic !== 'undefined' && BlindMusic.unlockMobile) BlindMusic.unlockMobile(); } catch (e) {}
+        try { if (typeof Music !== 'undefined' && Music.unlockMobile) Music.unlockMobile(); } catch (e) {}
+      }, 1800);
     },
     open,
   };

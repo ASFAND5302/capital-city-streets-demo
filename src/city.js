@@ -118,6 +118,15 @@ const CityMode = (() => {
     caption(text);
     TTS.interrupt(text, voice || VOICE);
   }
+  // v5.3 INSTANT KEYS: throttled speech for rapid movement — holding an
+  // arrow key moves fast but only announces ~6x/sec + the final block.
+  function sayNav(text, voice) {
+    caption(text);
+    try {
+      if (typeof TTS !== 'undefined' && TTS.sayNav) TTS.sayNav(text, voice || VOICE);
+      else TTS.interrupt(text, voice || VOICE);
+    } catch (e) {}
+  }
   function caption(text) {
     const cap = $('#city-caption');
     cap.textContent = text;
@@ -288,7 +297,7 @@ const CityMode = (() => {
     }
 
     if (marker) line += ' ' + markerStatus();
-    say(line, riding ? BONNIE : VOICE);
+    sayNav(line, riding ? BONNIE : VOICE);
     if (marker && marker.x === pos.x && marker.y === pos.y) {
       marker = null; saveState(); stopBeacon();
       setTimeout(() => say('You have reached your marker. Marker cleared.', riding ? BONNIE : VOICE), 1600);
@@ -842,6 +851,9 @@ const CityMode = (() => {
       if (K === '0') { e.preventDefault(); gotoActive = false; say('Go-to cancelled. Back to the streets.'); return; }
     }
 
+    // v5.3: only movement auto-repeats — holding Enter/B/T must not machine-gun
+    const isMoveKey = ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','W','A','S','D'].includes(K);
+    if (e.repeat && !isMoveKey) return;
     const handled = ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','W','A','S','D',
                      'Enter',' ','l','L','m','M','n','N','x','X','b','B','p','P','g','G','k','K','u','U',
                      'c','C','o','O','i','I','r','R','t','T','h','H','j','J','y','Y','e','E','Backspace','Escape'];

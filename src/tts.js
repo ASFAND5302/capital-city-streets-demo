@@ -209,6 +209,7 @@ const TTS = (() => {
     clearTimeout(interruptTimer); interruptTimer = null;
     clearTimeout(chunkTimer); chunkTimer = null;
     clearTimeout(watchdogTimer); watchdogTimer = null;
+    clearTimeout(navTimer); navTimer = null; navPending = null; // v5.3: drop trailing nav speech
     try {
       if (window.speechSynthesis) window.speechSynthesis.cancel();
     } catch (e) {}
@@ -341,6 +342,35 @@ const TTS = (() => {
     return queueSpeak(text, profile || {}, isMobile ? 90 : 45);
   }
 
+  /* v5.3 INSTANT KEYS: throttled navigation speech. Holding an arrow key
+     fires ~30 keydowns/sec — speaking every one cancel-storms Chrome's
+     speech engine until it wedges (the stuck/silent keys bug). sayNav
+     speaks immediately, collapses repeats within 160ms, and a trailing
+     timer guarantees the LAST focused option is always announced. */
+  let navTimer = null, navPending = null, lastNavAt = 0;
+  function sayNav(text, profile) {
+    profile = profile || { pitch: 1.15, rate: 1.1, slot: 0, _skipReal: true };
+    lastSpoken = { text, profile };
+    if (!enabled || !window.speechSynthesis) return Promise.resolve();
+    const now = Date.now();
+    navPending = { text, profile };
+    if (now - lastNavAt >= 160) {
+      clearTimeout(navTimer); navTimer = null;
+      lastNavAt = now; navPending = null;
+      return interrupt(text, profile);
+    }
+    if (!navTimer) {
+      navTimer = setTimeout(() => {
+        navTimer = null;
+        if (!navPending) return;
+        lastNavAt = Date.now();
+        const pend = navPending; navPending = null;
+        interrupt(pend.text, pend.profile);
+      }, 160 - (now - lastNavAt));
+    }
+    return Promise.resolve();
+  }
+
   function stop() { hardStop(); }
 
   function replay() {
@@ -348,7 +378,7 @@ const TTS = (() => {
   }
 
   return {
-    speak, interrupt, stop, replay, hardStop,
+    speak, interrupt, sayNav, stop, replay, hardStop,
     setEnabled(v) { enabled = v; localStorage.setItem('ccs-tts', v ? '1' : '0'); if (!v) stop(); window.dispatchEvent(new CustomEvent('tts-toggle', { detail: v })); },
     isEnabled: () => enabled,
     setRateMultiplier(m) { rateMul = Math.min(1.6, Math.max(0.6, m)); localStorage.setItem('ccs-rate', String(rateMul)); },
