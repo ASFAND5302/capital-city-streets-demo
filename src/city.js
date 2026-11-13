@@ -17,7 +17,7 @@
 const CityMode = (() => {
   const $ = sel => document.querySelector(sel);
   const CELL = 44;
-  const BUILD = 'v1.0';   // shown in the key bar — submission build
+  const BUILD = 'v5.4';   // open-world step 1: map foundation
   const VOICE = { pitch: 1.1, rate: 1.15, slot: 1 }; // Smart Glasses voice
   const BONNIE = { pitch: 1.45, rate: 1.08, slot: 10, gender: 'female', _charId: 'bonnie' }; // Bonnie voice
   // Location-specific music: now each district and POI has its own music field in city.json
@@ -88,14 +88,55 @@ const CityMode = (() => {
 
   /* ---------- loading ---------- */
   async function loadCity() {
-    const override = localStorage.getItem('ccs-data:city.json');
-    if (override) return JSON.parse(override);
+    // Bad editor overrides must not strand the player in a broken world.
+    try {
+      const override = localStorage.getItem('ccs-data:city.json');
+      if (override) return validateCity(JSON.parse(override));
+    } catch (e) { console.warn('[City] Ignoring invalid city override:', e.message); }
     const res = await fetch('data/city.json');
-    return res.json();
+    if (!res.ok) throw new Error('City data could not be loaded.');
+    return validateCity(await res.json());
   }
 
   /* ---------- helpers ---------- */
+  function validateCity(data) {
+    const fail = message => { throw new Error('Invalid city map: ' + message); };
+    if (!data || !Number.isInteger(data.gridSize) || data.gridSize < 1) fail('grid size');
+    const n = data.gridSize;
+    const point = p => p && Number.isInteger(p.x) && Number.isInteger(p.y) &&
+      p.x >= 0 && p.y >= 0 && p.x < n && p.y < n;
+    for (const key of ['streets', 'avenues']) {
+      if (!Array.isArray(data[key]) || data[key].length !== n ||
+          data[key].some(name => typeof name !== 'string' || !name.trim())) fail(key);
+    }
+    if (!point(data.start)) fail('starting position');
+    if (!Array.isArray(data.districts) || !data.districts.length) fail('districts');
+    const ids = new Set();
+    for (const d of data.districts) {
+      if (!d || !d.id || !d.name || ids.has(d.id) ||
+          !point({ x: d.x0, y: d.y0 }) || !point({ x: d.x1, y: d.y1 }) ||
+          d.x0 > d.x1 || d.y0 > d.y1) fail('district bounds or identity');
+      ids.add(d.id);
+    }
+    // Each road intersection must belong to exactly one district.
+    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+      const count = data.districts.filter(d => x >= d.x0 && x <= d.x1 && y >= d.y0 && y <= d.y1).length;
+      if (count !== 1) fail('district gap or overlap at ' + x + ',' + y);
+    }
+    if (!Array.isArray(data.pois)) fail('landmarks');
+    ids.clear();
+    const occupied = new Set();
+    for (const p of data.pois) {
+      if (!point(p) || !p.id || !p.name || ids.has(p.id) || occupied.has(p.x + ',' + p.y)) fail('landmark placement or identity');
+      ids.add(p.id); occupied.add(p.x + ',' + p.y);
+    }
+    return data;
+  }
   const N = () => city.gridSize;
+  function inBounds(p) {
+    return !!p && Number.isInteger(p.x) && Number.isInteger(p.y) &&
+      p.x >= 0 && p.y >= 0 && p.x < N() && p.y < N();
+  }
   function intersectionName(x, y) {
     return `${city.avenues[x]} Ave & ${city.streets[y]} St`;
   }
@@ -423,8 +464,18 @@ const CityMode = (() => {
 
   function move(dx, dy) {
     const step = riding ? 3 : 1;
-    const nx = Math.max(0, Math.min(N() - 1, pos.x + dx * step));
-    const ny = Math.max(0, Math.min(N() - 1, pos.y + dy * step));
+    let nx = pos.x, ny = pos.y;
+    // Ride up to three connected intersections, but stop at the first landmark,
+    // marker or new district so an important stop is never silently skipped.
+    const originDistrict = districtAt(pos.x, pos.y);
+    for (let i = 0; i < step; i++) {
+      const next = { x: nx + dx, y: ny + dy };
+      if (!inBounds(next)) break;
+      nx = next.x; ny = next.y;
+      const nextDistrict = districtAt(nx, ny);
+      if (poiAt(nx, ny) || (marker && marker.x === nx && marker.y === ny) ||
+          nextDistrict?.id !== originDistrict?.id) break;
+    }
     if (nx === pos.x && ny === pos.y) {
       // GHLT MOVE - edge of city, halki awaz for wrong
       try {
@@ -502,7 +553,7 @@ const CityMode = (() => {
     if (pos.x === N() - 1) edges.push('east');
     if (pos.y === 0) edges.push('north');
     if (pos.y === N() - 1) edges.push('south');
-    const edgeNote = edges.length ? ` The edge of the mapped city is one block ${edges.join(' and ')}.` : '';
+    const edgeNote = edges.length ? ` You are at the ${edges.join(' and ')} edge of the mapped city.` : '';
     describeMove(dirWord, wrongWay, edgeNote);
     maybeEncounter();
   }
@@ -683,21 +734,34 @@ const CityMode = (() => {
     localStorage.setItem('ccs-city', JSON.stringify({ x: pos.x, y: pos.y, riding, marker }));
   }
   function loadState() {
+    // Always establish a valid fresh spawn before attempting an older save.
+    pos = { x: city.start.x, y: city.start.y };
+    riding = false;
+    marker = null;
     try {
       const raw = localStorage.getItem('ccs-city');
       if (raw) {
         const s = JSON.parse(raw);
-        if (Number.isInteger(s.x) && Number.isInteger(s.y)) pos = { x: s.x, y: s.y };
-        riding = !!s.riding;
-        marker = s.marker || null;
+        if (inBounds(s)) pos = { x: s.x, y: s.y };
+        riding = !!(s && s.riding === true);
+        if (s && inBounds(s.marker)) marker = { x: s.marker.x, y: s.marker.y };
       }
     } catch (e) {}
   }
 
   /* ---------- enter / exit ---------- */
   async function enter() {
-    if (!city) city = await loadCity();
+    try {
+      if (!city) city = await loadCity();
+    } catch (e) {
+      console.error('[City]', e);
+      TTS.interrupt('The city map could not be loaded. Please try free roam again from the menu.', VOICE);
+      return;
+    }
     loadState();
+    lastPoiId = null;
+    lastSigPoi = null;
+    history = [{ x: pos.x, y: pos.y }];
     // v4.0: clear stale story choices — their keys must never leak into the city
     try { document.getElementById('choices').innerHTML = ''; } catch (e) {}
     // v4.1: cancel any pending "N options..." announcement from the story
@@ -778,6 +842,7 @@ const CityMode = (() => {
       (view3d ? 'You are in the 3D street view — press C for the overhead map. ' : '') +
       'Listen: every landmark makes its own sound around you — church bells, club bass, a bouncing ball. Wear headphones for true direction. ' +
       'Arrow keys move. P is sonar, G is go-to with letters, K district guide, L look around, B Bonnie. ' +
+      'Bonnie rides up to three blocks, stopping at landmarks, your marker and district boundaries. ' +
       'J is your case journal, Y a walking beacon to your marker, Backspace steps back along your trail, Escape for the menu.');
   }
 
